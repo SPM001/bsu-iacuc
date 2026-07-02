@@ -1,0 +1,508 @@
+/* ── GENERAL ───────────────── */
+
+body {
+    position: relative;
+    overflow-x: hidden;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+
+    background-image: url("../images/background.webp");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+
+    filter: blur(3px);
+    z-index: -1;
+    /* transform: scale(1); */
+}
+
+.body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin: 0 auto;
+}
+
+main {
+    flex: 0 1 auto;
+    width: 100%;
+    max-width: 500px;
+    margin: 36px auto;
+    background-color: white;
+    padding: 40px 24px;
+    border-radius: 8px;
+}
+
+main.wide {
+    max-width: 700px;
+}
+
+main form {
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form-actions {
+    width: fit-content;
+    padding: 20px 60px;
+    margin: 40px auto 0;
+}
+
+h1 {
+    font-family: var(--font-title);
+    font-weight: lighter;
+    margin: 20px;
+    text-align: center;
+    color: var(--green);
+}
+
+label,
+input {
+    width: 80%;
+}
+
+label {
+    text-align: left;
+    margin: .5em 0 .3em;
+    font-size: 1em;
+    color: rgb(55, 55, 55);
+}
+
+input {
+    padding: 12px 10px;
+    border-radius: 4px;
+    border: none;
+    margin-bottom: 1em;
+    box-shadow: 0 1px 4px lightgray;
+    font-size: .9em;
+}
+
+input:focus-visible {
+    box-shadow: 0 1px 4px lightgray;
+}
+
+/* ── Password show/hide toggle ───────────── */
+/* Wraps any <input type="password"> — injected by password-toggle.js. */
+.password-field-wrap {
+    position: relative;
+    width: 80%;
+}
+
+.password-field-wrap input {
+    width: 100%;
+    padding-right: 2.6rem;
+}
+
+.password-toggle-btn {
+    position: absolute;
+    width: fit-content;
+    height: 100%;
+    top: 40%;
+    transform: translateY(-50%);
+
+    right: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 6px;
+    margin: 0;
+    color: #888;
+    cursor: pointer;
+}
+
+.password-toggle-btn:hover {
+    background: transparent;
+    color: var(--green-mid2);
+}
+
+.password-toggle-btn:active {
+    transform: translateY(calc(-50% + 1px));
+    box-shadow: none;
+}
+
+.password-toggle-btn svg {
+    pointer-events: none;
+}
+
+select {
+    width: 80%;
+    padding: 8px 6px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    margin-bottom: 1em;
+}
+
+form>a {
+    width: 60%;
+    text-align: left;
+    margin-bottom: 1em;
+}
+
+
+/* ── BUTTONS ───────────────── */
+
+main button {
+    width: 200px;
+    margin-bottom: 1em;
+    font-size: 1em;
+    background-color: var(--green-mid2);
+    color: whitesmoke;
+}
+
+main button:hover {
+    /* color: rgb(42, 42, 42); */
+    color: rgba(233, 233, 233, 0.778);
+}
+
+.btn-back {
+    margin-left: 10px;
+}
+
+#account-back {
+    width: 135px;
+}
+
+.btn-red {
+    background-color: rgba(149, 25, 25, 0.721);
+}
+
+.btn-red:hover {
+    background-color: rgba(149, 25, 25, 0.842);
+}
+
+
+/* ── MESSAGES ───────────────── */
+
+.success-message {
+    text-align: center;
+    border-radius: 8px;
+    padding: 10px 15px;
+    background-color: #b8d7b8;
+    color: #062b04;
+    margin: 0 20px 20px 20px;
+}
+
+
+/* ── INFO POPUP ───────────────── */
+
+.info-wrapper {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.info-popup {
+    font-size: .9em;
+    visibility: hidden;
+    width: 300px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    border-radius: 6px;
+    position: absolute;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.info-wrapper:hover .info-popup {
+    visibility: visible;
+    opacity: 1;
+}
+
+.popup-wrap {
+    display: flex;
+    gap: .3em;
+    align-items: center;
+}
+
+
+/* ── PASSWORD ───────────────── */
+
+.password-requirements {
+    width: 60%;
+    text-align: left;
+    margin-bottom: 1em;
+    font-size: 0.9em;
+    color: #555;
+}
+
+.password-requirements ul {
+    padding-left: 1.2em;
+    margin-top: 0.3em;
+}
+
+
+/* ── OTHER ───────────────── */
+
+.form-label {
+    color: #666;
+    margin: auto 16px 1rem;
+}
+
+.helper-label {
+    margin-top: 1em;
+}
+
+.underlined-p {
+    margin: .5em auto .1em;
+}
+
+.staff-login-link {
+    position: fixed;
+    bottom: 60px;
+    right: 20px;
+    color: whitesmoke;
+}
+
+.staff-login-link a.underlined {
+    color: var(--green-light);
+}
+
+
+/* ── FORM ───────────────── */
+.label-group {
+    display: flex;
+    align-items: flex-start;
+    gap: 1em;
+    width: 80%;
+}
+
+.label-group div {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.label-group input {
+    width: 100%;
+}
+
+.label-group label {
+    margin: .5em 0 .3em;
+}
+
+.logout-form {
+    display: block;
+}
+
+
+/* ── CERTIFICATE SECTION ───────────────── */
+
+.certificate-section {
+    width: 80%;
+    margin: 0 auto 1em;
+    padding: 18px 20px;
+    border: 1px solid #e4e4e4;
+    border-radius: var(--btn-radius);
+    background-color: #fafafa;
+}
+
+.certificate-section-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+.certificate-section-header svg {
+    flex-shrink: 0;
+    color: var(--green-mid2);
+    margin-top: 2px;
+}
+
+.certificate-section-header h2 {
+    font-family: var(--font-default);
+    font-size: 1em;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin: 0;
+}
+
+.certificate-section-header .helper {
+    margin-top: 2px;
+}
+
+.certificate-section-body {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.certificate-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.certificate-section-body .button {
+    margin-top: 0;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+}
+
+
+/* ── RESPONSIVE ───────────────── */
+
+@media (max-width: 600px) {
+    main {
+        margin: 24px;
+        padding: 32px 20px;
+        border-radius: 6px;
+    }
+
+    form .helper {
+        text-align: center;
+    }
+
+    label,
+    input,
+    select,
+    form>a,
+    form .helper,
+    .password-requirements,
+    .password-field-wrap {
+        width: 90%;
+    }
+
+    .label-group {
+        flex-direction: column;
+        width: 90%;
+        gap: 0;
+    }
+
+    .certificate-section {
+        width: 90%;
+    }
+
+    .certificate-section-body {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .label-group div {
+        width: 100%;
+    }
+
+    .label-group input {
+        width: 100%;
+    }
+
+    .staff-login-link {
+        position: static;
+        margin-top: 1.5em;
+        color: inherit;
+    }
+
+    .staff-login-link a.underlined {
+        color: var(--green);
+    }
+
+    .form-actions {
+        padding: 20px 24px;
+    }
+}
+
+/* ── File popup modal ── */
+.modal-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-backdrop.open {
+    display: flex;
+}
+
+.modal-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 2rem;
+    max-width: 440px;
+    width: 90%;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+}
+
+.file-popup-card {
+    max-width: 860px;
+    width: 92vw;
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    max-height: 90vh;
+}
+
+.file-popup-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.75rem 1rem;
+    background: #f8f8f8;
+    border-bottom: 1px solid #e4e4e4;
+    flex-shrink: 0;
+}
+
+.file-popup-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.file-popup-close {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.8rem;
+    padding: 6px 10px;
+}
+
+.file-popup-frame {
+    flex: 1;
+    width: 100%;
+    min-height: 520px;
+    border: none;
+    background: #fff;
+}
+
+@media (max-width: 768px) {
+    .file-popup-card {
+        width: 98vw;
+        max-height: 95vh;
+    }
+
+    .file-popup-frame {
+        min-height: 320px;
+    }
+}

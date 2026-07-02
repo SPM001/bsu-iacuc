@@ -1,0 +1,361 @@
+/* ============================================================
+   RECORDS PAGE — records.css
+   Extends admin-home.css conventions: em units, 18px root.
+   admin-home.css is loaded first and provides the table,
+   filter-pill, pagination, and modal-backdrop base styles.
+   ============================================================ */
+
+/* ── Page header row ─────────────────────────────────────── */
+.records-page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* Reuse row-btn from admin-home but make the Add button
+   sit tightly in the header */
+.records-page-header .row-btn {
+  margin: 0;
+  background: var(--green-mid2);
+  color: whitesmoke;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 10px 14px;
+  font-size: .9em;
+  font-family: var(--font-body);
+  white-space: nowrap;
+  border-radius: var(--btn-radius);
+
+  box-shadow: 0 1px 3px lightgray;
+}
+
+.records-page-header .row-btn:hover {
+  background: rgba(60, 125, 49, 0.91);
+  color: rgba(255, 255, 255, 0.931);
+}
+
+/* ── Metric cards: only 3 cards on this page ─────────────── */
+.records-metrics {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  max-width: 600px;
+}
+
+/* ── Filter selects row ──────────────────────────────────── */
+.records-filters-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 10px 0 18px;
+}
+
+.records-filters-row p {
+  font-size: .8em;
+}
+
+.records-filter-select {
+  padding: 7px 10px;
+  font-size: 0.9em;
+  font-family: var(--font-body);
+  border: 1px solid #ddd;
+  border-radius: var(--btn-radius);
+  background: #fff;
+  color: #333;
+  cursor: pointer;
+  /* override body.css */
+  margin: 0;
+  height: auto;
+}
+
+.records-filter-select:focus {
+  outline: none;
+  border-color: var(--green-mid);
+  box-shadow: 0 0 0 2px rgba(44, 96, 33, 0.12);
+}
+
+/* ── Clear-all button ────────────────────────────────────── */
+.records-clear-btn {
+  white-space: nowrap;
+  color: #888;
+  font-size: 0.8em;
+  /* override row-btn defaults */
+  border-color: #e0e0e0;
+  padding: 7px 14px;
+}
+
+.records-clear-btn:hover {
+  background: #f0f0f0;
+  color: #333;
+}
+
+/* ── Table wrapper ───────────────────────────────────────── */
+.records-table-wrap {
+  /* inherits protocol-table-wrap */
+}
+
+/* The table is wide, so the scroll area is click-and-drag scrollable
+   (see the JS at the bottom of records.view.php). The grab/grabbing
+   cursor signals that affordance to the user. */
+.records-table-wrap .protocol-table-scroll {
+  cursor: grab;
+}
+
+.records-table-wrap .protocol-table-scroll.dragging {
+  cursor: grabbing;
+  user-select: none;
+  scroll-behavior: auto;
+}
+
+/* ── Column widths ───────────────────────────────────────────
+ *
+ * To adjust a column, change its width value below.
+ * The table uses horizontal scroll so total width can exceed 100%.
+ *
+ * col-actions  — Edit / Delete buttons. Fixed first column.
+ * col-ref      — Reference number badge.
+ * col-title    — Research title. Wider = less wrapping.
+ * col-school   — School / department name.
+ * col-animal   — Animal type.
+ * col-count    — Animal count number.
+ * col-pi       — Principal investigator name.
+ * col-gender   — Gender (Male / Female / Mixed).
+ * col-rtype    — Researcher type (Student / Faculty etc.).
+ * col-adviser  — Research adviser name.
+ * col-vet      — Veterinarian name.
+ * col-duration — Research duration text.
+ * col-date     — Date released.
+ * col-recv     — Received-by officer name.
+ *
+ * ─────────────────────────────────────────────────────────── */
+.records-table .col-actions {
+  width: 140px;
+  white-space: nowrap;
+}
+
+.records-table .col-ref {
+  width: 120px;
+  white-space: nowrap;
+}
+
+.records-table .col-title {
+  min-width: 300px;
+}
+
+/* ← increase for wider title column */
+.records-table .col-school {
+  width: 130px;
+}
+
+.records-table .col-animal {
+  width: 110px;
+}
+
+.records-table .col-count {
+  width: 70px;
+  text-align: right;
+}
+
+.records-table .col-pi {
+  width: 150px;
+}
+
+.records-table .col-gender {
+  width: 80px;
+}
+
+.records-table .col-rtype {
+  width: 110px;
+}
+
+.records-table .col-adviser {
+  width: 140px;
+}
+
+.records-table .col-vet {
+  width: 130px;
+}
+
+.records-table .col-duration {
+  width: 100px;
+}
+
+.records-table .col-date {
+  width: 110px;
+  white-space: nowrap;
+}
+
+.records-table .col-recv {
+  width: 130px;
+}
+
+/* Ref badge */
+.records-ref {
+  font-family: monospace;
+  font-size: 0.78em;
+  padding: 2px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+/* ── Delete button danger variant ────────────────────────── */
+.delete-record-btn:hover {
+  background: #b91c1c !important;
+  border-color: #b91c1c !important;
+  color: #fff !important;
+}
+
+/* ── Record modal ────────────────────────────────────────── */
+.records-modal-card {
+  max-width: 720px;
+  width: 94vw;
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  max-height: 92vh;
+}
+
+.records-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.1rem 1.4rem;
+  border-bottom: 1px solid #e4e4e4;
+  background: #fafafa;
+  flex-shrink: 0;
+}
+
+.records-modal-header h2 {
+  font-size: 1em;
+  font-weight: 700;
+  color: var(--green);
+  margin: 0;
+}
+
+.records-modal-close {
+  background: none;
+  border: none;
+  box-shadow: none;
+  font-size: 1.1em;
+  color: #888;
+  cursor: pointer;
+  padding: 4px 8px;
+  margin: 0;
+  line-height: 1;
+}
+
+.records-modal-close:hover {
+  color: #1a1a1a;
+}
+
+.records-modal-body {
+  padding: 1.2rem 1.4rem;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.records-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  padding: 0.9rem 1.4rem;
+  border-top: 1px solid #e4e4e4;
+  background: #fafafa;
+  flex-shrink: 0;
+}
+
+.records-modal-footer .row-btn {
+  margin: 0;
+}
+
+/* ── Form grid inside modal ──────────────────────────────── */
+.records-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.9rem 1.2rem;
+}
+
+.records-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.records-form-full {
+  grid-column: 1 / -1;
+}
+
+.records-form-group label {
+  font-size: 0.72em;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.records-required {
+  color: #b91c1c;
+}
+
+.records-form-group input,
+.records-form-group select,
+.records-form-group textarea {
+  font-size: 0.85em;
+  font-family: var(--font-body);
+  padding: 7px 10px;
+  border: 1px solid #ddd;
+  border-radius: var(--radius);
+  background: #fff;
+  color: #1a1a1a;
+  /* override body.css */
+  margin: 0;
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.records-form-group input:focus,
+.records-form-group select:focus,
+.records-form-group textarea:focus {
+  outline: none;
+  border-color: var(--green-mid);
+  box-shadow: 0 0 0 2px rgba(44, 96, 33, 0.12);
+}
+
+.records-form-group textarea {
+  resize: vertical;
+  min-height: 70px;
+}
+
+/* ── Alert inside modal ──────────────────────────────────── */
+.records-modal-body .alert {
+  margin-bottom: 0.8rem;
+  font-size: 0.82em;
+}
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .records-metrics {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .records-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .records-form-full {
+    grid-column: 1;
+  }
+
+  .records-filters-row {
+    gap: 6px;
+  }
+
+  .records-filter-select {
+    flex: 1 1 45%;
+  }
+}

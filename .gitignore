@@ -1,0 +1,22 @@
+# ── Environment & secrets ──────────────────────────────────────────
+.env
+
+# ── App config (keep the template, ignore overrides) ──────────────
+config.php
+!app/core/config.php
+
+# ── Uploaded protocol files ────────────────────────────────────────
+storage/uploads/protocols/**
+!storage/uploads/protocols/**/.gitkeep
+
+# ── Logs ──────────────────────────────────────────────────────────
+*.log
+
+# ── Dependencies ────────────────────────────────────────────────────
+vendor/
+
+# ── OS / editor junk ──────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

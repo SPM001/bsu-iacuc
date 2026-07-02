@@ -1,0 +1,164 @@
+/* ============================================================
+   action-queue.css  —  offline queue banner + panel
+   Uses existing CSS variables from body.css.
+   ============================================================ */
+
+
+/* ── Offline banner (slides in from top) ─────────────────── */
+
+.iq-banner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 8000;
+
+    background: #783b00;
+    color: #fff;
+
+    transform: translateY(-100%);
+    transition: transform 0.22s ease;
+    pointer-events: none;
+}
+
+.iq-banner--visible {
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.iq-banner--warn {
+    background: #991b1b;
+}
+
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+
+    max-width: 90%;
+    margin: 0 auto;
+    padding: 10px 0;
+}
+
+.iq-banner-msg {
+    font-size: 0.78em;
+    line-height: 1.4;
+}
+
+.iq-banner-btn {
+    flex-shrink: 0;
+    font-size: 0.75em;
+    padding: 5px 14px;
+    border-radius: var(--btn-radius);
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
+    box-shadow: none;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    transition: background 0.15s ease;
+    margin: 0;
+    display: inline-block;
+}
+
+.iq-banner-btn:hover {
+    background: rgba(255, 255, 255, 0.28);
+    color: #fff;
+}
+
+
+/* ── Queue panel (uses .modal-backdrop + .modal-card) ─────── */
+
+.iq-panel-card {
+    max-width: 480px;
+    padding: 0;
+    overflow: hidden;
+}
+
+.iq-panel-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.75rem 1.5rem;
+    border-top: 1px solid #e4e4e4;
+}
+
+.iq-panel-hint {
+    margin: 0;
+    font-size: 0.68em;
+}
+
+.iq-panel-discard-btn {
+    flex-shrink: 0;
+    font-size: 0.72em;
+    padding: 5px 12px;
+    color: #b91c1c;
+    box-shadow: none;
+    border: 1px solid #f0bfbf;
+    border-radius: var(--btn-radius);
+    background: #fff5f5;
+    margin: 0;
+}
+
+.iq-panel-discard-btn:hover {
+    background: #b91c1c;
+    color: #fff;
+    border-color: #b91c1c;
+}
+
+
+/* ── Queue entry rows ─────────────────────────────────────── */
+
+.iq-entry {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 0.7rem 1.5rem;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background-color 0.1s ease;
+}
+
+.iq-entry:last-child {
+    border-bottom: none;
+}
+
+.iq-entry:hover {
+    background: #f9fbf9;
+}
+
+.iq-entry-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.iq-entry-label {
+    font-size: 0.82em;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.iq-entry-time {
+    font-size: 0.68em;
+}
+
+.iq-entry-discard {
+    flex-shrink: 0;
+    font-size: 0.7em;
+    padding: 4px 10px;
+    color: #888;
+    box-shadow: none;
+    border: 1px solid #e4e4e4;
+    border-radius: var(--btn-radius);
+    background: #f5f5f5;
+    margin: 0;
+}
+
+.iq-entry-discard:hover {
+    background: #b91c1c;
+    color: #fff;
+    border-color: #b91c1c;
+}

@@ -1,0 +1,137 @@
+:root {
+    --aside-scheme: #e2e5e2e1;
+}
+
+.header-logo {
+    margin-left: 50px;
+}
+
+.body {
+    display: flex;
+    flex: 1;
+}
+
+aside {
+    top: 0;
+    left: 0;
+
+    min-height: 100vh;
+    width: 64px;
+
+    background-color: var(--aside-scheme);
+}
+
+aside ul {
+    list-style: none;
+}
+
+aside li {
+    padding: 0;
+    margin: 0;
+    position: relative;
+
+    display: flex;
+    align-items: center;
+}
+
+aside a,
+aside div {
+    background-color: var(--aside-scheme);
+    color: var(--green);
+    transition: all .15s ease;
+}
+
+aside a {
+    text-decoration: none;
+
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 24px 16px;
+    box-sizing: border-box;
+
+    align-items: center;
+}
+
+aside svg {
+    transition: all .15s ease;
+}
+
+aside svg:hover {
+    transform: scale(1.1);
+}
+
+aside a:hover+div {
+    opacity: 1;
+    z-index: 800;
+}
+
+aside div {
+    border-radius: 16px;
+
+    opacity: 0;
+
+    margin-left: .5em;
+    padding: 10px 16px;
+    width: fit-content;
+
+    font-size: 1.05em;
+
+    position: relative;
+    white-space: nowrap;
+}
+
+aside svg {
+    fill: none;
+}
+
+#home-icon,
+#protocols-icon,
+#contact-icon,
+#announcement-icon,
+#accounts-icon {
+    fill: inherit;
+}
+
+.icon-detail {
+    stroke: var(--icon-detail-color, currentColor);
+}
+
+aside a.active-link svg {
+    fill: currentColor;
+    --icon-detail-color: var(--aside-scheme);
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    aside {
+        display: none;
+    }
+}
+
+/* aside div::before {
+    content: '';
+    position: absolute;
+    left: -8px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-right: 10px solid var(--aside-scheme);
+} */
+
+aside a.active-link svg {
+    fill: currentColor;
+}
+
+aside a.active-link svg path {
+    fill: currentColor;
+    /* All paths get filled */
+}
+
+aside a.active-link svg path.icon-detail {
+    fill: none !important;
+    /* Override for the detail path */
+    stroke: var(--aside-scheme);
+}

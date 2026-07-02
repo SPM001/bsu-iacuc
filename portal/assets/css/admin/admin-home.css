@@ -1,0 +1,1034 @@
+/* ============================================================
+   STAFF DASHBOARD — admin-home.css
+   Sizes match submissions.css conventions: em units, 18px root.
+   ============================================================ */
+
+
+/* ── Page header ─────────────────────────────────────────── */
+.dashboard-page-header {
+    margin-bottom: 1.5rem;
+}
+
+.dashboard-page-title {
+    font-size: 1.8em;
+    font-weight: 700;
+    color: var(--green);
+    margin: 0;
+}
+
+
+/* ── Metric cards ────────────────────────────────────────── */
+.metrics-row {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+    margin-bottom: 1.5rem;
+}
+
+.metric-card {
+    background: #f8f9fa;
+    border-radius: var(--btn-radius);
+    padding: 14px 16px;
+    border: 1px solid #e8e8e8;
+}
+
+.metric-card-label {
+    font-size: 0.6em;
+    color: #777;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.metric-card-value {
+    font-size: 1.6em;
+    font-weight: 600;
+    color: var(--green);
+    line-height: 1.2;
+}
+
+.metric-card-value .metric-unit {
+    font-size: 0.55em;
+    font-weight: 400;
+    color: #999;
+    margin-left: 4px;
+}
+
+
+/* ── Search toolbar ──────────────────────────────────────── */
+.inbox-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.inbox-search-wrap {
+    position: relative;
+    flex: 1;
+    max-width: 500px;
+    width: 100%;
+    margin-left: auto;
+}
+
+.inbox-search-wrap svg {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+    pointer-events: none;
+    display: block;
+}
+
+.inbox-search-input {
+    width: 100%;
+    padding: 8px 32px 8px 34px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    font-size: 0.85em;
+    font-family: var(--font-body);
+    background: #fff;
+    color: #1a1a1a;
+    transition: border-color 0.2s;
+    /* override body.css main input defaults */
+    margin-bottom: 0;
+    display: block;
+    height: auto;
+    line-height: 1.4;
+}
+
+.inbox-search-input:focus {
+    outline: none;
+    border-color: var(--green-mid);
+    box-shadow: 0 0 0 2px rgba(44, 96, 33, 0.12);
+}
+
+.inbox-search-clear {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #999;
+    display: none;
+    /* override body.css button defaults */
+    background: none;
+    border: none;
+    box-shadow: none;
+    padding: 2px 4px;
+    font-size: 0.8em;
+    margin: 0;
+    line-height: 1;
+}
+
+.inbox-search-clear.visible {
+    display: block;
+}
+
+.inbox-search-clear:hover {
+    color: #333;
+    background: none;
+}
+
+@media (max-width: 768px) {
+    .inbox-search-wrap {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .inbox-search-wrap {
+        max-width: 100%;
+    }
+
+    .inbox-search-input {
+        font-size: 1em;
+        padding: 10px 32px 10px 34px;
+    }
+}
+
+
+/* ── Filter pills ────────────────────────────────────────── */
+.filter-pills-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 1rem;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+}
+
+.filter-pill {
+    font-size: 1em;
+    padding: 10px 20px;
+    border-radius: var(--btn-radius);
+    border: 1px solid #e0e0e0;
+    background: #fff;
+    color: #555;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+    /* override body.css button defaults */
+    box-shadow: 0 1px 3px lightgray;
+    margin: 0;
+    font-family: var(--font-body);
+    line-height: 1.4;
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+}
+
+.filter-pill:hover {
+    background: none;
+    color: inherit;
+}
+
+.filter-pill.active {
+    background: #18231ac2;
+    border-color: transparent;
+    color: whitesmoke;
+    font-weight: 600;
+    transform: scale(0.95);
+}
+
+.filter-pill .pill-count {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 10px;
+    padding: 1px 8px;
+    font-size: 0.8em;
+    color: inherit;
+    margin-left: 6px;
+    font-weight: 400;
+}
+
+.filter-pill:not(.active) .pill-count {
+    background: #e8e8e8;
+    color: #666;
+}
+
+.filter-pill.active .pill-count {
+    background: rgba(255, 255, 255, 0.22);
+    color: whitesmoke;
+}
+
+
+/* ── Protocol table — desktop ────────────────────────────── */
+
+/*
+ * The outer wrapper clips corners. The inner scroll div handles horizontal
+ * overflow so the border-radius is preserved while buttons never clip.
+ */
+.protocol-table-wrap {
+    border: 1px solid #e4e4e4;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.protocol-table-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.protocol-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 1em;
+}
+
+.protocol-table thead th {
+    text-align: left;
+    padding: 12px 18px;
+    font-size: 0.65em;
+    font-weight: 600;
+    color: #aaa;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    border-bottom: 1px solid #e4e4e4;
+    background: #fafafa;
+    white-space: nowrap;
+}
+
+.protocol-table tbody tr {
+    background: white;
+    border-bottom: 1px solid #e4e4e4;
+    transition: background 0.1s;
+}
+
+.protocol-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.protocol-table tbody tr:hover {
+    background-color: #f9fbf9;
+}
+
+.protocol-table tbody tr.protocol-row-hidden {
+    display: none;
+}
+
+.protocol-table tbody td {
+    padding: 20px 18px;
+    color: #1a1a1a;
+    vertical-align: middle;
+}
+
+
+/* ── Column widths ───────────────────────────────────────── */
+.protocol-table .col-title {
+    width: 40%;
+}
+
+.protocol-table .col-researcher {
+    width: 14%;
+}
+
+.protocol-table .col-submitted {
+    width: 12%;
+}
+
+.protocol-table .col-status {
+    width: 14%;
+}
+
+.protocol-table .col-actions {
+    width: 20%;
+}
+
+
+/* ── Table cell types ────────────────────────────────────── */
+.protocol-title-cell {
+    font-size: 1em;
+    font-weight: 600;
+    color: #1a1a1a;
+    display: flex;
+    align-items: flex-start;
+    line-height: 1.4;
+    white-space: normal;
+    word-break: break-word;
+}
+
+/*
+ * Secondary meta line (researcher · date) — hidden on desktop because those
+ * columns exist in the table. Shown on mobile when the columns collapse.
+ */
+.protocol-title-meta {
+    display: none;
+    font-size: 0.75em;
+    color: #888;
+    margin-top: 4px;
+    gap: 5px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.meta-sep {
+    color: #ccc;
+}
+
+.researcher-cell {
+    color: #555;
+    font-size: 0.85em;
+    white-space: nowrap;
+}
+
+.date-cell {
+    color: #999;
+    font-size: 0.8em;
+    white-space: nowrap;
+}
+
+.actions-cell {
+    text-align: right;
+}
+
+.row-actions {
+    display: inline-flex;
+    gap: 6px;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+}
+
+
+/* ── Status badges ───────────────────────────────────────── */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 700;
+    white-space: nowrap;
+    letter-spacing: 0.03em;
+}
+
+.status-badge-dot {
+    width: 5px;
+    height: 5px;
+    min-width: 5px;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+}
+
+.badge-to-review {
+    background: #fef3e2;
+    color: #92600a;
+}
+
+.badge-to-review .status-badge-dot {
+    background: #92600a;
+}
+
+.badge-returned {
+    background: #fde8e8;
+    color: #9b1c1c;
+}
+
+.badge-returned .status-badge-dot {
+    background: #9b1c1c;
+}
+
+.badge-reviewed {
+    background: #ede9fe;
+    color: #5b21b6;
+}
+
+.badge-reviewed .status-badge-dot {
+    background: #5b21b6;
+}
+
+.badge-endorsed {
+    background: #e0f2fe;
+    color: #075985;
+}
+
+.badge-endorsed .status-badge-dot {
+    background: #075985;
+}
+
+.badge-approved {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.badge-approved .status-badge-dot {
+    background: #166534;
+}
+
+
+/* ── Row action buttons ──────────────────────────────────── */
+/* Specific selector overrides body.css `main button { display:block; margin-top:1em }` */
+.row-actions .row-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 8px 12px;
+    font-size: 0.8em;
+    font-family: var(--font-body);
+    white-space: nowrap;
+    border-radius: var(--btn-radius);
+    border: 1px solid #ddd;
+    background: transparent;
+    color: #1a1a1a;
+    cursor: pointer;
+    box-shadow: 0 1px 3px lightgray;
+    margin: 0;
+    transition: background 0.15s, color 0.15s;
+}
+
+.records-table .row-actions .row-btn {
+    width: 100%;
+}
+
+.row-actions .row-btn:hover {
+    /* background: #6a6a6a; */
+    background: var(--green-mid2);
+    color: #fff;
+}
+
+.row-actions .row-btn.row-btn-primary {
+    background: var(--green-mid2);
+    border-color: var(--green-mid2);
+    color: var(--white);
+}
+
+.row-actions .row-btn.row-btn-primary:hover {
+    background: rgba(60, 125, 49, 0.91);
+    color: rgba(255, 255, 255, 0.931);
+}
+
+.row-actions .row-btn svg {
+    flex-shrink: 0;
+}
+
+
+/* ── No-results message ──────────────────────────────────── */
+.inbox-no-results {
+    text-align: center;
+    padding: 36px;
+    color: #aaa;
+    font-size: 0.85em;
+}
+
+
+/* ── Pagination ──────────────────────────────────────────── */
+.pagination-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 14px;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.pagination-info {
+    font-size: 0.72em;
+    color: #888;
+}
+
+.pagination-buttons {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+}
+
+.pagination-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: var(--btn-radius);
+    border: 1px solid #ddd;
+    background: transparent;
+    color: #333;
+    font-size: 0.85em;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* override body.css */
+    box-shadow: none;
+    margin: 0;
+    font-family: var(--font-body);
+    line-height: 1;
+}
+
+.pagination-btn:hover {
+    background: #f0f0f0;
+    color: #1a1a1a;
+}
+
+.pagination-btn.active {
+    background: #eaf3de;
+    border-color: #8bb866;
+    color: var(--green);
+    font-weight: 600;
+}
+
+.pagination-ellipsis {
+    font-size: 0.85em;
+    color: #999;
+    padding: 0 4px;
+    line-height: 34px;
+}
+
+.rows-per-page-wrap {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.72em;
+    color: #888;
+}
+
+.rows-per-page-wrap select {
+    font-size: 1em;
+    padding: 4px 7px;
+    border: 1px solid #ddd;
+    border-radius: var(--btn-radius);
+    font-family: var(--font-body);
+    background: #fff;
+    margin: 0;
+}
+
+
+/* ── Modal base — defined here because submissions.css is not loaded ── */
+.modal-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-backdrop.open {
+    display: flex;
+}
+
+.modal-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 2rem;
+    max-width: 440px;
+    width: 90%;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-card h2 {
+    font-size: 1.1em;
+    margin-bottom: 0.35rem;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: flex-end;
+    margin-top: 1.5rem;
+}
+
+.modal-actions button,
+.modal-actions .button {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin: 0;
+}
+
+
+/* ── History modal ───────────────────────────────────────── */
+.history-modal-card {
+    max-width: 560px;
+    padding: 0;
+    overflow: hidden;
+}
+
+.history-modal-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.25rem 1.5rem 1rem;
+    border-bottom: 1px solid #e4e4e4;
+}
+
+.history-modal-label {
+    font-size: 0.65em;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: #aaa;
+    margin-bottom: 0.2rem;
+}
+
+.history-modal-title {
+    font-size: 0.9em;
+    font-weight: 600;
+    color: #1a1a1a;
+    line-height: 1.4;
+}
+
+.history-modal-close {
+    flex-shrink: 0;
+    box-shadow: none;
+    padding: 4px;
+    color: #888;
+    margin: 0;
+    display: inline-flex;
+    align-items: center;
+}
+
+.history-modal-close:hover {
+    color: #1a1a1a;
+    background: #f0f0f0;
+}
+
+.history-modal-body {
+    max-height: 60vh;
+    overflow-y: auto;
+    padding: 0.5rem 0;
+}
+
+.history-loading {
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.history-error {
+    color: #b91c1c;
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.history-offline {
+    color: #b45309;
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.history-row {
+    display: grid;
+    grid-template-columns: 72px 1fr auto;
+    align-items: center;
+    gap: 12px;
+    padding: 0.75rem 1.5rem;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background-color 0.12s ease;
+}
+
+.history-row:last-child {
+    border-bottom: none;
+}
+
+.history-row:hover {
+    background-color: #f9fbf9;
+}
+
+.history-row--latest {
+    background-color: #f4fbf4;
+}
+
+.history-row-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+}
+
+.history-ver {
+    font-size: 0.72em;
+    font-weight: 700;
+    color: #888;
+    background: #f0f0f0;
+    border-radius: 4px;
+    padding: 2px 7px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.history-latest-badge {
+    font-size: 0.65em;
+    font-weight: 700;
+    color: var(--green);
+    background: var(--green-light);
+    border-radius: 4px;
+    padding: 2px 6px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.history-row-detail {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+}
+
+.history-filename {
+    font-size: 0.82em;
+    font-weight: 600;
+    color: #1a1a1a;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.history-open-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 12px;
+    font-size: 0.75em;
+    white-space: nowrap;
+    margin: 0;
+}
+
+
+/* ── Upload Clearance modal ──────────────────────────────── */
+.clearance-modal-subtitle {
+    margin-bottom: 1rem;
+}
+
+.clearance-modal-hint {
+    margin-top: 0.25rem;
+}
+
+.clearance-modal-error {
+    margin: 0.75rem 0 0;
+}
+
+.clearance-modal-card label {
+    display: block;
+    font-size: 0.8em;
+    font-weight: 600;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.4rem;
+    margin-top: 1rem;
+}
+
+.clearance-modal-card input[type="file"] {
+    display: block;
+    width: 100%;
+    font-size: 0.85em;
+    margin-bottom: 0;
+}
+
+
+/* ── Empty protocols state ───────────────────────────────── */
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.5em;
+    margin: 50px auto;
+    padding: 50px 30px;
+    border-radius: var(--btn-radius);
+    background-color: rgba(22, 71, 11, 0.03);
+}
+
+.empty-state h3 {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    font-family: var(--font-default);
+    font-size: 1.2em;
+    font-weight: 600;
+    color: var(--green);
+}
+
+.empty-state h3 svg {
+    flex-shrink: 0;
+}
+
+.empty-state p {
+    color: #777;
+    font-size: 0.9em;
+}
+
+
+/* ── Responsive ──────────────────────────────────────────── */
+
+/* Tablet: 2-col metrics, hide Submitted column */
+@media (max-width: 900px) {
+    .metrics-row {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .protocol-table .col-submitted,
+    .protocol-table tbody td:nth-child(3) {
+        display: none;
+    }
+}
+
+/*
+ * Narrow desktop / large tablet (900px–1100px): the actions column gets
+ * cramped when buttons wrap. Give actions more room by hiding Researcher
+ * column (info is still in the title meta line at mobile, and the table
+ * width itself is constrained at this range). Also shrink pill padding.
+ */
+@media (max-width: 1100px) {
+    .filter-pill {
+        padding: 8px 14px;
+        font-size: 0.9em;
+    }
+
+    .protocol-table .col-researcher,
+    .protocol-table tbody td.researcher-cell {
+        display: none;
+    }
+
+    /* Show researcher name under the title since the column is gone */
+    .protocol-title-meta {
+        display: flex;
+    }
+
+    .protocol-table .col-title {
+        width: 50%;
+    }
+
+    .protocol-table .col-actions {
+        width: 30%;
+    }
+}
+
+/*
+ * Mobile card layout — 640px and below
+ *
+ * The table structure stays in the DOM (JS still drives filtering/pagination
+ * against it), but we reformat each <tr> as a stacked card and each <td> as
+ * a full-width block. Columns we'd normally hide (researcher, date) are
+ * already baked into .protocol-title-meta inside the first <td>, so they
+ * surface naturally without any extra JS.
+ */
+@media (max-width: 640px) {
+
+    /* Remove table scrolling — cards don't need it */
+    .protocol-table-scroll {
+        overflow-x: visible;
+    }
+
+    /* Strip table-layout so rows behave as block cards */
+    .protocol-table,
+    .protocol-table thead,
+    .protocol-table tbody,
+    .protocol-table tr,
+    .protocol-table td,
+    .protocol-table th {
+        display: block;
+        width: 100%;
+    }
+
+    /* Hide the column header row entirely */
+    .protocol-table thead {
+        display: none;
+    }
+
+    /* Each row becomes a card */
+    .protocol-table tbody tr {
+        padding: 14px 16px;
+        border-bottom: 1px solid #e4e4e4;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .protocol-table tbody tr:last-child {
+        border-bottom: none;
+    }
+
+    /* Normalize all cells */
+    .protocol-table tbody td {
+        padding: 0;
+        width: 100%;
+    }
+
+    /* Show the meta line (researcher · date) that's hidden on desktop */
+    .protocol-title-meta {
+        display: flex;
+    }
+
+    /* Hide the separate researcher and date columns — info is in the meta line */
+    .protocol-table tbody td.researcher-cell,
+    .protocol-table tbody td.date-cell {
+        display: none;
+    }
+
+    /* Status badge left-aligned */
+    .protocol-table tbody td:nth-child(4) {
+        display: flex;
+        align-items: center;
+    }
+
+    /* Actions: stack vertically, full width */
+    .actions-cell {
+        text-align: left;
+    }
+
+    .row-actions {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 6px;
+        width: 100%;
+    }
+
+    .row-actions .row-btn {
+        width: 100%;
+        justify-content: center;
+        padding: 9px 12px;
+        font-size: 0.8em;
+    }
+
+    /* Pagination */
+    .pagination-bar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .metrics-row {
+        display: flex;
+        gap: 8px;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 4px;
+    }
+
+    .metric-card {
+        flex: 0 0 auto;
+        padding: 10px 12px;
+    }
+
+    .metric-card-label {
+        font-size: 0.5em;
+        white-space: nowrap;
+    }
+
+    .metric-card-value {
+        font-size: 1.1em;
+    }
+}
+
+/* ── File popup modal ── */
+.file-popup-card {
+    max-width: 860px;
+    width: 92vw;
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    max-height: 90vh;
+}
+
+.file-popup-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.75rem 1rem;
+    background: #f8f8f8;
+    border-bottom: 1px solid #e4e4e4;
+    flex-shrink: 0;
+}
+
+.file-popup-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.file-popup-close {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.8rem;
+    padding: 6px 10px;
+}
+
+.file-popup-frame {
+    flex: 1;
+    width: 100%;
+    min-height: 520px;
+    border: none;
+    background: #fff;
+}
+
+@media (max-width: 768px) {
+    .file-popup-card {
+        width: 98vw;
+        max-height: 95vh;
+    }
+
+    .file-popup-frame {
+        min-height: 320px;
+    }
+}

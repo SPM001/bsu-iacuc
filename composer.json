@@ -1,0 +1,11 @@
+{
+    "require": {
+        "phpmailer/phpmailer": "^7.1",
+        "tecnickcom/tcpdf": "^6.7"
+    },
+    "autoload": {
+        "classmap": [
+            "vendor/tecnickcom/tcpdf/tcpdf.php"
+        ]
+    }
+}
