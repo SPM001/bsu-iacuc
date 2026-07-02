@@ -26,9 +26,6 @@ define('CSSPATH', ROOT . '/assets/css');
 define('JSPATH', ROOT . '/assets/js');
 define('IMGPATH', ROOT . '/assets/images');
 
-// Admin registration token
-define('ADMIN_INVITE_TOKEN', EnvLoader::get('ADMIN_INVITE_TOKEN'));
-
 // Brevo SMTP
 define('MAIL_HOST', EnvLoader::get('MAIL_HOST'));
 define('MAIL_PORT', EnvLoader::get('MAIL_PORT', 587));
@@ -43,8 +40,7 @@ if (!$isLocal) {
     'PROD_DBSERVER',
     'PROD_DBUSER',
     'PROD_DBPASS',
-    'MAIL_PASSWORD',
-    'ADMIN_INVITE_TOKEN'
+    'MAIL_PASSWORD'
   ];
 
   foreach ($required as $req) {
