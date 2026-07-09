@@ -22,6 +22,7 @@ include "includes/scroll-top.php";
             </div>
 
             <h1>Benguet State University - Institutional Animal Care and Use Committee</h1>
+            <span>Hehe. tablet git dev test</span>
         </div>
 
         <div class="articles">
