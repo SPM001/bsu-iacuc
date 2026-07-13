@@ -1,9 +1,9 @@
 section {
     margin: 1.5rem 0;
     padding: 1.5rem;
-    border: 1px solid #ddd;
+    border: 1px solid var(--input-border);
     border-radius: var(--radius);
-    background: #fafafa;
+    background: var(--divider-color-subtle);
     max-width: 800px;
 }
 
@@ -13,7 +13,7 @@ section {
 .invite-section h2 {
     font-size: 1.1rem;
     margin-bottom: 1rem;
-    color: #333;
+    color: var(--secondary-text);
 }
 
 .invite-form {
@@ -26,10 +26,10 @@ section {
 .invite-form select {
     flex: 1;
     padding: 0.6rem 0.8rem;
-    border: 1px solid #ccc;
+    border: 1px solid var(--input-border);
     border-radius: var(--radius);
     font-size: 0.9rem;
-    background: white;
+    background: var(--card-background);
     /* min-width: 120px; */
     width: 70%;
     margin-left: .3em;
@@ -41,26 +41,26 @@ section {
 
 .invite-form select:focus {
     outline: none;
-    border-color: var(--green);
+    border-color: var(--brand-color);
 }
 
 main .button,
 main button {
     flex-shrink: 0;
     padding: 0.6rem 2rem;
-    background: var(--green);
-    color: white;
+    background: var(--brand-color);
+    color: var(--text-on-brand);
     border: none;
     border-radius: var(--radius);
     font-size: 0.8rem;
     cursor: pointer;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px var(--shadow-color-soft);
     margin: 0;
     transition: background 0.15s ease;
 }
 
 .invite-form button:hover {
-    background: var(--green-mid);
+    background: var(--brand-color-hover);
 }
 
 .invite-form button:active {
@@ -76,7 +76,7 @@ main button {
     font-weight: 600;
     margin-bottom: 0.5rem;
     font-size: 0.9rem;
-    color: #333;
+    color: var(--secondary-text);
     margin-top: 1.5em;
 }
 
@@ -89,36 +89,36 @@ main button {
 .invite-link-row input {
     flex: 1;
     padding: 0.6rem 0.8rem;
-    border: 1px solid #ccc;
+    border: 1px solid var(--input-border);
     border-radius: var(--radius);
     font-size: 0.9rem;
     font-family: monospace;
-    background: white;
+    background: var(--card-background);
     margin: 0;
     min-width: 0;
 }
 
 .invite-link-row input:focus {
     outline: none;
-    border-color: var(--green);
+    border-color: var(--brand-color);
 }
 
 .invite-link-row button {
     flex-shrink: 0;
     padding: 0.6rem 1.2rem;
-    background: var(--green);
-    color: white;
+    background: var(--brand-color);
+    color: var(--text-on-brand);
     border: none;
     border-radius: var(--radius);
     font-size: 0.8rem;
     cursor: pointer;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px var(--shadow-color-soft);
     margin: 0;
     transition: background 0.2s ease;
 }
 
 .invite-link-row button:hover {
-    background: var(--green-mid);
+    background: var(--brand-color-hover);
 }
 
 .invite-link-row button:active {
@@ -128,7 +128,7 @@ main button {
 #copy-message {
     margin-top: 0.5rem;
     font-size: 0.85rem;
-    color: var(--green);
+    color: var(--brand-text);
     min-height: 1.5em;
 }
 
@@ -157,19 +157,19 @@ main button {
 /* #region INDIVIDUAL PENDING ACCOUNTS */
 
 .pending-box {
-    border: 1px solid #ddd;
+    border: 1px solid var(--input-border);
     border-radius: 6px;
     padding: 1rem;
     margin: 1rem 0;
 }
 
 .pending-box .username {
-    color: #666;
+    color: var(--secondary-text);
 }
 
 .pending-box .application-date {
     font-size: 0.85rem;
-    color: #999;
+    color: var(--muted-text);
 }
 
 .pending-box .actions {
@@ -199,15 +199,14 @@ main button {
 }
 
 .reject-btn {
-    /* background-color: darkred; */
-    border: 1px solid darkred;
+    border: 1px solid var(--danger-color);
     background: none;
-    color: darkred;
+    color: var(--danger-color);
 }
 
 .reject-btn:hover {
-    /* background-color: rgba(150, 64, 64, 0.821); */
-    background-color: darkred;
+    background-color: var(--danger-color);
+    color: var(--text-on-brand);
 }
 
 /* #endregion */

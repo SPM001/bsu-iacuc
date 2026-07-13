@@ -5,13 +5,13 @@
 .announcements-title {
   font-size: 1.8em;
   font-weight: 700;
-  color: var(--green);
+  color: var(--brand-text);
   margin: 0 0 0.2em;
 }
 
 .announcements-subtitle {
   font-size: 0.85em;
-  color: #666;
+  color: var(--secondary-text);
 }
 
 .fb-pages-grid {
@@ -21,11 +21,11 @@
 }
 
 .fb-page-section {
-  border: 1px solid #e4e4e4;
+  border: 1px solid var(--divider-color);
   border-radius: var(--btn-radius);
   overflow: hidden;
-  background: #fff;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  background: var(--card-background);
+  box-shadow: 0 1px 4px var(--shadow-color-soft);
   width: fit-content;
 }
 
@@ -37,9 +37,9 @@
   padding: 0.75em 1em;
   font-size: 0.8em;
   font-weight: 600;
-  color: var(--green);
-  border-bottom: 1px solid #e4e4e4;
-  background: #f8f9f8;
+  color: var(--brand-text);
+  border-bottom: 1px solid var(--divider-color);
+  background: var(--divider-color-subtle);
 }
 
 .fb-embed-wrap {

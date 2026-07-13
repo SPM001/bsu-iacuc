@@ -20,8 +20,8 @@
 
 .btn-apply:hover,
 .btn-apply-outline:hover {
-    background: rgba(60, 125, 49, 0.91);
-    color: rgba(255, 255, 255, 0.931);
+    background: var(--brand-color-hover);
+    color: var(--text-on-brand);
 }
 
 
@@ -37,7 +37,7 @@
     display: flex;
     flex-direction: column;
     gap: 0;
-    border: 1px solid #e4e4e4;
+    border: 1px solid var(--divider-color);
     border-radius: 10px;
     overflow: hidden;
 }
@@ -49,8 +49,8 @@
     align-items: stretch;
 
     margin: 0;
-    background-color: white;
-    border-bottom: 1px solid #e4e4e4;
+    background-color: var(--card-background);
+    border-bottom: 1px solid var(--divider-color);
 
     transition: background-color 0.15s ease;
 }
@@ -60,7 +60,7 @@
 }
 
 .protocol:hover {
-    background-color: #f9fbf9;
+    background-color: var(--hover-surface-soft);
 }
 
 /* Protocol number column */
@@ -70,22 +70,22 @@
     align-items: center;
     justify-content: center;
     padding: 20px 0;
-    border-right: 1px solid #e4e4e4;
-    background-color: #fafafa;
+    border-right: 1px solid var(--divider-color);
+    background-color: var(--divider-color-subtle);
 }
 
 .count-label {
     font-size: .6em;
     text-transform: uppercase;
     letter-spacing: .04em;
-    color: #aaa;
+    color: var(--muted-text);
     font-style: normal;
 }
 
 .count {
     font-size: 1.2em;
     font-weight: 600;
-    color: #999;
+    color: var(--muted-text);
     line-height: 1.1;
 }
 
@@ -96,13 +96,13 @@
     flex-direction: column;
     justify-content: center;
     gap: 6px;
-    border-right: 1px solid #e4e4e4;
+    border-right: 1px solid var(--divider-color);
 }
 
 .research-title {
     font-size: 1em;
     font-weight: 600;
-    color: #1a1a1a;
+    color: var(--primary-text);
     line-height: 1.4;
 }
 
@@ -110,8 +110,8 @@
     /* display: none; */
     font-size: 0.7em;
     font-weight: 600;
-    color: #888;
-    background: #f0f0f0;
+    color: var(--muted-text);
+    background: var(--divider-color-subtle);
     border-radius: 4px;
     padding: 2px 7px;
     width: fit-content;
@@ -129,7 +129,7 @@
     align-items: center;
     gap: 4px 8px;
     padding: 20px;
-    border-right: 1px solid #e4e4e4;
+    border-right: 1px solid var(--divider-color);
 }
 
 .protocol .status-cont .protocol-status {
@@ -161,58 +161,58 @@
 
 .protocol-date {
     font-size: 0.72em;
-    color: #999;
+    color: var(--muted-text);
     font-style: normal;
 }
 
 .under-review {
-    background: #fef3e2;
-    color: #92600a;
+    background: var(--status-warning-bg);
+    color: var(--status-warning-text);
 }
 
 .needs-revision {
-    background: #fde8e8;
-    color: #9b1c1c;
+    background: var(--status-danger-bg);
+    color: var(--status-danger-text);
 }
 
 .reviewed {
-    background: #ede9fe;
-    color: #5b21b6;
+    background: var(--status-purple-bg);
+    color: var(--status-purple-text);
 }
 
 .endorsed {
-    background: #e0f2fe;
-    color: #075985;
+    background: var(--status-info-bg);
+    color: var(--status-info-text);
 }
 
 .approved {
-    background: #dcfce7;
-    color: #166534;
+    background: var(--status-success-bg);
+    color: var(--status-success-text);
 }
 
 /* Return reason inline banner (dashboard card, needs-revision only) */
 .return-reason-inline {
     margin-top: .5rem;
     padding: .5rem .75rem;
-    background: #fff5f5;
+    background: var(--danger-background-soft);
     border-radius: 0 4px 4px 0;
     font-size: .78rem;
 }
 
 .return-reason-by {
     font-weight: 600;
-    color: #9b1c1c;
+    color: var(--status-danger-text);
     margin-bottom: .2rem;
 }
 
 .return-reason-issues {
     margin: 0 0 .2rem 1rem;
-    color: #444;
+    color: var(--muted-text);
     line-height: 1.7;
 }
 
 .return-reason-comment {
-    color: #555;
+    color: var(--muted-text);
     font-style: italic;
 }
 
@@ -239,7 +239,7 @@
 
 .actions button:hover,
 .actions .button:hover {
-    background-color: #6a6a6a;
+    background-color: var(--muted-text);
 }
 
 /* #endregion */
@@ -256,7 +256,7 @@
     padding: 50px 30px;
 
     border-radius: var(--btn-radius);
-    background-color: rgba(22, 71, 11, 0.03);
+    background-color: var(--brand-surface-faint);
 }
 
 .empty-state h3 {
@@ -274,7 +274,7 @@
 }
 
 .empty-state p {
-    color: #777;
+    color: var(--muted-text);
     font-size: .9em;
 }
 
@@ -312,8 +312,8 @@
         top: calc(100% + 8px);
         left: 0;
 
-        background-color: var(--white);
-        color: black;
+        background-color: var(--card-background);
+        color: var(--primary-text);
 
         border-radius: var(--radius);
         min-width: 130px;
@@ -321,7 +321,7 @@
         display: none;
         overflow: hidden;
 
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 4px 12px var(--shadow-color-soft);
 
         gap: 0;
         margin: 0;
@@ -376,7 +376,7 @@
     .protocol .status-cont {
         grid-area: status;
         border-right: none;
-        border-bottom: 1px solid #e4e4e4;
+        border-bottom: 1px solid var(--divider-color);
         padding: 6px 16px 12px;
         display: flex;
         flex-direction: row;
@@ -431,7 +431,7 @@
     }
 
     .protocol .status-cont {
-        border-right: 1px solid #e4e4e4;
+        border-right: 1px solid var(--divider-color);
         padding: 20px 12px;
     }
 
@@ -454,7 +454,7 @@
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.5);
+    background: var(--backdrop-color);
     z-index: 9000;
     align-items: center;
     justify-content: center;
@@ -465,12 +465,12 @@
 }
 
 .modal-card {
-    background: #fff;
+    background: var(--card-background);
     border-radius: 12px;
     padding: 2rem;
     max-width: 440px;
     width: 90%;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+    box-shadow: 0 8px 32px var(--shadow-color-modal);
 }
 
 .modal-card h2 {
@@ -482,7 +482,7 @@
     display: block;
     font-size: .8rem;
     font-weight: 600;
-    color: #6b7280;
+    color: var(--muted-text);
     text-transform: uppercase;
     letter-spacing: .05em;
     margin-bottom: .4rem;
@@ -515,8 +515,8 @@
     font-size: .95em;
     font-weight: 500;
 
-    background-color: var(--green-mid2);
-    color: var(--white);
+    background-color: var(--brand-color);
+    color: var(--text-on-brand);
     margin-top: 0;
     box-shadow: none;
 }
@@ -527,9 +527,9 @@
 }
 
 .btn-apply-outline {
-    background: #fff;
-    color: var(--green-mid2);
-    border: 1.5px solid var(--green-mid2);
+    background: var(--card-background);
+    color: var(--brand-text);
+    border: 1.5px solid var(--brand-text);
 }
 
 
@@ -546,7 +546,7 @@
     justify-content: space-between;
     gap: 1rem;
     padding: 1.25rem 1.5rem 1rem;
-    border-bottom: 1px solid #e4e4e4;
+    border-bottom: 1px solid var(--divider-color);
 }
 
 .history-modal-label {
@@ -554,14 +554,14 @@
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: .07em;
-    color: #aaa;
+    color: var(--muted-text);
     margin-bottom: .2rem;
 }
 
 .history-modal-title {
     font-size: 0.9rem;
     font-weight: 600;
-    color: #1a1a1a;
+    color: var(--primary-text);
     line-height: 1.4;
 }
 
@@ -569,13 +569,13 @@
     flex-shrink: 0;
     box-shadow: none;
     padding: 4px;
-    color: #888;
+    color: var(--muted-text);
     margin-top: 0;
 }
 
 .history-modal-close:hover {
-    color: #1a1a1a;
-    background: #f0f0f0;
+    color: var(--primary-text);
+    background: var(--divider-color-subtle);
 }
 
 .history-modal-body {
@@ -595,7 +595,7 @@
     align-items: center;
     gap: 12px;
     padding: .75rem 1.5rem;
-    border-bottom: 1px solid #f0f0f0;
+    border-bottom: 1px solid var(--divider-color-subtle);
     transition: background-color .12s ease;
 }
 
@@ -604,11 +604,11 @@
 }
 
 .history-row:hover {
-    background-color: #f9fbf9;
+    background-color: var(--hover-surface-soft);
 }
 
 .history-row--latest {
-    background-color: #f4fbf4;
+    background-color: var(--hover-surface-soft);
 }
 
 .history-row-meta {
@@ -621,8 +621,8 @@
 .history-ver {
     font-size: .72rem;
     font-weight: 700;
-    color: #888;
-    background: #f0f0f0;
+    color: var(--muted-text);
+    background: var(--divider-color-subtle);
     border-radius: 4px;
     padding: 2px 7px;
     letter-spacing: .04em;
@@ -632,8 +632,8 @@
 .history-latest-badge {
     font-size: .65rem;
     font-weight: 700;
-    color: var(--green);
-    background: var(--green-light);
+    color: var(--brand-text);
+    background: var(--brand-color-light);
     border-radius: 4px;
     padding: 2px 6px;
     letter-spacing: .04em;
@@ -650,7 +650,7 @@
 .history-filename {
     font-size: .82rem;
     font-weight: 600;
-    color: #1a1a1a;
+    color: var(--primary-text);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -674,9 +674,9 @@
 /* ── Status guide for researchers ── */
 .status-guide {
     margin: 2rem 0 1rem;
-    border: 1px solid #e4e4e4;
+    border: 1px solid var(--divider-color);
     border-radius: var(--btn-radius);
-    background: #fff;
+    background: var(--card-background);
     overflow: hidden;
 }
 
@@ -687,7 +687,7 @@
     padding: 14px 20px;
     font-size: 0.85em;
     font-weight: 600;
-    color: #555;
+    color: var(--muted-text);
     cursor: pointer;
     list-style: none;
     user-select: none;
@@ -699,12 +699,12 @@
 }
 
 .status-guide-summary:hover {
-    background-color: #f5f5f5;
-    color: #222;
+    background-color: var(--page-background);
+    color: var(--primary-text);
 }
 
 .status-guide[open] .status-guide-summary {
-    border-bottom: 1px solid #e4e4e4;
+    border-bottom: 1px solid var(--divider-color);
 }
 
 .status-guide-body {
@@ -730,14 +730,14 @@
 
 .status-guide-text {
     font-size: 0.9em;
-    color: #444;
+    color: var(--muted-text);
     line-height: 1.55;
 }
 
 .status-guide-text strong {
     display: block;
     margin-bottom: 2px;
-    color: #222;
+    color: var(--primary-text);
 }
 
 @media (max-width: 600px) {
@@ -753,7 +753,7 @@
 
 /* ── History modal: return reason banner ── */
 .history-return-banner {
-    background: #fff8e6;
+    background: var(--status-warning-bg);
     margin: .75rem 1.5rem;
     border-radius: 0 6px 6px 0;
     padding: .75rem 1rem;
@@ -765,20 +765,20 @@
     align-items: center;
     gap: 6px;
     font-weight: 700;
-    color: #92600a;
+    color: var(--status-warning-text);
     flex-wrap: wrap;
 }
 
 .history-return-issues {
     margin: .5rem 0 0 1.25rem;
-    color: #444;
+    color: var(--muted-text);
     line-height: 1.8;
 }
 
 .history-return-comment {
     margin-top: .5rem;
     font-style: italic;
-    color: #555;
+    color: var(--muted-text);
 }
 
 /* ── History modal: section labels ── */
@@ -788,8 +788,8 @@
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: .07em;
-    color: #aaa;
-    border-top: 1px solid #f0f0f0;
+    color: var(--muted-text);
+    border-top: 1px solid var(--divider-color-subtle);
     margin-top: .25rem;
 }
 
@@ -801,19 +801,19 @@
 .history-error {
     padding: 1.5rem;
     text-align: center;
-    color: #b91c1c;
+    color: var(--danger-color);
 }
 
 /* ── button--primary on submissions page ── */
 .button--primary {
-    background-color: var(--green-mid2);
-    color: var(--white);
-    /* box-shadow: 0 2px 4px rgba(0, 0, 0, .15); */
+    background-color: var(--brand-color);
+    color: var(--text-on-brand);
+    /* box-shadow: 0 2px 4px var(--heading-fill); */
 }
 
 .button--primary:hover {
-    background-color: rgba(60, 125, 49, 0.91);
-    color: var(--white);
+    background-color: var(--brand-color-hover);
+    color: var(--text-on-brand);
 }
 
 /* ── File popup modal ── */
@@ -833,15 +833,15 @@
     justify-content: space-between;
     gap: 1rem;
     padding: 0.75rem 1rem;
-    background: #f8f8f8;
-    border-bottom: 1px solid #e4e4e4;
+    background: var(--divider-color-subtle);
+    border-bottom: 1px solid var(--divider-color);
     flex-shrink: 0;
 }
 
 .file-popup-title {
     font-size: 0.85rem;
     font-weight: 600;
-    color: #1a1a1a;
+    color: var(--primary-text);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -861,7 +861,7 @@
     width: 100%;
     min-height: 520px;
     border: none;
-    background: #fff;
+    background: var(--card-background);
 }
 
 @media (max-width: 768px) {

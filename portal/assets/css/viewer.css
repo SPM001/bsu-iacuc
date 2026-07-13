@@ -675,7 +675,7 @@
 #returnRevisionBackdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.55);
+  background: var(--backdrop-color);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -691,10 +691,10 @@
 }
 
 .return-modal-card {
-  background: #fff;
-  color: #1a1a1a;
+  background: var(--card-background);
+  color: var(--primary-text);
   border-radius: 12px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.22);
+  box-shadow: 0 8px 32px var(--shadow-color-modal);
   width: min(480px, calc(100vw - 32px));
   max-height: 90vh;
   overflow-y: auto;
@@ -707,7 +707,7 @@
   justify-content: space-between;
   gap: 1rem;
   padding: 1.25rem 1.5rem 1rem;
-  border-bottom: 1px solid #e4e4e4;
+  border-bottom: 1px solid var(--divider-color);
 }
 
 .return-modal-label {
@@ -715,14 +715,14 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.07em;
-  color: #aaa;
+  color: var(--muted-text);
   margin: 0 0 0.2rem;
 }
 
 .return-modal-title {
   font-size: 0.9em;
   font-weight: 600;
-  color: #1a1a1a;
+  color: var(--primary-text);
   line-height: 1.4;
   margin: 0;
 }
@@ -736,13 +736,13 @@
 
 .return-modal-intro {
   font-size: 0.88em;
-  color: #444;
+  color: var(--muted-text);
   margin: 0;
   line-height: 1.5;
 }
 
 .return-reasons-fieldset {
-  border: 1px solid #ddd;
+  border: 1px solid var(--input-border);
   border-radius: 8px;
   padding: 0.75rem 1rem 1rem;
   margin: 0;
@@ -751,7 +751,7 @@
 .return-reasons-legend {
   font-size: 0.78em;
   font-weight: 600;
-  color: #333;
+  color: var(--secondary-text);
   padding: 0 0.25rem;
 }
 
@@ -766,7 +766,7 @@
 .return-reason-option input[type="checkbox"] {
   margin-top: 2px;
   flex-shrink: 0;
-  accent-color: var(--green);
+  accent-color: var(--brand-color);
   width: 15px;
   height: 15px;
   cursor: pointer;
@@ -775,19 +775,19 @@
 .return-reason-label {
   font-size: 0.88em;
   font-weight: 500;
-  color: #1a1a1a;
+  color: var(--primary-text);
   line-height: 1.4;
 }
 
 .return-comment-label {
   font-size: 0.82em;
   font-weight: 600;
-  color: #333;
+  color: var(--secondary-text);
 }
 
 .return-comment-optional {
   font-weight: 400;
-  color: #888;
+  color: var(--muted-text);
   margin-left: 4px;
 }
 
@@ -796,9 +796,9 @@
   padding: 0.6rem 0.75rem;
   font-family: inherit;
   font-size: 0.88em;
-  color: #1a1a1a;
-  background: #fff;
-  border: 1px solid #ccc;
+  color: var(--primary-text);
+  background: var(--card-background);
+  border: 1px solid var(--input-border);
   border-radius: 6px;
   resize: vertical;
   box-sizing: border-box;
@@ -807,13 +807,13 @@
 
 .return-comment-textarea:focus {
   outline: none;
-  border-color: var(--green);
-  box-shadow: 0 0 0 2px rgba(74, 103, 45, 0.15);
+  border-color: var(--brand-color);
+  box-shadow: 0 0 0 2px var(--focus-ring-tint);
 }
 
 .return-char-count {
   font-size: 0.78em;
-  color: #aaa;
+  color: var(--muted-text);
   margin: -0.25rem 0 0;
   text-align: right;
 }

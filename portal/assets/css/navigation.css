@@ -1,7 +1,3 @@
-:root {
-    --aside-scheme: #e2e5e2e1;
-}
-
 .header-logo {
     margin-left: 50px;
 }
@@ -18,7 +14,7 @@ aside {
     min-height: 100vh;
     width: 64px;
 
-    background-color: var(--aside-scheme);
+    background-color: var(--sidebar-background);
 }
 
 aside ul {
@@ -36,8 +32,8 @@ aside li {
 
 aside a,
 aside div {
-    background-color: var(--aside-scheme);
-    color: var(--green);
+    background-color: var(--sidebar-background);
+    color: var(--brand-text);
     transition: all .15s ease;
 }
 
@@ -99,7 +95,7 @@ aside svg {
 
 aside a.active-link svg {
     fill: currentColor;
-    --icon-detail-color: var(--aside-scheme);
+    --icon-detail-color: var(--sidebar-background);
 }
 
 /* RESPONSIVE */
@@ -133,5 +129,5 @@ aside a.active-link svg path {
 aside a.active-link svg path.icon-detail {
     fill: none !important;
     /* Override for the detail path */
-    stroke: var(--aside-scheme);
+    stroke: var(--sidebar-background);
 }

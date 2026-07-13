@@ -115,5 +115,3 @@ $role = $user['role'] ?? '';
 
         </main>
     </div>
-
-    <?php include dirname(__DIR__) . '/includes/footer.php'; ?>

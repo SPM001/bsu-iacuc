@@ -11,6 +11,9 @@ include dirname(__DIR__) . '/includes/header.php';
 
 <div class="body">
     <main class="main-content" id="main-content" tabindex="-1">
+        <?php $themeToggleExtraClass = 'theme-toggle--card theme-toggle--floating'; ?>
+        <?php include dirname(__DIR__) . '/includes/theme-toggle.php'; ?>
+
         <a class="btn-back button" href="<?= $_SERVER['HTTP_REFERER'] ?? ROOT . '/home' ?>">
             <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                 <use href="#back-icon">
@@ -62,4 +65,6 @@ include dirname(__DIR__) . '/includes/header.php';
     </main>
 </div>
 
-<?php include dirname(__DIR__) . '/includes/footer.php'; ?>
+</body>
+
+</html>

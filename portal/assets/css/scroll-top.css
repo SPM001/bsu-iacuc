@@ -5,8 +5,8 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background: var(--green);
-  color: white;
+  background: var(--brand-color);
+  color: var(--text-on-brand);
   padding: 0.75rem 1rem;
   border-radius: 2rem;
   text-decoration: none;
@@ -14,7 +14,7 @@
   visibility: hidden;
   transition: all 0.2s ease;
   z-index: 1000;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 8px var(--shadow-color-soft);
 }
 
 .scroll-top.is-visible {
@@ -23,7 +23,8 @@
 }
 
 .scroll-top:hover {
-  background: var(--green-light);
+  background: var(--brand-color-light);
+  color: var(--primary-text);
 }
 
 .scroll-top img {

@@ -66,7 +66,7 @@ include "includes/scroll-top.php";
 
                         <div class="process-step">
                             <span>3</span>
-                            <p>Once the protocol has passed review, it will be endorsed to the Bureau of Animal Industry (BAI). Pay <strong>₱100</strong> via a provided GCash QR code for BAI's animal research clearance processing fee.</p>
+                            <p>Once the protocol has passed review, it will be endorsed to the Bureau of Animal Industry (BAI). Note: An animal research clearance processing fee of <strong>Php 100.00</strong> is required by BAI. Visit the BSU-CCARD office to provide payment or <a href="<?= ROOT ?>/contact" class="underlined">contact the CCARD Director</a> for concerns.</p>
                             <p></p>
                         </div>
 

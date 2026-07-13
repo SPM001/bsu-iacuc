@@ -60,5 +60,3 @@ include dirname(__DIR__) . '/includes/header.php';
         </form>
     </main>
 </div>
-
-<?php include dirname(__DIR__) . '/includes/footer.php'; ?>

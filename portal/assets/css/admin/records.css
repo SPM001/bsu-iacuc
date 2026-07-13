@@ -18,7 +18,7 @@
    sit tightly in the header */
 .records-page-header .row-btn {
   margin: 0;
-  background: var(--green-mid2);
+  background: var(--brand-color);
   color: whitesmoke;
 
   display: inline-flex;
@@ -30,12 +30,12 @@
   white-space: nowrap;
   border-radius: var(--btn-radius);
 
-  box-shadow: 0 1px 3px lightgray;
+  box-shadow: 0 1px 3px var(--shadow-color-soft);
 }
 
 .records-page-header .row-btn:hover {
-  background: rgba(60, 125, 49, 0.91);
-  color: rgba(255, 255, 255, 0.931);
+  background: var(--brand-color-hover);
+  color: var(--text-on-brand);
 }
 
 /* ── Metric cards: only 3 cards on this page ─────────────── */
@@ -61,10 +61,10 @@
   padding: 7px 10px;
   font-size: 0.9em;
   font-family: var(--font-body);
-  border: 1px solid #ddd;
+  border: 1px solid var(--input-border);
   border-radius: var(--btn-radius);
-  background: #fff;
-  color: #333;
+  background: var(--card-background);
+  color: var(--secondary-text);
   cursor: pointer;
   /* override body.css */
   margin: 0;
@@ -73,23 +73,23 @@
 
 .records-filter-select:focus {
   outline: none;
-  border-color: var(--green-mid);
-  box-shadow: 0 0 0 2px rgba(44, 96, 33, 0.12);
+  border-color: var(--focus-ring-color);
+  box-shadow: 0 0 0 2px var(--focus-ring-tint);
 }
 
 /* ── Clear-all button ────────────────────────────────────── */
 .records-clear-btn {
   white-space: nowrap;
-  color: #888;
+  color: var(--muted-text);
   font-size: 0.8em;
   /* override row-btn defaults */
-  border-color: #e0e0e0;
+  border-color: var(--input-border);
   padding: 7px 14px;
 }
 
 .records-clear-btn:hover {
-  background: #f0f0f0;
-  color: #333;
+  background: var(--divider-color-subtle);
+  color: var(--secondary-text);
 }
 
 /* ── Table wrapper ───────────────────────────────────────── */
@@ -203,9 +203,9 @@
 
 /* ── Delete button danger variant ────────────────────────── */
 .delete-record-btn:hover {
-  background: #b91c1c !important;
-  border-color: #b91c1c !important;
-  color: #fff !important;
+  background: var(--danger-color) !important;
+  border-color: var(--danger-color) !important;
+  color: var(--text-on-brand) !important;
 }
 
 /* ── Record modal ────────────────────────────────────────── */
@@ -224,15 +224,15 @@
   align-items: center;
   justify-content: space-between;
   padding: 1.1rem 1.4rem;
-  border-bottom: 1px solid #e4e4e4;
-  background: #fafafa;
+  border-bottom: 1px solid var(--divider-color);
+  background: var(--divider-color-subtle);
   flex-shrink: 0;
 }
 
 .records-modal-header h2 {
   font-size: 1em;
   font-weight: 700;
-  color: var(--green);
+  color: var(--brand-text);
   margin: 0;
 }
 
@@ -241,7 +241,7 @@
   border: none;
   box-shadow: none;
   font-size: 1.1em;
-  color: #888;
+  color: var(--muted-text);
   cursor: pointer;
   padding: 4px 8px;
   margin: 0;
@@ -249,7 +249,7 @@
 }
 
 .records-modal-close:hover {
-  color: #1a1a1a;
+  color: var(--primary-text);
 }
 
 .records-modal-body {
@@ -263,8 +263,8 @@
   justify-content: flex-end;
   gap: 0.6rem;
   padding: 0.9rem 1.4rem;
-  border-top: 1px solid #e4e4e4;
-  background: #fafafa;
+  border-top: 1px solid var(--divider-color);
+  background: var(--divider-color-subtle);
   flex-shrink: 0;
 }
 
@@ -292,13 +292,13 @@
 .records-form-group label {
   font-size: 0.72em;
   font-weight: 600;
-  color: #6b7280;
+  color: var(--muted-text);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
 .records-required {
-  color: #b91c1c;
+  color: var(--danger-color);
 }
 
 .records-form-group input,
@@ -307,10 +307,10 @@
   font-size: 0.85em;
   font-family: var(--font-body);
   padding: 7px 10px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--input-border);
   border-radius: var(--radius);
-  background: #fff;
-  color: #1a1a1a;
+  background: var(--card-background);
+  color: var(--primary-text);
   /* override body.css */
   margin: 0;
   width: 100%;
@@ -322,8 +322,8 @@
 .records-form-group select:focus,
 .records-form-group textarea:focus {
   outline: none;
-  border-color: var(--green-mid);
-  box-shadow: 0 0 0 2px rgba(44, 96, 33, 0.12);
+  border-color: var(--focus-ring-color);
+  box-shadow: 0 0 0 2px var(--focus-ring-tint);
 }
 
 .records-form-group textarea {

@@ -8,15 +8,171 @@
     --font-body: "Akt", serif;
     --font-default: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
 
-    /* ── COLORS ───────────────── */
-    --green: rgb(22, 71, 11);
-    --green-mid: rgb(61, 129, 46);
-    --green-mid2: rgb(44, 96, 33);
-    --green-light: #c8e6c0;
-    --white: #f5f5f5;
-    --lighter: rgba(255, 255, 255, 0.25);
+    /* ── BRAND (the IACUC green — stays consistent across both themes) ── */
+    --brand-color: rgb(22, 71, 11);
+    --brand-color-hover: rgb(61, 129, 46);
+    --brand-color-active: rgb(44, 96, 33);
+    --brand-color-deep: rgb(0, 72, 0);
+    --brand-color-light: #c8e6c0;
+    --brand-surface-tint: rgba(202, 214, 204, 0.716);
+    --focus-ring-color: rgb(48, 159, 23);
+
+    /* brand green used for TEXT/ICONS sitting directly on a page/card surface
+       (headings, nav icons, outline-button labels). Unlike --brand-color,
+       this one flips in dark mode so it stays readable against dark backgrounds. */
+    --brand-text: var(--brand-color);
+
+    /* light-tinted overlays used on top of brand-colored surfaces (buttons in the header/footer) */
+    --tint-on-brand: rgba(255, 255, 255, 0.25);
+    --tint-on-brand-soft: rgba(255, 255, 255, 0.15);
+    --tint-on-brand-border: rgba(255, 255, 255, 0.3);
+    --brand-tint-active: rgba(77, 116, 70, 0.25);
+    --brand-tint-strong: rgba(22, 71, 11, 0.382);
+
+    /* ── SURFACES (flip between themes) ───────────────── */
+    --page-background: #f5f5f5;
+    --card-background: #ffffff;
+    --card-background-translucent: rgba(255, 255, 255, 0.912);
+    --sidebar-background: #e2e5e2e1;
+    --backdrop-color: rgba(0, 0, 0, 0.5);
+
+    /* ── TEXT (flip between themes) ───────────────── */
+    --primary-text: #1a1a1a;
+    --secondary-text: #666666;
+    --text-on-brand: #f5f5f5;
+
+    /* ── BORDERS & HOVER SURFACES (flip between themes) ── */
+    --divider-color: #e4e4e4;
+    --divider-color-subtle: #f0f0f0;
+    --divider-color-strong: #000000;
+    --hover-surface: #d0d0d0;
+    --hover-surface-soft: #f9fbf9;
+
+    /* ── DECORATIVE ────────────── */
+    --heading-fill: rgba(0, 0, 0, 0.15);
+    --heading-shadow: rgba(0, 0, 0, 1);
+
+    /* text sitting on top of the fixed background photo, and tooltips —
+       these stay the same in both themes since what's behind them doesn't change */
+    --text-on-image: #f5f5f5;
+    --text-on-brand-muted: rgba(233, 233, 233, 0.778);
+    --tooltip-background: rgba(0, 0, 0, 0.9);
+    --tooltip-text: #ffffff;
+    --focus-ring-tint: rgba(44, 96, 33, 0.12);
+
+    /* ── SHADOWS (flip between themes) ───────────────── */
+    --shadow-color: rgba(0, 0, 0, 0.3);
+    --shadow-color-soft: rgba(0, 0, 0, 0.15);
+    --shadow-color-modal: rgba(0, 0, 0, 0.25);
+
+    /* ── FEEDBACK COLORS (flip between themes) ───────────────── */
+    --required-color: red;
+    --danger-color: #b91c1c;
+    --danger-color-hover: #8f1d17;
+    --danger-background-soft: #fff5f5;
+    --danger-border-soft: #f0bfbf;
+    --warning-background: #783b00;
+    --warning-background-strong: #991b1b;
+    --success-background: #b8d7b8;
+    --success-text: #062b04;
+    --error-background: #f8d7da;
+    --error-border: #f5c6cb;
+    --error-text: #721c24;
+
+    /* ── STATUS BADGES (protocol review states) ── */
+    --status-warning-bg: #fef3e2;
+    --status-warning-text: #92600a;
+    --status-danger-bg: #fde8e8;
+    --status-danger-text: #9b1c1c;
+    --status-purple-bg: #ede9fe;
+    --status-purple-text: #5b21b6;
+    --status-info-bg: #e0f2fe;
+    --status-info-text: #075985;
+    --status-success-bg: #dcfce7;
+    --status-success-text: #166534;
+    --warning-text: #b45309;
+    --brand-surface-faint: rgba(22, 71, 11, 0.03);
+
+    /* ── ADDITIONAL NEUTRALS & TINTS (flip between themes) ── */
+    --muted-text: #8a8a8a;
+    --input-border: #cccccc;
+    --success-background-soft: #eaf7e6;
+    --success-border-soft: #a7f3d0;
+    --danger-tint-strong: rgba(149, 25, 25, 0.8);
 
     /* ── FONT SIZES ────────────── */
+}
+
+/* Dark theme: same variable names, different values.
+   Everything above stays a light-mode default; this block is the only
+   place that needs to change to retheme the whole site. */
+[data-theme="dark"] {
+    --page-background: #12181f;
+    --card-background: #1c242d;
+    --card-background-translucent: rgba(28, 36, 45, 0.93);
+    --sidebar-background: #1a2129;
+    --backdrop-color: rgba(0, 0, 0, 0.65);
+
+    --primary-text: #e8eaed;
+    --secondary-text: #a3adb8;
+
+    --divider-color: #333d47;
+    --divider-color-subtle: #262e37;
+    --divider-color-strong: #6b7684;
+    --hover-surface: #2a3339;
+    --hover-surface-soft: #212a30;
+
+    --heading-fill: rgba(255, 255, 255, 0.16);
+    --heading-shadow: rgba(255, 255, 255, 0.45);
+
+    --brand-surface-tint: rgba(30, 41, 36, 0.75);
+    --brand-text: #6fcf6a;
+
+    --shadow-color: rgba(0, 0, 0, 0.6);
+    --shadow-color-soft: rgba(0, 0, 0, 0.4);
+    --shadow-color-modal: rgba(0, 0, 0, 0.5);
+
+    --required-color: #ff6b6b;
+    --danger-color: #ef4444;
+    --danger-color-hover: #dc2626;
+    --danger-background-soft: #3a1f1f;
+    --danger-border-soft: #5c2b2b;
+    --warning-background: #5c2e00;
+    --warning-background-strong: #7a1717;
+    --success-background: #1d3320;
+    --success-text: #a7d7ae;
+    --error-background: #3a1f22;
+    --error-border: #5c2b30;
+    --error-text: #f2b8bd;
+
+    --status-warning-bg: #453014;
+    --status-warning-text: #f5c064;
+    --status-danger-bg: #4a1f1f;
+    --status-danger-text: #f5a3a3;
+    --status-purple-bg: #2f2350;
+    --status-purple-text: #c4b5fd;
+    --status-info-bg: #0f3049;
+    --status-info-text: #7dd3fc;
+    --status-success-bg: #133824;
+    --status-success-text: #6ee7b7;
+    --warning-text: #f0a868;
+    --brand-surface-faint: rgba(200, 230, 192, 0.05);
+
+    --muted-text: #7d8994;
+    --input-border: #626f7a;
+    --success-background-soft: #163a22;
+    --success-border-soft: #2d5a3d;
+    --danger-tint-strong: rgba(239, 68, 68, 0.55);
+}
+
+/* Smooth crossfade whenever the theme changes.
+   Respects reduced-motion preferences. */
+@media (prefers-reduced-motion: no-preference) {
+    html[data-theme] * {
+        transition: background-color 0.25s ease, color 0.25s ease,
+            border-color 0.25s ease, box-shadow 0.25s ease, fill 0.25s ease,
+            stroke 0.25s ease;
+    }
 }
 
 * {
@@ -27,22 +183,23 @@
 
 html {
     font-size: 18px;
-    background-color: var(--white);
+    background-color: var(--page-background);
     scroll-behavior: smooth;
 }
 
 ::selection {
-    background-color: var(--green);
-    color: var(--white);
+    background-color: var(--brand-color);
+    color: var(--text-on-brand);
 }
 
 *:focus-visible {
-    outline: 3px solid rgb(48, 159, 23);
+    outline: 3px solid var(--focus-ring-color);
     border-radius: 2px;
 }
 
 body {
     font-family: var(--font-body);
+    color: var(--primary-text);
 
     display: flex;
     flex-direction: column;
@@ -74,7 +231,7 @@ button,
 
     border: none;
     background-color: transparent;
-    box-shadow: 0 2px 4px gray;
+    box-shadow: 0 2px 4px var(--shadow-color-soft);
     padding: 8px 4px;
     cursor: pointer;
     border-radius: 4px;
@@ -83,15 +240,15 @@ button,
 
 button:hover,
 .button:hover {
-    background: rgba(60, 125, 49, 0.91);
-    color: rgba(255, 255, 255, 0.931);
+    background: var(--brand-color-hover);
+    color: var(--text-on-brand);
 }
 
 button:active,
 .button:active {
     transform: translateY(2px);
     /* transform: scale(0.97); */
-    box-shadow: 0 1px 2px gray;
+    box-shadow: 0 1px 2px var(--shadow-color-soft);
 }
 
 main input {
@@ -114,7 +271,7 @@ main button {
 }
 
 .btn-back:hover {
-    background-color: var(--green-mid2);
+    background-color: var(--brand-color-active);
 }
 
 .btn-back svg {
@@ -122,11 +279,11 @@ main button {
 }
 
 main a.underlined {
-    color: var(--green);
+    color: var(--brand-text);
 }
 
 main a.underlined:hover {
-    color: var(--green-mid);
+    color: var(--brand-color-hover);
     text-decoration: none;
 }
 
@@ -141,12 +298,12 @@ main a.underlined:hover {
 .helper {
     font-size: 0.7em;
     font-style: italic;
-    color: gray;
+    color: var(--secondary-text);
 }
 
 .helper-big {
     font-size: 0.9em;
-    color: #666;
+    color: var(--secondary-text);
     margin: auto 20px 1rem;
     text-align: center;
 }
@@ -158,15 +315,15 @@ main a.underlined:hover {
 /* #region SPECIFIC ELEMENTS */
 
 .required-asterisk {
-    color: red;
+    color: var(--required-color);
 }
 
 .skip-link {
     position: absolute;
     top: -100%;
     left: 1rem;
-    background: var(--green);
-    color: var(--white);
+    background: var(--brand-color);
+    color: var(--text-on-brand);
     padding: .5em 1em;
     border-radius: var(--btn-radius);
     z-index: 9999;
@@ -195,28 +352,27 @@ main a.underlined:hover {
 }
 
 .success-message {
-    color: #155724;
     margin: auto 20px;
     font-size: 0.9rem;
 
     border-radius: 8px;
     padding: 10px 15px;
-    background-color: #b8d7b8;
-    color: #062b04;
+    background-color: var(--success-background);
+    color: var(--success-text);
     margin: 0 auto 20px;
 }
 
 .error-message {
-    color: #b91c1c;
+    color: var(--danger-color);
     margin: auto 20px;
     font-size: 0.9rem;
     margin-bottom: 12px;
 }
 
 .error-messages {
-    background-color: #f8d7da;
-    border: 1px solid #f5c6cb;
-    color: #721c24;
+    background-color: var(--error-background);
+    border: 1px solid var(--error-border);
+    color: var(--error-text);
     padding: 12px;
     border-radius: 4px;
     margin: auto 20px 20px;
@@ -244,9 +400,10 @@ main a.underlined:hover {
 }
 
 .status-card {
-    background-color: white;
+    background-color: var(--card-background);
+    color: var(--primary-text);
     padding: 12px 38px;
-    box-shadow: 0 1px 4px lightgray;
+    box-shadow: 0 1px 4px var(--shadow-color-soft);
     font-size: 1em;
     border-radius: 4px;
 }
@@ -257,16 +414,16 @@ main a.underlined:hover {
 }
 
 .status-card.active {
-    background: #18231ac2;
-    color: whitesmoke;
+    background: var(--brand-tint-strong);
+    color: var(--text-on-brand);
     transform: none;
     transform: scale(0.95);
 }
 
 .status-card .status-count {
     display: inline-block;
-    background: #e8e8e8;
-    color: #666;
+    background: var(--hover-surface);
+    color: var(--secondary-text);
     border-radius: 10px;
     padding: 1px 8px;
     font-size: 0.8em;
@@ -275,8 +432,8 @@ main a.underlined:hover {
 }
 
 .status-card.active .status-count {
-    background: rgba(255, 255, 255, 0.22);
-    color: whitesmoke;
+    background: var(--tint-on-brand);
+    color: var(--text-on-brand);
 }
 
 /* #endregion */

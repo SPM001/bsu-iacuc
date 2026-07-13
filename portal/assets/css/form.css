@@ -9,16 +9,19 @@
   margin-bottom: 0;
   padding: 12px 10px;
   border-radius: var(--radius);
-  border: none;
-  box-shadow: 0 1px 4px lightgray;
+  border: 1px solid var(--input-border);
+  background-color: var(--card-background);
+  color: var(--primary-text);
+  box-shadow: 0 1px 4px var(--shadow-color-soft);
   font-size: .9em;
   outline: none;
 
-  transition: box-shadow 0.2s ease;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .input-group input:focus-visible {
-  box-shadow: 0 0 0 3px var(--green-light), 0 1px 4px lightgray;
+  border-color: var(--brand-text);
+  box-shadow: 0 0 0 3px var(--focus-ring-tint), 0 1px 4px var(--shadow-color-soft);
 }
 
 .input-group label {
@@ -28,7 +31,7 @@
   width: auto;
   transform: translateY(-50%);
   margin: 0;
-  color: #888;
+  color: var(--secondary-text);
   font-size: .9em;
 
   pointer-events: none;
@@ -39,8 +42,8 @@
 .input-group:has(input:not(:placeholder-shown)) label {
   top: 0;
   font-size: .7em;
-  color: var(--green-mid2);
-  background: white;
+  color: var(--brand-text);
+  background: var(--card-background);
   padding: 0 5px;
 }
 

@@ -13,8 +13,8 @@
     right: 0;
     z-index: 8000;
 
-    background: #783b00;
-    color: #fff;
+    background: var(--warning-background);
+    color: var(--text-on-brand);
 
     transform: translateY(-100%);
     transition: transform 0.22s ease;
@@ -27,10 +27,10 @@
 }
 
 .iq-banner--warn {
-    background: #991b1b;
+    background: var(--warning-background-strong);
 }
 
-
+.iq-banner-inner {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -51,10 +51,10 @@
     font-size: 0.75em;
     padding: 5px 14px;
     border-radius: var(--btn-radius);
-    background: rgba(255, 255, 255, 0.15);
-    color: #fff;
+    background: var(--tint-on-brand-soft);
+    color: var(--text-on-brand);
     box-shadow: none;
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    border: 1px solid var(--tint-on-brand-border);
     cursor: pointer;
     transition: background 0.15s ease;
     margin: 0;
@@ -62,8 +62,8 @@
 }
 
 .iq-banner-btn:hover {
-    background: rgba(255, 255, 255, 0.28);
-    color: #fff;
+    background: var(--tint-on-brand);
+    color: var(--text-on-brand);
 }
 
 
@@ -81,7 +81,7 @@
     justify-content: space-between;
     gap: 1rem;
     padding: 0.75rem 1.5rem;
-    border-top: 1px solid #e4e4e4;
+    border-top: 1px solid var(--divider-color);
 }
 
 .iq-panel-hint {
@@ -93,18 +93,18 @@
     flex-shrink: 0;
     font-size: 0.72em;
     padding: 5px 12px;
-    color: #b91c1c;
+    color: var(--danger-color);
     box-shadow: none;
-    border: 1px solid #f0bfbf;
+    border: 1px solid var(--danger-border-soft);
     border-radius: var(--btn-radius);
-    background: #fff5f5;
+    background: var(--danger-background-soft);
     margin: 0;
 }
 
 .iq-panel-discard-btn:hover {
-    background: #b91c1c;
-    color: #fff;
-    border-color: #b91c1c;
+    background: var(--danger-color);
+    color: var(--text-on-brand);
+    border-color: var(--danger-color);
 }
 
 
@@ -116,7 +116,7 @@
     justify-content: space-between;
     gap: 12px;
     padding: 0.7rem 1.5rem;
-    border-bottom: 1px solid #f0f0f0;
+    border-bottom: 1px solid var(--divider-color-subtle);
     transition: background-color 0.1s ease;
 }
 
@@ -125,7 +125,7 @@
 }
 
 .iq-entry:hover {
-    background: #f9fbf9;
+    background: var(--hover-surface-soft);
 }
 
 .iq-entry-info {
@@ -138,27 +138,28 @@
 .iq-entry-label {
     font-size: 0.82em;
     font-weight: 600;
-    color: #1a1a1a;
+    color: var(--primary-text);
 }
 
 .iq-entry-time {
     font-size: 0.68em;
+    color: var(--secondary-text);
 }
 
 .iq-entry-discard {
     flex-shrink: 0;
     font-size: 0.7em;
     padding: 4px 10px;
-    color: #888;
+    color: var(--secondary-text);
     box-shadow: none;
-    border: 1px solid #e4e4e4;
+    border: 1px solid var(--divider-color);
     border-radius: var(--btn-radius);
-    background: #f5f5f5;
+    background: var(--page-background);
     margin: 0;
 }
 
 .iq-entry-discard:hover {
-    background: #b91c1c;
-    color: #fff;
-    border-color: #b91c1c;
+    background: var(--danger-color);
+    color: var(--text-on-brand);
+    border-color: var(--danger-color);
 }

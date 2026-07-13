@@ -18,6 +18,16 @@ $hideHeader     = $hideHeader     ?? false;
   <?php $default = "BSU-IACUC"; ?>
   <title><?= isset($title) ? "$title - $default" : $default ?></title>
 
+  <!-- set the theme before anything paints, so there's no flash of the wrong theme -->
+  <script>
+    (function() {
+      var savedTheme = localStorage.getItem('theme');
+      var systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      var theme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+
   <link rel="stylesheet" href="<?= CSSPATH ?>/header.css">
   <link rel="stylesheet" href="<?= CSSPATH ?>/body.css">
   <link rel="stylesheet" href="<?= CSSPATH ?>/modals.css">
@@ -26,6 +36,7 @@ $hideHeader     = $hideHeader     ?? false;
   <link rel="icon" href="<?= IMGPATH ?>/favicon.ico" type="image/x-icon">
 
   <script src="<?= JSPATH ?>/header.js" defer></script>
+  <script src="<?= JSPATH ?>/theme-toggle.js" defer></script>
   <script src="<?= JSPATH ?>/modals.js" defer></script>
   <script src="<?= JSPATH ?>/action-queue.js" defer></script>
   <script src="<?= JSPATH ?>/sw-register.js" data-root="<?= ROOT ?>" defer></script>
@@ -33,7 +44,7 @@ $hideHeader     = $hideHeader     ?? false;
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Akt:wght@100..900&family=Alfa+Slab+One&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Akt:wght@100..900&family=Alfa+Slab+One&family=Bitter:ital,wght@0,100..900;1,100..900&family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -44,8 +55,8 @@ $hideHeader     = $hideHeader     ?? false;
       <div class="header-logo-cont">
         <a href="<?= ROOT ?>" class="header-logo">
           <div>
-            <img src="<?= IMGPATH ?>/bsu.webp" alt="">
-            <img src="<?= IMGPATH ?>/ccard.webp" alt="">
+            <!-- <img src="<?= IMGPATH ?>/bsu.webp" alt=""> -->
+            <!-- <img src="<?= IMGPATH ?>/ccard.webp" alt=""> -->
           </div>
           <div>BSU-<span>IACUC</span></div>
         </a>
@@ -88,6 +99,9 @@ $hideHeader     = $hideHeader     ?? false;
           </ul>
         </nav>
       <?php endif; ?>
+
+      <!-- DARK MODE TOGGLE -->
+      <?php include 'theme-toggle.php'; ?>
 
       <!-- ACCOUNT DROPDOWN (LOGGED IN) -->
       <?php if (!$hideHeaderAuth): ?>

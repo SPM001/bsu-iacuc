@@ -12,6 +12,9 @@ include dirname(__DIR__) . '/includes/sprites.php';
 
 <div class="body">
     <main class="main-content" id="main-content" tabindex="-1">
+        <?php $themeToggleExtraClass = 'theme-toggle--card theme-toggle--floating'; ?>
+        <?php include dirname(__DIR__) . '/includes/theme-toggle.php'; ?>
+
         <form method="POST" action="<?= ROOT ?>/admin/login_process">
             <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf ?? $_SESSION['csrf_token'] ?? ''); ?>">
 
@@ -58,4 +61,6 @@ include dirname(__DIR__) . '/includes/sprites.php';
     </main>
 </div>
 
-<?php include dirname(__DIR__) . '/includes/footer.php'; ?>
+</body>
+
+</html>

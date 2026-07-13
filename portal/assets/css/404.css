@@ -29,10 +29,10 @@ main {
 }
 
 div {
-  box-shadow: 0 2px 4px black;
+  box-shadow: 0 2px 4px var(--shadow-color);
   border-radius: 8px;
   padding: 40px;
-  background-color: var(--white);
+  background-color: var(--card-background);
 }
 
 div * {
@@ -47,7 +47,7 @@ div a.button {
 
 h1 {
   font-family: var(--font-title);
-  color: rgb(17, 35, 13);
+  color: var(--primary-text);
 }
 
 p {
@@ -56,6 +56,6 @@ p {
 
 p.helper-note {
   font-size: .85rem;
-  color: #555;
+  color: var(--secondary-text);
   margin-top: -10px;
 }

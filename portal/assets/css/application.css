@@ -7,8 +7,8 @@
 
 body {
     /* font-family: system-ui, -apple-system, sans-serif; */
-    background: #f5f5f4;
-    color: #1a1a1a;
+    background: var(--page-background);
+    color: var(--primary-text);
     /* min-height: 100vh; */
     /* padding: 2rem 1rem; */
 }
@@ -29,13 +29,13 @@ body {
 .portal-header svg {
     width: 24px;
     height: 24px;
-    color: #2d7a3a;
+    color: var(--brand-text);
 }
 
 .portal-header h1 {
     font-size: 16px;
     font-weight: 600;
-    color: #2d7a3a;
+    color: var(--brand-text);
     margin-bottom: 0;
 }
 
@@ -50,9 +50,9 @@ body {
     width: 32px;
     height: 32px;
     border-radius: 50%;
-    border: 1.5px solid #d1d5db;
-    background: #fff;
-    color: #9ca3af;
+    border: 1.5px solid var(--input-border);
+    background: var(--card-background);
+    color: var(--muted-text);
     font-size: 13px;
     font-weight: 600;
     display: flex;
@@ -63,33 +63,33 @@ body {
 }
 
 .step-dot.active {
-    background: #2d7a3a;
-    border-color: #2d7a3a;
-    color: #fff;
+    background: var(--brand-color);
+    border-color: var(--brand-color);
+    color: var(--text-on-brand);
 }
 
 .step-dot.done {
-    background: #1a8a4a;
-    border-color: #1a8a4a;
-    color: #fff;
+    background: var(--brand-color-hover);
+    border-color: var(--brand-color-hover);
+    color: var(--text-on-brand);
 }
 
 .step-line {
     flex: 1;
     height: 2px;
-    background: #e5e7eb;
+    background: var(--input-border);
     transition: background 0.25s;
 }
 
 .step-line.done {
-    background: #1a8a4a;
+    background: var(--brand-color-hover);
 }
 
 /* ── Card ── */
 .card {
-    background: #fff;
+    background: var(--card-background);
     border-radius: 14px;
-    border: 1px solid #e5e7eb;
+    border: 1px solid var(--input-border);
     padding: 2rem;
 }
 
@@ -99,14 +99,14 @@ body {
     font-weight: 600;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: #9ca3af;
+    color: var(--muted-text);
     margin-bottom: 0.4rem;
 }
 
 .page-title {
     font-size: 22px;
     font-weight: 700;
-    color: #111;
+    color: var(--primary-text);
     margin-bottom: 1.25rem;
 }
 
@@ -115,7 +115,7 @@ body {
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.07em;
-    color: #6b7280;
+    color: var(--muted-text);
     margin-bottom: 0.5rem;
     margin-top: 1.25rem;
 }
@@ -126,11 +126,11 @@ body {
     align-items: flex-start;
     gap: 10px;
     padding: 10px 12px;
-    background: #eaf7e6;
+    background: var(--success-background-soft);
     border-radius: 8px;
     margin-bottom: 6px;
     font-size: 14px;
-    color: #2d7a3a;
+    color: var(--brand-text);
 }
 
 .req-item svg {
@@ -152,8 +152,8 @@ body {
     width: 24px;
     height: 24px;
     border-radius: 50%;
-    background: #d4edcc;
-    color: #2d7a3a;
+    background: var(--success-background-soft);
+    color: var(--brand-text);
     font-size: 12px;
     font-weight: 700;
     display: flex;
@@ -165,7 +165,7 @@ body {
 
 .process-text {
     font-size: 14px;
-    color: #374151;
+    color: var(--secondary-text);
     line-height: 1.55;
 }
 
@@ -176,13 +176,13 @@ body {
     gap: 8px;
     padding: 9px 13px;
 
-    /* background: color-mix(in srgb, var(--green-light) 40%, transparent); */
-    background: lightgray;
-    /* border: 1px solid var(--green-light); */
+    /* background: color-mix(in srgb, var(--brand-color-light) 40%, transparent); */
+    background: var(--divider-color-subtle);
+    /* border: 1px solid var(--brand-color-light); */
 
     border-radius: 8px;
     font-size: 0.8rem;
-    color: var(--green);
+    color: var(--brand-text);
     margin-bottom: 1rem;
     line-height: 1.5;
 }
@@ -200,10 +200,10 @@ body {
     align-items: center;
     gap: 8px;
     padding: 10px 12px;
-    background: #eaf7e6;
+    background: var(--success-background-soft);
     border-radius: 8px;
     font-size: 13px;
-    color: #2d7a3a;
+    color: var(--brand-text);
     margin-top: 1rem;
 }
 
@@ -214,8 +214,8 @@ body {
 }
 
 .orange {
-    background: #f7f0e6;
-    color: #7a5e2d;
+    background: var(--status-warning-bg);
+    color: var(--status-warning-text);
 }
 
 /* ── Buttons ── */
@@ -238,8 +238,8 @@ button {
 }
 
 .btn-primary {
-    background: #2d7a3a;
-    color: #fff;
+    background: var(--brand-color);
+    color: var(--text-on-brand);
 }
 
 .btn-primary:hover {
@@ -252,19 +252,19 @@ button {
 }
 
 .btn-secondary {
-    background: #fff;
-    color: #374151;
-    border: 1px solid #d1d5db;
+    background: var(--card-background);
+    color: var(--secondary-text);
+    border: 1px solid var(--input-border);
 }
 
 .btn-secondary:hover {
-    background: #e4e4e4be;
-    color: #374151;
+    background: var(--divider-color);
+    color: var(--secondary-text);
 }
 
 .btn-success {
-    background: #1a8a4a;
-    color: #fff;
+    background: var(--brand-color-hover);
+    color: var(--text-on-brand);
 }
 
 .btn-success:hover {
@@ -276,11 +276,11 @@ button {
     height: 160px;
     overflow-y: auto;
     padding: 14px;
-    background: #f9fafb;
+    background: var(--divider-color-subtle);
     border-radius: 8px;
-    border: 1px solid #e5e7eb;
+    border: 1px solid var(--input-border);
     font-size: 13px;
-    color: #4b5563;
+    color: var(--secondary-text);
     line-height: 1.7;
 }
 
@@ -290,7 +290,7 @@ button {
     gap: 10px;
     margin-top: 10px;
     font-size: 14px;
-    color: #374151;
+    color: var(--secondary-text);
     cursor: pointer;
 }
 
@@ -299,14 +299,14 @@ button {
     width: 15px;
     height: 15px;
     flex-shrink: 0;
-    accent-color: #2d7a3a;
+    accent-color: var(--brand-color);
     cursor: pointer;
 }
 
 /* ── Upload ── */
 .upload-box {
     display: block;
-    border: 2px dashed #d1d5db;
+    border: 2px dashed var(--input-border);
     border-radius: 10px;
     padding: 24px;
     text-align: center;
@@ -316,26 +316,26 @@ button {
 }
 
 .upload-box:hover {
-    background: #eaf7e6;
-    border-color: #6bbf7a;
+    background: var(--success-background-soft);
+    border-color: var(--brand-color-hover);
 }
 
 .upload-box svg {
     width: 28px;
     height: 28px;
-    color: #9ca3af;
+    color: var(--muted-text);
     margin-bottom: 8px;
 }
 
 .upload-label {
     font-size: 14px;
-    color: #374151;
+    color: var(--secondary-text);
     font-weight: 500;
 }
 
 .upload-sub {
     font-size: 12px;
-    color: #9ca3af;
+    color: var(--muted-text);
     margin-top: 4px;
 }
 
@@ -346,7 +346,7 @@ button {
 
 .file-badge-name {
     font-size: 1.1em;
-    color: #065f46;
+    color: var(--status-success-text);
     flex: 1;
     min-width: 0;
     overflow-wrap: break-word;
@@ -354,8 +354,8 @@ button {
 }
 
 .file-badge-remove {
-    background: var(--green);
-    color: whitesmoke;
+    background: var(--brand-color);
+    color: var(--text-on-brand);
 
     border: none;
     padding: 4px 8px;
@@ -374,7 +374,7 @@ button {
     display: block;
     font-size: 12px;
     font-weight: 600;
-    color: #6b7280;
+    color: var(--muted-text);
     margin-bottom: 5px;
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -385,12 +385,12 @@ button {
 .field textarea {
     width: 100%;
     padding: 9px 12px;
-    border: 1px solid #d1d5db;
+    border: 1px solid var(--input-border);
     border-radius: 8px;
     font-size: 14px;
     font-family: inherit;
-    color: #111;
-    background: #fff;
+    color: var(--primary-text);
+    background: var(--card-background);
     outline: none;
     transition: border-color 0.15s;
 }
@@ -398,8 +398,8 @@ button {
 .field input:focus,
 .field select:focus,
 .field textarea:focus {
-    border-color: #2d7a3a;
-    box-shadow: 0 0 0 3px rgba(45, 122, 58, 0.08);
+    border-color: var(--brand-color);
+    box-shadow: 0 0 0 3px var(--focus-ring-tint);
 }
 
 .field textarea {
@@ -417,7 +417,7 @@ button {
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    background: #ecfdf5;
+    background: var(--success-background-soft);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -427,12 +427,12 @@ button {
 .success-icon svg {
     width: 30px;
     height: 30px;
-    color: #1a8a4a;
+    color: var(--brand-color-hover);
 }
 
 .success-desc {
     font-size: 14px;
-    color: #6b7280;
+    color: var(--muted-text);
     line-height: 1.6;
     margin-bottom: 1.5rem;
 }
@@ -446,7 +446,7 @@ button {
 
 hr {
     border: none;
-    border-top: 1px solid #f3f4f6;
+    border-top: 1px solid var(--divider-color-subtle);
     margin: 1rem 0;
 }
 
@@ -472,9 +472,9 @@ hr {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background: #fff;
-    border: 1.5px solid var(--green);
-    color: var(--green);
+    background: var(--card-background);
+    border: 1.5px solid var(--brand-text);
+    color: var(--brand-text);
     padding: 10px 18px;
     border-radius: 8px;
     font-size: .82rem;
@@ -486,8 +486,8 @@ hr {
 }
 
 .btn-download:hover {
-    background: var(--green);
-    color: #fff;
+    background: var(--brand-color);
+    color: var(--text-on-brand);
 }
 
 .btn-download svg {
@@ -502,11 +502,11 @@ hr {
     align-items: center;
     gap: 8px;
     padding: 10px 14px;
-    background: #ecfdf5;
-    border: 1px solid #a7f3d0;
+    background: var(--success-background-soft);
+    border: 1px solid var(--success-border-soft);
     border-radius: 8px;
     font-size: .85em;
-    color: #065f46;
+    color: var(--status-success-text);
     margin-bottom: .75rem;
 }
 
@@ -519,7 +519,7 @@ hr {
 .field label {
     font-size: .75rem;
     font-weight: 600;
-    color: #6b7280;
+    color: var(--muted-text);
     text-transform: uppercase;
     letter-spacing: .05em;
     display: block;
@@ -531,12 +531,12 @@ hr {
 .field textarea {
     width: 100%;
     padding: 9px 12px;
-    border: 1px solid #d1d5db;
+    border: 1px solid var(--input-border);
     border-radius: 8px;
     font-size: .82rem;
     font-family: inherit;
-    color: #111;
-    background: #fff;
+    color: var(--primary-text);
+    background: var(--card-background);
     outline: none;
     transition: border-color .15s;
 }
@@ -544,8 +544,8 @@ hr {
 .field input:focus,
 .field select:focus,
 .field textarea:focus {
-    border-color: #2d7a3a;
-    box-shadow: 0 0 0 3px rgba(45, 122, 58, .08);
+    border-color: var(--brand-color);
+    box-shadow: 0 0 0 3px var(--focus-ring-tint);
 }
 
 .field textarea {
@@ -564,7 +564,7 @@ hr {
 }
 
 .req {
-    color: #dc2626;
+    color: var(--danger-color);
 }
 
 .pi-choice {
@@ -573,17 +573,17 @@ hr {
 
     padding: 8px 20px;
     border-radius: 4px;
-    box-shadow: 0 1px 2px gray;
+    box-shadow: 0 1px 2px var(--shadow-color-soft);
 }
 
 .pi-choice:hover {
-    background: #18231aa0 !important;
+    background: var(--brand-tint-active) !important;
 }
 
 .pi-choice--active {
-    background: #18231ad4;
-    color: #fff !important;
-    border-color: #2d7a3a !important;
+    background: var(--brand-tint-strong);
+    color: var(--text-on-brand) !important;
+    border-color: var(--brand-color) !important;
 }
 
 .error-messages {
