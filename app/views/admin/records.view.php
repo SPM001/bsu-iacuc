@@ -87,6 +87,21 @@ function pageUrl(int $p, string $search, string $school, string $animalType, str
                 <!-- <p>Protocol entries are automatically added to the records table once the reviewer finishes review.</p> -->
             </div>
 
+            <div class="inbox-search-wrap">
+                <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <use href="#search-icon">
+                </svg>
+                <input type="text"
+                    name="search"
+                    id="recordSearch"
+                    class="inbox-search-input"
+                    placeholder="Search records…"
+                    value="<?= htmlspecialchars($search, ENT_QUOTES) ?>"
+                    autocomplete="off"
+                    form="recordsFilterForm">
+                <button type="button" class="inbox-search-clear <?= $search ? 'visible' : '' ?>" id="clearSearch" aria-label="Clear search">✕</button>
+            </div>
+
             <?php if ($role === 'admin'): ?>
                 <button class="row-btn row-btn-primary" id="addRecordBtn" type="button">
                     <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -122,28 +137,14 @@ function pageUrl(int $p, string $search, string $school, string $animalType, str
             </div>
         </div>
 
-        <!-- ── Search + filters ─────────────────────────────────────── -->
+        <!-- ── Filters ─────────────────────────────────────────────── -->
         <form method="GET" action="" id="recordsFilterForm">
 
-            <div class="inbox-toolbar">
-                <div class="inbox-search-wrap">
-                    <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                        <use href="#search-icon">
-                    </svg>
-                    <input type="text"
-                        name="search"
-                        id="recordSearch"
-                        class="inbox-search-input"
-                        placeholder="Search records…"
-                        value="<?= htmlspecialchars($search, ENT_QUOTES) ?>"
-                        autocomplete="off">
-                    <button type="button" class="inbox-search-clear <?= $search ? 'visible' : '' ?>" id="clearSearch" aria-label="Clear search">✕</button>
-                </div>
-
-                <?php if ($hasFilters): ?>
+            <?php if ($hasFilters): ?>
+                <div class="inbox-toolbar">
                     <a href="<?= ROOT ?>/admin/records" class="row-btn records-clear-btn">Clear all</a>
-                <?php endif; ?>
-            </div>
+                </div>
+            <?php endif; ?>
 
             <!-- Filter selects -->
             <div class="records-filters-row">
@@ -192,7 +193,7 @@ function pageUrl(int $p, string $search, string $school, string $animalType, str
                             <?php elseif ($role === 'reviewer'): ?>
                                 <th class="col-actions"></th>
                             <?php endif; ?>
-                            <th class="col-ref">Ref. No.</th>
+                            <th class="col-ref">IPN</th>
                             <th class="col-title">Title of Research</th>
                             <th class="col-school">School</th>
                             <th class="col-animal">Animal Type</th>

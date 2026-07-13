@@ -6,13 +6,7 @@
    ============================================================ */
 
 /* ── Page header row ─────────────────────────────────────── */
-.records-page-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
+/* layout (flex/gap/etc) comes from .dashboard-page-header in admin-home.css */
 
 /* Reuse row-btn from admin-home but make the Add button
    sit tightly in the header */

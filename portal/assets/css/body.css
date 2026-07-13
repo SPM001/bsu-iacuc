@@ -414,7 +414,7 @@ main a.underlined:hover {
 }
 
 .status-card.active {
-    background: var(--brand-tint-strong);
+    background: var(--brand-color-active);
     color: var(--text-on-brand);
     transform: none;
     transform: scale(0.95);

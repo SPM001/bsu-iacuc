@@ -14,6 +14,7 @@ $hideHeader     = $hideHeader     ?? false;
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="google" content="notranslate">
 
   <?php $default = "BSU-IACUC"; ?>
   <title><?= isset($title) ? "$title - $default" : $default ?></title>

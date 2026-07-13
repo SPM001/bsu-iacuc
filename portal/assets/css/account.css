@@ -283,6 +283,7 @@ main button:hover {
     align-items: flex-start;
     gap: 1em;
     width: 80%;
+    margin-bottom: 1.2em;
 }
 
 .label-group div {

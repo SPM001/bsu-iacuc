@@ -30,6 +30,7 @@ section {
     border-radius: var(--radius);
     font-size: 0.9rem;
     background: var(--card-background);
+    color: var(--primary-text);
     /* min-width: 120px; */
     width: 70%;
     margin-left: .3em;

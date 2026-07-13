@@ -81,9 +81,22 @@ foreach ($protocols as $p) {
 
     <main class="main-content" id="main-content" tabindex="-1">
 
-        <!-- ── Page header ─────────────────────────────────────── -->
+        <!-- ── Page header with search bar ─────────────────────────────────────── -->
         <div class="dashboard-page-header">
             <h1 class="dashboard-page-title">Protocol Inbox</h1>
+
+            <div class="inbox-search-wrap">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <circle cx="11" cy="11" r="8" />
+                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+                <input type="text" id="inboxSearchInput" class="inbox-search-input"
+                    placeholder="Search by title or researcher..." autocomplete="off">
+                <button class="inbox-search-clear" id="inboxSearchClear" aria-label="Clear search">
+                    &#x2715;
+                </button>
+            </div>
         </div>
 
         <!-- ── Flash messages ──────────────────────────────────── -->
@@ -141,21 +154,10 @@ foreach ($protocols as $p) {
 
         <?php else: ?>
 
-            <!-- ── Search toolbar ──────────────────────────────── -->
+            <!-- ── Search toolbar ────────────────────────────────
             <div class="inbox-toolbar">
-                <div class="inbox-search-wrap">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" aria-hidden="true">
-                        <circle cx="11" cy="11" r="8" />
-                        <line x1="21" y1="21" x2="16.65" y2="16.65" />
-                    </svg>
-                    <input type="text" id="inboxSearchInput" class="inbox-search-input"
-                        placeholder="Search by title or researcher..." autocomplete="off">
-                    <button class="inbox-search-clear" id="inboxSearchClear" aria-label="Clear search">
-                        &#x2715;
-                    </button>
-                </div>
-            </div>
+
+            </div> -->
 
             <!-- ── Filter pills ────────────────────────────────── -->
             <div class="filter-pills-row" id="filterPillsRow">

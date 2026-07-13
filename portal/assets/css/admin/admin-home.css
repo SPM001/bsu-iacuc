@@ -6,6 +6,11 @@
 
 /* ── Page header ─────────────────────────────────────────── */
 .dashboard-page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
     margin-bottom: 1.5rem;
 }
 
@@ -177,9 +182,9 @@
     white-space: nowrap;
 }
 
-.filter-pill:hover {
-    background: none;
-    color: inherit;
+.filter-pill:not(.active):hover {
+    background: var(--hover-surface);
+    color: var(--primary-text);
 }
 
 .filter-pill.active {
