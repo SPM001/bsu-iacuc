@@ -7,6 +7,7 @@ include dirname(__DIR__) . '/includes/header.php';
 ?>
 
 <link rel="stylesheet" href="<?= CSSPATH ?>/account.css">
+<link rel="stylesheet" href="<?= CSSPATH ?>/form.css">
 
 <div class="body">
     <main class="main-content" id="main-content" tabindex="-1">
@@ -41,14 +42,15 @@ include dirname(__DIR__) . '/includes/header.php';
                 </div>
             <?php endif; ?>
 
-            <label for="username">Username or Email:</label>
-            <input type="text" id="username" name="username"
-                placeholder="Enter your username or email"
-                value="<?= htmlspecialchars($prefill ?? ''); ?>" required>
+            <div class="input-group">
+                <input type="text" id="username" name="username" placeholder=" " value="<?= htmlspecialchars($prefill ?? ''); ?>" required>
+                <label for="username">Username or Email</label>
+            </div>
 
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password"
-                placeholder="Enter your password" minlength="8" required>
+            <div class="input-group">
+                <input type="password" id="password" name="password" placeholder=" " minlength="8" required>
+                <label for="password">Password</label>
+            </div>
 
             <button type="submit">Log In</button>
 

@@ -1,0 +1,60 @@
+.input-group {
+  position: relative;
+  width: 80%;
+  margin: 0 0 1.4em;
+}
+
+.input-group input {
+  width: 100%;
+  margin-bottom: 0;
+  padding: 12px 10px;
+  border-radius: var(--radius);
+  border: none;
+  box-shadow: 0 1px 4px lightgray;
+  font-size: .9em;
+  outline: none;
+
+  transition: box-shadow 0.2s ease;
+}
+
+.input-group input:focus-visible {
+  box-shadow: 0 0 0 3px var(--green-light), 0 1px 4px lightgray;
+}
+
+.input-group label {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  width: auto;
+  transform: translateY(-50%);
+  margin: 0;
+  color: #888;
+  font-size: .9em;
+
+  pointer-events: none;
+  transition: all 0.2s ease;
+}
+
+.input-group:has(input:focus) label,
+.input-group:has(input:not(:placeholder-shown)) label {
+  top: 0;
+  font-size: .7em;
+  color: var(--green-mid2);
+  background: white;
+  padding: 0 5px;
+}
+
+.input-group .password-field-wrap {
+  width: 100%;
+}
+
+.helper+.label-group,
+.helper+.input-group {
+  margin: 1.2em 0;
+}
+
+@media (max-width: 600px) {
+  .input-group {
+    width: 90%;
+  }
+}

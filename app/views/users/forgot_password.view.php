@@ -14,6 +14,7 @@ include dirname(__DIR__) . '/includes/header.php';
 ?>
 
 <link rel="stylesheet" href="<?= CSSPATH ?>/account.css">
+<link rel="stylesheet" href="<?= CSSPATH ?>/form.css">
 
 <div class="body">
     <main class="main-content" id="main-content" tabindex="-1">
@@ -50,8 +51,10 @@ include dirname(__DIR__) . '/includes/header.php';
                 </div>
             <?php endif; ?>
 
-            <input type="email" id="email" name="email"
-                placeholder="Enter your email" required>
+            <div class="input-group">
+                <input type="email" id="email" name="email" placeholder=" " required>
+                <label for="email">Email</label>
+            </div>
 
             <button type="submit">Send Reset Link</button>
         </form>

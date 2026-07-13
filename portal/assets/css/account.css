@@ -298,6 +298,15 @@ main button:hover {
     margin: .5em 0 .3em;
 }
 
+.label-group .input-group {
+    width: 100%;
+    margin: 0;
+}
+
+.label-group .input-group label {
+    margin: 0;
+}
+
 .logout-form {
     display: block;
 }

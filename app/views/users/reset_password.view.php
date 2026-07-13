@@ -10,6 +10,7 @@ include dirname(__DIR__) . '/includes/header.php';
 ?>
 
 <link rel="stylesheet" href="<?= CSSPATH ?>/account.css">
+<link rel="stylesheet" href="<?= CSSPATH ?>/form.css">
 
 <div class="body">
     <main class="main-content" id="main-content" tabindex="-1">
@@ -29,13 +30,15 @@ include dirname(__DIR__) . '/includes/header.php';
                 </div>
             <?php endif; ?>
 
-            <label for="password">New Password</label>
-            <input type="password" id="password" name="password"
-                placeholder="Enter new password" required>
+            <div class="input-group">
+                <input type="password" id="password" name="password" placeholder=" " required>
+                <label for="password">New Password</label>
+            </div>
 
-            <label for="confirm_password">Confirm New Password</label>
-            <input type="password" id="confirm_password" name="confirm_password"
-                placeholder="Confirm new password" required>
+            <div class="input-group">
+                <input type="password" id="confirm_password" name="confirm_password" placeholder=" " required>
+                <label for="confirm_password">Confirm New Password</label>
+            </div>
 
             <div class="password-requirements">
                 Password must contain:

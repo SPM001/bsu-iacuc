@@ -18,6 +18,7 @@ $role = $user['role'] ?? '';
 
     <link rel="stylesheet" href="<?= CSSPATH ?>/body.css">
     <link rel="stylesheet" href="<?= CSSPATH ?>/account.css">
+    <link rel="stylesheet" href="<?= CSSPATH ?>/form.css">
     <link rel="stylesheet" href="<?= CSSPATH ?>/admin/admin.css">
 
     <script src="<?= JSPATH ?>/password-toggle.js" defer></script>
@@ -60,33 +61,39 @@ $role = $user['role'] ?? '';
 
                     <span class="helper">(Alphabetic characters (including accented and non-English letters), hyphens, and apostrophes only.)</span>
                     <div class="label-group">
-                        <div>
-                            <label for="first_name">First Name</label>
-                            <input type="text" id="first_name" name="first_name" placeholder="Juan"
+                        <div class="input-group">
+                            <input type="text" id="first_name" name="first_name" placeholder=" "
                                 value="<?= htmlspecialchars($old['first_name'] ?? ''); ?>" required>
+                            <label for="first_name">First Name</label>
                         </div>
-                        <div>
-                            <label for="last_name">Last Name</label>
-                            <input type="text" id="last_name" name="last_name" placeholder="Santos"
+                        <div class="input-group">
+                            <input type="text" id="last_name" name="last_name" placeholder=" "
                                 value="<?= htmlspecialchars($old['last_name'] ?? ''); ?>" required>
+                            <label for="last_name">Last Name</label>
                         </div>
                     </div>
 
-                    <label for="username">Username</label>
-                    <input type="text" id="username" name="username" placeholder="JuanSantos_123"
-                        value="<?= htmlspecialchars($old['username'] ?? ''); ?>" required>
+                    <div class="input-group">
+                        <input type="text" id="username" name="username" placeholder=" "
+                            value="<?= htmlspecialchars($old['username'] ?? ''); ?>" required>
+                        <label for="username">Username</label>
+                    </div>
 
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" placeholder="juan.santos@example.com"
-                        value="<?= htmlspecialchars($old['email'] ?? ''); ?>" required>
+                    <div class="input-group">
+                        <input type="email" id="email" name="email" placeholder=" "
+                            value="<?= htmlspecialchars($old['email'] ?? ''); ?>" required>
+                        <label for="email">Email</label>
+                    </div>
 
-                    <label for="password">Create Password</label>
-                    <input type="password" id="password" name="password"
-                        placeholder="Enter your password" required>
+                    <div class="input-group">
+                        <input type="password" id="password" name="password" placeholder=" " required>
+                        <label for="password">Create Password</label>
+                    </div>
 
-                    <label for="confirm_password">Confirm Password</label>
-                    <input type="password" id="confirm_password" name="confirm_password"
-                        placeholder="Confirm your password" required>
+                    <div class="input-group">
+                        <input type="password" id="confirm_password" name="confirm_password" placeholder=" " required>
+                        <label for="confirm_password">Confirm Password</label>
+                    </div>
 
                     <div class="password-requirements">
                         Password must contain:
