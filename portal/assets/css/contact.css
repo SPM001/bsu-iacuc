@@ -133,3 +133,29 @@ main h1 {
     align-items: center;
     gap: 6px;
 }
+
+#director-contact {
+    transition: background-color 0.8s ease, box-shadow 0.8s ease;
+    padding: 6px 10px;
+    border-radius: 4px;
+    margin: 0 -10px;
+}
+
+#director-contact:target {
+    background-color: var(--brand-surface-tint);
+    box-shadow: 0 0 0 3px var(--brand-color);
+    animation: highlightFade 2s ease forwards;
+    margin: 10px 0 0;
+}
+
+@keyframes highlightFade {
+    0% {
+        background-color: var(--brand-color-light);
+        box-shadow: 0 0 0 4px var(--brand-color);
+    }
+
+    100% {
+        background-color: var(--brand-surface-tint);
+        box-shadow: 0 0 0 3px var(--brand-color);
+    }
+}

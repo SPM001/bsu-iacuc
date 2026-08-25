@@ -47,6 +47,7 @@ class Model
                     `first_name` varchar(100) NOT NULL,
                     `last_name` varchar(100) NOT NULL,
                     `email` varchar(100) NOT NULL,
+                    `phone_number` varchar(20) DEFAULT NULL,
                     `password` varchar(255) NOT NULL,
                     `role` varchar(50) DEFAULT 'researcher',
                     `status` varchar(20) NOT NULL DEFAULT 'active',
@@ -55,6 +56,8 @@ class Model
                     `cert_original_name` varchar(255) DEFAULT NULL,
                     `cert_uploaded_at` timestamp NULL DEFAULT NULL
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;");
+
+        $this->ensureColumn('users', 'phone_number', "varchar(20) DEFAULT NULL AFTER `email`");
 
         $c->query("CREATE TABLE IF NOT EXISTS `records` (
                     `id`                     int(11)      NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -170,6 +173,16 @@ class Model
                     FOREIGN KEY (`protocol_id`) REFERENCES `protocols`(`id`) ON DELETE CASCADE,
                     FOREIGN KEY (`reviewer_id`) REFERENCES `users`(`id`) ON DELETE CASCADE
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;");
+    }
+
+    private function ensureColumn(string $table, string $column, string $definition): void
+    {
+        $c = $this->connection;
+
+        $exists = $c->query("SHOW COLUMNS FROM `$table` LIKE '$column'");
+        if ($exists && $exists->num_rows === 0) {
+            $c->query("ALTER TABLE `$table` ADD COLUMN `$column` $definition");
+        }
     }
 
     public function logAudit(

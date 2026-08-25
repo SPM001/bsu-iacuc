@@ -71,7 +71,7 @@ include "includes/scroll-top.php";
                                     Once the protocol has passed CCARD review, it will be endorsed to the Bureau of Animal Industry (BAI).
                                 </p>
                                 <p class="process-step-note">
-                                    <span class="italic">Note:</span> BAI requires an animal research clearance processing fee of <strong>Php 100.00</strong>. Visit the BSU-CCARD office or <a href="<?= ROOT ?>/contact" class="underlined">contact the CCARD Director</a> to process your payment.
+                                    <span class="italic">Note:</span> BAI requires an animal research clearance processing fee of <strong>Php 100.00</strong>. Visit the BSU-CCARD office or <a href="<?= ROOT ?>/contact#director-contact" class="underlined">contact the CCARD Director</a> to process your payment.
                                 </p>
                             </div>
                         </div>
@@ -281,7 +281,7 @@ include "includes/scroll-top.php";
     // ===== APPLY BUTTON — Continue vs New =====
     (function() {
         const isLoggedIn = <?= isset($_SESSION['user']['user_id']) ? 'true' : 'false' ?>;
-        const SAVE_KEY = 'bsu_iacuc_apply_v2';
+        const SAVE_KEY = 'bsu_iacuc_apply_v2_u<?= (int) ($_SESSION['user']['user_id'] ?? 0) ?>';
         const ROOT_URL = '<?= ROOT ?>';
         const applyUrl = ROOT_URL + '/apply';
         const container = document.getElementById('apply-actions');
@@ -306,7 +306,7 @@ include "includes/scroll-top.php";
 
         if (!inProgress) {
             container.innerHTML =
-                `<a href="${applyUrl}" class="button btn-apply">Apply for IACUC Protocol Review here →</a>`;
+                `<a href="${applyUrl}" class="button btn-apply">Click to Apply for IACUC Protocol Review</a>`;
             return;
         }
 

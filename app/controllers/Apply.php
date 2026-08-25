@@ -61,7 +61,28 @@ class Apply extends Controller
         return $protocolId . '/' . basename($absPath);
     }
 
-    private function saveUpload(string $inputName, string $dir, array $allowedExts, bool $required): array|false|null
+    // Turns a raw detected MIME type (from finfo) into a short, user-facing
+    // description, so a rejection message can say what the file actually is
+    // instead of just "upload failed". Used when the real file content
+    // doesn't match its extension — e.g. a ".png" that's actually WebP
+    // (common with images saved from Facebook/Messenger, which silently
+    // re-encodes images even though the filename still ends in .png).
+    private function describeMime(string $mime): string
+    {
+        $known = [
+            'image/webp'    => 'a WebP image',
+            'image/gif'     => 'a GIF image',
+            'image/bmp'     => 'a BMP image',
+            'image/heic'    => 'a HEIC image',
+            'image/heif'    => 'a HEIF image',
+            'image/tiff'    => 'a TIFF image',
+            'image/svg+xml' => 'an SVG image',
+            'application/pdf' => 'a PDF',
+        ];
+        return $known[$mime] ?? "a \"$mime\" file";
+    }
+
+    private function saveUpload(string $inputName, string $dir, array $allowedExts, bool $required, ?string &$reason = null): array|false|null
     {
         if (empty($_FILES[$inputName]['tmp_name']) || $_FILES[$inputName]['error'] !== UPLOAD_ERR_OK) {
             return $required ? false : null;
@@ -70,29 +91,40 @@ class Apply extends Controller
         $file = $_FILES[$inputName];
 
         if ($file['size'] > 10 * 1024 * 1024) {
+            $reason = 'That file is larger than the 10 MB limit.';
             return false;
         }
 
         $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
         if (!in_array($ext, $allowedExts, true)) {
+            $reason = 'That file type isn\'t supported.';
             return false;
         }
 
         $finfo   = new finfo(FILEINFO_MIME_TYPE);
         $mime    = $finfo->file($file['tmp_name']);
+
+        // Some libmagic/finfo builds report certain PNGs (commonly
+        // palette/indexed PNGs from screenshot tools) as image/x-png
+        // instead of image/png, and some JPEGs as image/pjpeg instead of
+        // image/jpeg. Accept those known-equivalent variants too.
         $mimeMap = [
-            'pdf'  => 'application/pdf',
-            'jpg'  => 'image/jpeg',
-            'jpeg' => 'image/jpeg',
-            'png'  => 'image/png',
+            'pdf'  => ['application/pdf'],
+            'jpg'  => ['image/jpeg', 'image/pjpeg'],
+            'jpeg' => ['image/jpeg', 'image/pjpeg'],
+            'png'  => ['image/png', 'image/x-png'],
         ];
 
         if ($inputName === 'protocol_file' || $inputName === 'clearance_file') {
-            if ($ext !== 'pdf' || $mime !== 'application/pdf') {
+            if ($ext !== 'pdf' || !in_array($mime, $mimeMap['pdf'], true)) {
+                $reason = 'That file isn\'t actually a PDF (it looks like it\'s ' . $this->describeMime($mime) . '), even though it\'s named .pdf.';
                 return false;
             }
         } else {
-            if (!isset($mimeMap[$ext]) || $mime !== $mimeMap[$ext]) {
+            if (!isset($mimeMap[$ext]) || !in_array($mime, $mimeMap[$ext], true)) {
+                $reason = 'That file isn\'t actually a ' . strtoupper($ext) . ' (it looks like it\'s ' . $this->describeMime($mime) . '), even though it\'s named .' . $ext . '. '
+                    . 'This can happen with images saved from Messenger or Facebook, which sometimes convert images to WebP behind the scenes. '
+                    . 'Try re-saving or exporting the image as a PNG or JPG and upload it again.';
                 return false;
             }
         }
@@ -112,6 +144,15 @@ class Apply extends Controller
     {
         $finfo    = new finfo(FILEINFO_MIME_TYPE);
         $mimeType = $finfo->file($filePath);
+
+        // Normalize known libmagic variants (see saveUpload()) to their
+        // canonical mime type so the whitelist check and the Content-Type
+        // header sent to the browser both stay correct.
+        $normalize = [
+            'image/x-png' => 'image/png',
+            'image/pjpeg' => 'image/jpeg',
+        ];
+        $mimeType = $normalize[$mimeType] ?? $mimeType;
 
         if (!in_array($mimeType, ['application/pdf', 'image/jpeg', 'image/png'], true)) {
             $this->jsonError(403, 'File type not permitted.');

@@ -59,8 +59,11 @@ include "includes/scroll-top.php";
         isPi: null,
         certAlready: false,
         certName: null,
+        certSize: null,
         authName: null,
+        authSize: null,
         protocolName: null,
+        protocolSize: null,
         title: '',
         submittedId: null,
     };
@@ -89,6 +92,89 @@ include "includes/scroll-top.php";
         try {
             localStorage.removeItem(SAVE_KEY);
         } catch (e) {}
+    }
+
+    // ===== FILE PERSISTENCE (IndexedDB) =====
+    // localStorage can't hold File objects, so the actual file blobs live here.
+    // This is what lets an upload survive a refresh.
+    const IDB_NAME = 'bsu_iacuc_apply_files';
+    const IDB_STORE = 'files';
+    const IDB_KEY_PREFIX = SAVE_KEY + '_';
+    const FILE_KEYS = ['cert', 'auth', 'protocol'];
+
+    function idbOpen() {
+        return new Promise((resolve, reject) => {
+            if (!window.indexedDB) return reject(new Error('IndexedDB unavailable'));
+            const req = indexedDB.open(IDB_NAME, 1);
+            req.onupgradeneeded = () => {
+                if (!req.result.objectStoreNames.contains(IDB_STORE)) {
+                    req.result.createObjectStore(IDB_STORE);
+                }
+            };
+            req.onsuccess = () => resolve(req.result);
+            req.onerror = () => reject(req.error);
+        });
+    }
+
+    async function idbSetFile(key, file) {
+        try {
+            const db = await idbOpen();
+            await new Promise((resolve, reject) => {
+                const tx = db.transaction(IDB_STORE, 'readwrite');
+                tx.objectStore(IDB_STORE).put(file, IDB_KEY_PREFIX + key);
+                tx.oncomplete = resolve;
+                tx.onerror = () => reject(tx.error);
+            });
+        } catch (e) {}
+    }
+
+    async function idbGetFile(key) {
+        try {
+            const db = await idbOpen();
+            return await new Promise((resolve, reject) => {
+                const tx = db.transaction(IDB_STORE, 'readonly');
+                const req = tx.objectStore(IDB_STORE).get(IDB_KEY_PREFIX + key);
+                req.onsuccess = () => resolve(req.result || null);
+                req.onerror = () => reject(req.error);
+            });
+        } catch (e) {
+            return null;
+        }
+    }
+
+    async function idbDeleteFile(key) {
+        try {
+            const db = await idbOpen();
+            await new Promise((resolve, reject) => {
+                const tx = db.transaction(IDB_STORE, 'readwrite');
+                tx.objectStore(IDB_STORE).delete(IDB_KEY_PREFIX + key);
+                tx.oncomplete = resolve;
+                tx.onerror = () => reject(tx.error);
+            });
+        } catch (e) {}
+    }
+
+    async function idbClearAllFiles() {
+        await Promise.all(FILE_KEYS.map(idbDeleteFile));
+    }
+
+    // Rehydrate `files` from IndexedDB on load. Only clear a saved filename
+    // if the blob genuinely isn't recoverable (e.g. first load on a new
+    // browser/device, matching the "saved in this browser only" notice).
+    async function hydrateFiles() {
+        for (const key of FILE_KEYS) {
+            if (state[key + 'Name'] && !files[key]) {
+                const f = await idbGetFile(key);
+                if (f) {
+                    files[key] = f;
+                } else {
+                    state[key + 'Name'] = null;
+                    state[key + 'Size'] = null;
+                }
+            }
+        }
+        saveState();
+        render();
     }
 
     // ===== NAVIGATION =====
@@ -177,14 +263,22 @@ include "includes/scroll-top.php";
     // ===== HELPERS =====
     const esc = s => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
+    function formatFileSize(bytes) {
+        if (bytes === null || bytes === undefined) return '';
+        if (bytes < 1024) return bytes + ' B';
+        if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+        return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+    }
+
     function uploadBox(key, label, subtitle, required = false) {
         const name = state[key + 'Name'];
         if (name) {
+            const size = formatFileSize(state[key + 'Size']);
             return `<div class="info-bar">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
             </svg>
-            <span class="file-badge-name">${esc(name)}</span>
+            <span class="file-badge-name">${esc(name)}${size ? ` <span class="file-badge-size">(${size})</span>` : ''}</span>
             <button class="file-badge-remove" onclick="removeFile('${key}')" title="Remove">✕</button>
         </div>`;
         }
@@ -245,6 +339,13 @@ include "includes/scroll-top.php";
         <div class="process-text">${s}</div>
     </div>`).join('')}
 
+    <div class="info-bar orange">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"/>
+        </svg>
+        <span><span class="bold">All uploads will be thoroughly examined.</span> Make sure documents are legible, complete, and accurate before submitting.</span>
+    </div>
+
     <div class="btn-row btn-row--lg-top">
         <button class="btn-primary" onclick="goTo(1)">Proceed →</button>
     </div>`;
@@ -289,6 +390,8 @@ include "includes/scroll-top.php";
         I have read and agree to the Privacy Policy
     </label>
 
+    <div id="terms-error" class="error-messages is-hidden"></div>
+
     <div class="btn-row">
         <button class="btn-secondary" onclick="goTo(0)">← Previous</button>
         <button class="btn-primary" onclick="proceedFromTerms()">Next →</button>
@@ -309,6 +412,11 @@ include "includes/scroll-top.php";
             ? '<span class="status-required-badge">Required</span>'
             : ''}
     </div>
+    ${!state.certAlready ? `
+    <p class="step-intro-text">
+        This is the certificate issued upon completion of your IACUC (animal care and use) training course or seminar.
+        If you have not yet completed this training, contact the IACUC office before continuing with your application.
+    </p>` : ''}
     ${state.certAlready
         ? `<div class="notice-bar">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -316,7 +424,7 @@ include "includes/scroll-top.php";
                 </svg>
                 You have a stored IACUC training certificate.
            </div>`
-        : uploadBox('cert', 'Click to upload certificate', 'PDF, JPG, PNG · max 10 MB', certRequired)
+        : uploadBox('cert', 'Click to upload certificate', 'PDF, JPG, or PNG · max 10 MB', certRequired)
     }
 
     <div class="section-label section-label--lg-top">Are you the Principal Investigator?</div>
@@ -333,7 +441,7 @@ include "includes/scroll-top.php";
             Authorization Letter by PI
             <span class="status-required-badge">Required</span>
         </div>
-        ${uploadBox('auth', 'Click to upload authorization letter', 'PDF, JPG, PNG · max 10 MB', true)}
+        ${uploadBox('auth', 'Click to upload authorization letter', 'PDF, JPG, or PNG · max 10 MB', true)}
     </div>` : ''}
 
     <div id="doc-error" class="error-messages is-hidden"></div>
@@ -354,22 +462,23 @@ include "includes/scroll-top.php";
     <div class="page-title">Download Protocol Form</div>
 
     <p class="step-intro-text">
-        Choose to fill in either the fillable PDF or the DOCX format of the official BSU-IACUC protocol form below. Incomplete forms will be returned for revision. Once done, proceed to
-        the next step to upload your completed form.
+        Choose to fill in ONE BSU-IACUC protocol form below, in either the DOCX or fillable PDF format. Convert the DOCX file as PDF for submission in the next step. An incomplete form will be returned for revision. 
     </p>
 
     <div class="section-label">Official Protocol Form</div>
-    <a href="${formPdfUrl}" download class="btn-download">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M12 3v13.5m0 0l-4.5-4.5m4.5 4.5l4.5-4.5"/>
-        </svg>
-        Download BSU-IACUC Protocol Form (Fillable PDF)
-    </a>
+    
     <a href="${formDocxUrl}" download class="btn-download">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M12 3v13.5m0 0l-4.5-4.5m4.5 4.5l4.5-4.5"/>
         </svg>
         Download BSU-IACUC Protocol Form (.DOCX)
+    </a>
+
+    <a href="${formPdfUrl}" download class="btn-download">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M12 3v13.5m0 0l-4.5-4.5m4.5 4.5l4.5-4.5"/>
+        </svg>
+        Download BSU-IACUC Protocol Form (Fillable PDF)
     </a>
 
     <div class="btn-row">
@@ -397,6 +506,12 @@ include "includes/scroll-top.php";
     </div>
 
     <div class="section-label">Completed protocol form <span class="req">*</span></div>
+    <div class="info-bar orange">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"/>
+        </svg>
+        <span><span class="bold">Filename format required:</span> Surname_ProtocolTitle.pdf (e.g. DelaCruz_EffectsOfXOnY.pdf)</span>
+    </div>
     ${uploadBox('protocol', 'Click to upload completed form', 'PDF only · max 10 MB', true)}
 
     <div id="upload-error" class="error-messages is-hidden"></div>
@@ -421,8 +536,7 @@ include "includes/scroll-top.php";
         </div>
         <div class="page-title page-title--center">Protocol Submitted!</div>
         <p class="success-desc">
-            Your protocol has been received and will be assigned to a reviewer at BSU-CCARD.<br>
-            Expect feedback within <strong>5–7 business days</strong>. You will be notified via email.
+            Your protocol has been received and will be assigned to a reviewer at BSU-CCARD. Expect feedback within <strong>5–7 business days</strong>. You will be notified via email.
         </p>
         <div class="success-btn-row">
             <a href="${ROOT}/submissions?submitted=1" class="btn-link" onclick="clearState(); disarmGuard();">
@@ -434,19 +548,6 @@ include "includes/scroll-top.php";
 
     // ===== RENDER =====
     function render() {
-        if (!files.protocol && state.protocolName) {
-            state.protocolName = null;
-            saveState();
-        }
-        if (!files.auth && state.authName) {
-            state.authName = null;
-            saveState();
-        }
-        if (!files.cert && state.certName) {
-            state.certName = null;
-            saveState();
-        }
-
         renderStepper();
         const pages = [step0, step1, step2, step3, step4, step5];
         document.getElementById('page-content').innerHTML = pages[state.step]();
@@ -476,13 +577,16 @@ include "includes/scroll-top.php";
     function proceedFromTerms() {
         const t = document.getElementById('chk-terms');
         const p = document.getElementById('chk-privacy');
+        const errBox = document.getElementById('terms-error');
         state.agreedTerms = t && t.checked;
         state.agreedPrivacy = p && p.checked;
         saveState();
         if (!state.agreedTerms || !state.agreedPrivacy) {
-            alert('Please accept both the Terms & Conditions and the Privacy Policy to continue.');
+            errBox.textContent = 'Please accept both the Terms & Conditions and the Privacy Policy to continue.';
+            errBox.classList.remove('is-hidden');
             return;
         }
+        errBox.classList.add('is-hidden');
         goTo(2);
     }
 
@@ -492,7 +596,9 @@ include "includes/scroll-top.php";
         if (val === true) {
             files.auth = null;
             state.authName = null;
+            state.authSize = null;
             saveState();
+            idbDeleteFile('auth');
         }
         render();
     }
@@ -560,6 +666,7 @@ include "includes/scroll-top.php";
 
         files[key] = file;
         state[key + 'Name'] = file.name;
+        state[key + 'Size'] = file.size;
 
         const titleInp = document.getElementById('inp-title');
         if (titleInp) {
@@ -567,6 +674,7 @@ include "includes/scroll-top.php";
         }
 
         saveState();
+        idbSetFile(key, file);
 
         const wrapper = event.target.closest('.upload-box, .info-bar');
         if (wrapper) {
@@ -582,7 +690,9 @@ include "includes/scroll-top.php";
     function removeFile(key) {
         files[key] = null;
         state[key + 'Name'] = null;
+        state[key + 'Size'] = null;
         saveState();
+        idbDeleteFile(key);
         render();
     }
 
@@ -641,9 +751,20 @@ include "includes/scroll-top.php";
             }
 
             state.submittedId = json.protocolId ?? null;
-            clearState();
             disarmGuard();
-            goTo(5);
+            idbClearAllFiles();
+
+            // Go straight to the Done step without persisting it — this is a
+            // terminal, one-time screen, not something to restore on reload.
+            // (clearState() must run *after* this, since goTo()/saveState()
+            // would otherwise immediately re-write the just-cleared state.)
+            state.step = 5;
+            render();
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+            clearState();
 
         } catch (err) {
             errBox.textContent = 'Network error. Please check your connection and try again.';
@@ -669,7 +790,10 @@ include "includes/scroll-top.php";
             render();
         });
 
+    // Render immediately with whatever we have so the page isn't blank,
+    // then rehydrate the actual file blobs from IndexedDB and re-render.
     render();
+    hydrateFiles();
 
     armGuard();
 </script>

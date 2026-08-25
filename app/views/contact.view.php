@@ -72,7 +72,7 @@ include "includes/header.php";
                         <dd><a href="https://www.facebook.com/profile.php?id=100083273710247" target="_blank" class="underlined">BSU - Cordillera Center for Animal Research & Development</a></dd>
                     </div>
 
-                    <div class="notable-people">
+                    <div class="notable-people" id="director-contact">
                         <div>
                             <span class="person-name">Dr. Ana Mendoza</span>
                             <span class="person-role">Director, BSU-CCARD</span>

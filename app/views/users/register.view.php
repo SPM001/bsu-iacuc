@@ -26,7 +26,7 @@ include dirname(__DIR__) . '/includes/header.php';
         <form method="POST" action="<?= ROOT ?>/users/register_process">
             <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf ?? ''); ?>">
 
-            <h1>Register</h1>
+            <h1>Create Account</h1>
 
             <?php if (!empty($success)): ?>
                 <div class="success-message">
@@ -71,6 +71,12 @@ include dirname(__DIR__) . '/includes/header.php';
                 <input type="email" id="email" name="email" placeholder=" "
                     value="<?= htmlspecialchars($old['email'] ?? ''); ?>" required>
                 <label for="email">Email</label>
+            </div>
+
+            <div class="input-group">
+                <input type="tel" id="phone_number" name="phone_number" placeholder=" "
+                    value="<?= htmlspecialchars($old['phone_number'] ?? '+63'); ?>" required>
+                <label for="phone_number">Phone Number</label>
             </div>
 
             <div class="input-group">

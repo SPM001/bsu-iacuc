@@ -17,6 +17,7 @@ class Users extends Controller
       'first_name'   => ucfirst(mb_strtolower(trim(preg_replace('/[^\p{L}\p{M}\s\-\']/u', '', $post['first_name'] ?? '')))),
       'last_name'    => trim(preg_replace('/[^\p{L}\p{M}\s\-\']/u', '', $post['last_name'] ?? '')),
       'email'        => filter_var(trim($post['email'] ?? ''), FILTER_SANITIZE_EMAIL),
+      'phone_number' => trim(preg_replace('/[^0-9+]/', '', $post['phone_number'] ?? '')),
       'password'     => $post['password'] ?? '',
       'confirm_pass' => $post['confirm_password'] ?? '',
       'role'         => $post['role'] ?? '',
@@ -28,6 +29,7 @@ class Users extends Controller
     string $first_name,
     string $last_name,
     string $email,
+    string $phone_number,
     string $password,
     string $confirm_pass,
     string $role,
@@ -55,6 +57,12 @@ class Users extends Controller
 
     if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
       $errors[] = 'A valid email address is required.';
+    }
+
+    if (empty($phone_number)) {
+      $errors[] = 'Phone number is required.';
+    } elseif (!preg_match('/^\+63\d{9,10}$/', $phone_number)) {
+      $errors[] = 'Enter a valid Philippine phone number (e.g., +63xxxxxxxxxx).';
     }
 
     if ($password_required || !empty($password) || !empty($confirm_pass)) {
@@ -203,9 +211,9 @@ class Users extends Controller
     $this->verifyCsrfToken();
 
     extract($this->sanitizeInputs($_POST));
-    $old = compact('username', 'first_name', 'last_name', 'email');
+    $old = compact('username', 'first_name', 'last_name', 'email', 'phone_number');
 
-    $errors = $this->validateUserFields($username, $first_name, $last_name, $email, $password, $confirm_pass, 'researcher');
+    $errors = $this->validateUserFields($username, $first_name, $last_name, $email, $phone_number, $password, $confirm_pass, 'researcher');
 
     if (empty($errors)) {
       if ($this->model->getUserByEmail($email)) {
@@ -226,7 +234,7 @@ class Users extends Controller
     }
 
     $hash = password_hash($password, PASSWORD_DEFAULT);
-    $ok   = $this->model->insertUser($username, $first_name, $last_name, $email, $hash, 'researcher', 'active');
+    $ok   = $this->model->insertUser($username, $first_name, $last_name, $email, $hash, 'researcher', 'active', $phone_number);
 
     if ($ok) {
       $_SESSION['new_username'] = $username;
@@ -278,11 +286,12 @@ class Users extends Controller
       'errors'      => !empty($_SESSION['flash_error']) ? [$_SESSION['flash_error']] : [],
       'certificate' => $certificate,
       'old'         => [
-        'first_name' => $user['first_name'],
-        'last_name'  => $user['last_name'],
-        'username'   => $user['username'],
-        'email'      => $user['email'],
-        'role'       => $user['role'],
+        'first_name'   => $user['first_name'],
+        'last_name'    => $user['last_name'],
+        'username'     => $user['username'],
+        'email'        => $user['email'],
+        'phone_number' => $user['phone_number'] ?? '+63',
+        'role'         => $user['role'],
       ],
     ]);
     unset($_SESSION['flash_error']);
@@ -310,9 +319,9 @@ class Users extends Controller
       $role = in_array($role, ['admin', 'reviewer']) ? $role : $current_user['role'];
     }
 
-    $old = compact('username', 'first_name', 'last_name', 'email', 'role');
+    $old = compact('username', 'first_name', 'last_name', 'email', 'phone_number', 'role');
 
-    $errors = $this->validateUserFields($username, $first_name, $last_name, $email, $password, $confirm_pass, $role, false);
+    $errors = $this->validateUserFields($username, $first_name, $last_name, $email, $phone_number, $password, $confirm_pass, $role, false);
 
     if (empty($errors)) {
       $existing_email    = $this->model->getUserByEmail($email);
@@ -340,7 +349,7 @@ class Users extends Controller
       return;
     }
 
-    $input = compact('username', 'first_name', 'last_name', 'email', 'role');
+    $input = compact('username', 'first_name', 'last_name', 'email', 'phone_number', 'role');
     if (!empty($password)) {
       $input['password'] = password_hash($password, PASSWORD_DEFAULT);
     }

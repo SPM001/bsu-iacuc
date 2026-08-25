@@ -24,7 +24,7 @@ include dirname(__DIR__) . '/includes/header.php';
         <form method="POST" action="<?= ROOT ?>/users/login_process">
             <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf ?? $_SESSION['csrf_token'] ?? ''); ?>">
 
-            <h1>Log In</h1>
+            <h1>Login</h1>
 
             <?php if (!empty($_SESSION['flash_success'])): ?>
                 <div class="success-message">

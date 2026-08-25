@@ -27,6 +27,26 @@ $is_staff = in_array($old['role'] ?? '', ['admin', 'reviewer']);
 
             <h1>My Account</h1>
 
+            <?php if (!empty($_SESSION['flash_success'])): ?>
+                <div class="success-message">
+                    <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <use href="#info-icon">
+                    </svg>
+                    <?= htmlspecialchars($_SESSION['flash_success']); ?>
+                </div>
+                <?php unset($_SESSION['flash_success']); ?>
+            <?php endif; ?>
+
+            <?php if (!empty($errors)): ?>
+                <div class="error-messages">
+                    <ul>
+                        <?php foreach ($errors as $err): ?>
+                            <li><?= htmlspecialchars($err); ?></li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+            <?php endif; ?>
+
             <?php if (!empty($certificate)): ?>
                 <section class="certificate-section">
                     <div class="certificate-section-header">
@@ -46,26 +66,6 @@ $is_staff = in_array($old['role'] ?? '', ['admin', 'reviewer']);
                         </button>
                     </div>
                 </section>
-            <?php endif; ?>
-
-            <?php if (!empty($_SESSION['flash_success'])): ?>
-                <div class="success-message">
-                    <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                        <use href="#info-icon">
-                    </svg>
-                    <?= htmlspecialchars($_SESSION['flash_success']); ?>
-                </div>
-                <?php unset($_SESSION['flash_success']); ?>
-            <?php endif; ?>
-
-            <?php if (!empty($errors)): ?>
-                <div class="error-messages">
-                    <ul>
-                        <?php foreach ($errors as $err): ?>
-                            <li><?= htmlspecialchars($err); ?></li>
-                        <?php endforeach; ?>
-                    </ul>
-                </div>
             <?php endif; ?>
 
             <div class="label-group">
@@ -91,6 +91,12 @@ $is_staff = in_array($old['role'] ?? '', ['admin', 'reviewer']);
                 <input type="email" id="email" name="email" placeholder=" "
                     value="<?= htmlspecialchars($old['email'] ?? ''); ?>" required>
                 <label for="email">Email <span class="required-asterisk">*</span></label>
+            </div>
+
+            <div class="input-group">
+                <input type="tel" id="phone_number" name="phone_number" placeholder=" "
+                    value="<?= htmlspecialchars($old['phone_number'] ?? '+63'); ?>" required>
+                <label for="phone_number">Phone Number <span class="required-asterisk">*</span></label>
             </div>
 
             <span class="helper">Leave the password fields blank to keep your current password.</span>

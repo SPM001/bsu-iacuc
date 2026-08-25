@@ -151,10 +151,8 @@ function statusIconSvg(string $iconId, int $size = 14): string
                 <button type="button" class="legend-info-btn" id="legendInfoBtn"
                     aria-expanded="false" aria-controls="legendInfoPanel"
                     aria-label="What do the statuses mean? What should I do?">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-                        <circle cx="12" cy="12" r="9" />
-                        <line x1="12" y1="11" x2="12" y2="16" />
-                        <line x1="12" y1="7.5" x2="12" y2="7.5" />
+                    <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <use href="#question-info-icon" />
                     </svg>
                 </button>
 
@@ -189,7 +187,7 @@ function statusIconSvg(string $iconId, int $size = 14): string
                     </svg>
                     No protocols yet
                 </h3>
-                <p>Submit your first IACUC application to get started.</p>
+                <p>Submit your first IACUC protocol to get started.</p>
             </div>
 
         <?php else: ?>
@@ -220,8 +218,8 @@ function statusIconSvg(string $iconId, int $size = 14): string
                                 <p class="research-title">
                                     <?= htmlspecialchars($protocol['research_title'], ENT_QUOTES, 'UTF-8') ?>
                                 </p>
-                                <p class="protocol-meta-line">
-                                    <?= $versionNum ?> &middot; Submitted <?= htmlspecialchars($date, ENT_QUOTES, 'UTF-8') ?>
+                                <p class="protocol-meta-line" title="Version no. (number of rounds submitted) and the submission date">
+                                    <?= $versionNum ?> &middot; <?= htmlspecialchars($date, ENT_QUOTES, 'UTF-8') ?>
                                 </p>
 
                                 <?php if ($needsRevision && (!empty($returnIssues) || !empty($protocol['rr_comment']))): ?>
@@ -293,7 +291,7 @@ function statusIconSvg(string $iconId, int $size = 14): string
                     <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                         <use href="#file-x-icon" />
                     </svg>
-                    No protocols found with this status.
+                    No protocols found with this status
                 </p>
             </div>
         <?php endif; ?>
@@ -401,7 +399,11 @@ function statusIconSvg(string $iconId, int $size = 14): string
             return;
         }
 
-        guide.innerHTML = `<p class="status-guide-text">${meta.desc}</p>`;
+        guide.innerHTML = `<p class="status-guide-text">                    
+                                <svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                    <use href="#info-icon" />
+                                </svg> ${meta.desc}
+                            </p>`;
         guide.style.background = hexToRgba(meta.color, 0.12);
         guide.classList.add('open');
     }

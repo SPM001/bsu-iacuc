@@ -97,10 +97,8 @@ body {
 
 /* ===== Typography ===== */
 .page-tag {
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    font-size: 13px;
+    font-weight: 500;
     color: var(--muted-text);
     margin-bottom: 0.4rem;
 }
@@ -117,12 +115,10 @@ body {
 }
 
 .section-label {
-    font-size: 11px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.07em;
-    color: var(--muted-text);
-    margin-bottom: 0.5rem;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--primary-text);
+    margin-bottom: 0.6rem;
     margin-top: 1.25rem;
 }
 
@@ -210,7 +206,6 @@ body {
 
     border-radius: 8px;
     font-size: 0.8rem;
-    color: var(--brand-text);
     margin-bottom: 1rem;
     line-height: 1.5;
 }
@@ -232,7 +227,7 @@ body {
     border-radius: 8px;
     font-size: 13px;
     color: var(--brand-text);
-    margin-top: 1rem;
+    margin: .5em 0 .9rem;
 }
 
 .info-bar svg {
@@ -391,13 +386,13 @@ button {
 }
 
 .upload-label {
-    font-size: 14px;
+    font-size: .9em;
     color: var(--secondary-text);
     font-weight: 500;
 }
 
 .upload-sub {
-    font-size: 12px;
+    font-size: .75em;
     color: var(--muted-text);
     margin-top: 4px;
 }
@@ -413,6 +408,12 @@ button {
     min-width: 0;
     overflow-wrap: break-word;
     word-break: break-word;
+}
+
+.file-badge-size {
+    font-size: .85em;
+    color: var(--muted-text);
+    font-weight: 400;
 }
 
 .file-badge-remove {
@@ -434,12 +435,10 @@ button {
 
 .field label {
     display: block;
-    font-size: .75rem;
+    font-size: .82rem;
     font-weight: 600;
-    color: var(--muted-text);
+    color: var(--secondary-text);
     margin-bottom: 5px;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
 }
 
 .field input,
@@ -493,7 +492,7 @@ button {
 }
 
 .success-desc {
-    font-size: 14px;
+    font-size: .9em;
     color: var(--muted-text);
     line-height: 1.6;
     margin-bottom: 1.5rem;
