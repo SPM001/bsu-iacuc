@@ -7,8 +7,8 @@
 
   <title><?= htmlspecialchars($title ?? 'Error', ENT_QUOTES, 'UTF-8') ?></title>
 
-  <link rel="stylesheet" href="<?= CSSPATH ?>/body.css">
-  <link rel="stylesheet" href="<?= CSSPATH ?>/404.css">
+  <link rel="stylesheet" href="<?= asset_css('body.css') ?>">
+  <link rel="stylesheet" href="<?= asset_css('404.css') ?>">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

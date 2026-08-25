@@ -1,16 +1,5 @@
 <?php
 
-/**
- * Protocol viewer
- *
- * Variables provided by Apply::view():
- *   $protocol  array  — protocol row (protocol_id, title, status, user_id, …)
- *   $version   array  — latest protocol_versions row
- *   $csrf      string — CSRF token
- *   $isStaff   bool   — admin or reviewer
- *   $isAdmin   bool   — admin only
- */
-
 /** @var array  $protocol */
 /** @var array  $version  */
 /** @var string $csrf     */
@@ -38,8 +27,6 @@ $protocolId = (int) $protocol['protocol_id'];
 $versionId  = (int) $version['id'];
 $versionNum = (int) $version['version_number'];
 
-// $backUrl is injected by the controller (includes ?status= for filter restore).
-// Fall back only if somehow not provided.
 $backUrl = $backUrl ?? ($isStaff ? ROOT . '/admin/home' : ROOT . '/submissions');
 
 $submitterName     = trim(($protocol['submitter_first_name'] ?? '') . ' ' . ($protocol['submitter_last_name'] ?? ''));
@@ -53,7 +40,7 @@ include 'includes/header.php';
 
 <!-- PDF.js from CDN -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-<link rel="stylesheet" href="<?= CSSPATH ?>/viewer.css">
+<link rel="stylesheet" href="<?= asset_css('viewer.css') ?>">
 
 <div class="viewer-body">
 
@@ -110,7 +97,7 @@ include 'includes/header.php';
         </div>
     <?php endif; ?>
 
-    <!-- ── Top bar ──────────────────────────────────────────── -->
+    <!-- ===== Top bar ===== -->
     <div class="viewer-topbar">
         <div class="viewer-topbar-left">
             <a href="<?= $backUrl ?>"
@@ -167,7 +154,7 @@ include 'includes/header.php';
     </div>
 
     <?php if ($isReviewer && $statusKey === 'under review'): ?>
-        <!-- ── Annotation hint (reviewer only, while under review) ──────── -->
+        <!-- ===== Annotation hint (reviewer only, while under review) ===== -->
         <div class="annot-toolbar">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536M9 13l6.586-6.586a2 2 0 012.828 2.828L11.828 15.828a2 2 0 01-1.414.586H9v-1.414A2 2 0 019 13z" />
@@ -176,7 +163,7 @@ include 'includes/header.php';
         </div>
     <?php endif; ?>
 
-    <!-- ── Layout: PDF + sidebar ────────────────────────────── -->
+    <!-- ===== Layout: PDF + sidebar ===== -->
     <div class="viewer-layout">
 
         <div class="pdf-column" id="pdfColumn"></div>
@@ -202,7 +189,7 @@ include 'includes/header.php';
         </div>
     </div>
 
-    <!-- ── Comment dialog (reviewer only, while under review) ──── -->
+    <!-- ===== Comment dialog (reviewer only, while under review) ===== -->
     <?php if ($isReviewer && $statusKey === 'under review'): ?>
         <div class="modal-backdrop" id="commentDialog">
             <div class="modal-card">
@@ -219,7 +206,7 @@ include 'includes/header.php';
 </div><!-- .viewer-body -->
 
 <?php if ($isReviewer && $statusKey === 'under review'): ?>
-    <!-- ── Return for Revision modal ─────────────────────────────────────────── -->
+    <!-- ===== Return for Revision modal ===== -->
     <div class="modal-backdrop" id="returnRevisionBackdrop">
         <div class="modal-card return-modal-card">
             <div class="return-modal-header">
@@ -281,8 +268,7 @@ include 'includes/header.php';
     </div>
 <?php endif; ?>
 
-<!-- File popup lives outside .viewer-body so it isn't scoped out of
-     the .viewer-body .modal-backdrop selector in viewer.css -->
+<!-- ===== File popup modal ===== -->
 <div class="modal-backdrop" id="filePopupBackdrop" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:900;align-items:center;justify-content:center;">
     <div class="modal-card file-popup-card">
         <div class="file-popup-header">
@@ -341,15 +327,14 @@ include 'includes/header.php';
     const ANNOT_API = <?= json_encode($annotApi)  ?>;
     const STATUS_API = <?= json_encode($statusApi) ?>;
 
-    // ── State ───────────────────────────────────────────────────────────────────
+    // ===== State =====
     let pdfDoc = null;
     let annotations = [];
     let pendingBox = null;
     let dragState = null;
 
-    // ── Load PDF ─────────────────────────────────────────────────────────────────
+    // ===== Load PDF =====
     async function loadPdf() {
-        // DOCX files cannot be rendered by PDF.js — show a download prompt instead.
         if (FILE_EXT === 'docx') {
             const col = document.getElementById('pdfColumn');
             const name = <?= json_encode(htmlspecialchars($version['original_name'] ?? 'protocol.docx', ENT_QUOTES, 'UTF-8')) ?>;
@@ -415,16 +400,11 @@ include 'includes/header.php';
         } catch (err) {
             document.getElementById('pdfColumn').innerHTML =
                 '<p class="error-msg">Could not load document: ' + escHtml(err.message) + '</p>';
-            // Still attempt to load any cached annotations even if the PDF failed.
         }
-        // Load annotations separately so a network failure there does not
-        // report as a document error.
         await loadAnnotations();
     }
 
-    // ── Draw listeners ───────────────────────────────────────────────────────────
-    // canvas is passed so we always read its *current* rendered size,
-    // which may differ from the original viewport dims after CSS scaling.
+    // ===== Draw listeners =====
     function attachDrawListeners(overlay, pageNum, canvas) {
         overlay.addEventListener('mousedown', e => {
             e.preventDefault();
@@ -467,7 +447,6 @@ include 'includes/header.php';
                 return;
             }
 
-            // Normalise against the canvas's *current* rendered size
             const cRect = dragState.canvas.getBoundingClientRect();
             pendingBox = {
                 pageNum: dragState.pageNum,
@@ -481,7 +460,7 @@ include 'includes/header.php';
         });
     }
 
-    // ── Comment dialog ───────────────────────────────────────────────────────────
+    // ===== Comment dialog =====
     function openCommentDialog() {
         document.getElementById('commentText').value = '';
         document.getElementById('commentDialog').classList.add('open');
@@ -529,8 +508,6 @@ include 'includes/header.php';
             pendingBox = null;
             renderAnnotations();
         } else if (data.queued) {
-            // Queued while offline — show a temporary local preview so the
-            // reviewer can see what they typed; it will be saved on reconnect.
             annotations.push({
                 id: 'queued-' + Date.now(),
                 page_number: pendingBox.pageNum,
@@ -549,15 +526,13 @@ include 'includes/header.php';
         }
     }
 
-    // ── Load + render annotations ─────────────────────────────────────────────────
+    // ===== Load + render annotations =====
     async function loadAnnotations() {
         try {
             const res = await fetch(ANNOT_API + '?version_id=' + VERSION_ID);
             const data = await res.json();
             annotations = Array.isArray(data) ? data : [];
         } catch (err) {
-            // Offline and no cached copy — start with an empty list.
-            // Any queued annotations added this session are already in memory.
             annotations = [];
         }
         renderAnnotations();
@@ -570,8 +545,6 @@ include 'includes/header.php';
             const overlay = document.querySelector('.annot-overlay[data-page="' + ann.page_number + '"]');
             if (!overlay) return;
 
-            // Use the canvas's current rendered size so boxes stay in the right
-            // place regardless of CSS scaling or viewport width.
             const canvas = overlay.closest('.page-wrapper')?.querySelector('canvas');
             const pw = canvas ? canvas.getBoundingClientRect().width : parseFloat(overlay.dataset.origW);
             const ph = canvas ? canvas.getBoundingClientRect().height : parseFloat(overlay.dataset.origH);
@@ -651,7 +624,7 @@ include 'includes/header.php';
         highlightSidebarItem(annotId);
     }
 
-    // ── Delete annotation ─────────────────────────────────────────────────────────
+    // ===== Delete annotation =====
     async function deleteAnnotation(annotId) {
         const res = await fetch(ANNOT_API, {
             method: 'POST',
@@ -671,7 +644,7 @@ include 'includes/header.php';
         }
     }
 
-    // ── Status update ─────────────────────────────────────────────────────────────
+    // ===== Status update =====
     async function updateStatus(newStatus) {
         try {
             const res = await fetch(STATUS_API, {
@@ -688,19 +661,15 @@ include 'includes/header.php';
             const data = await res.json();
             if (data.ok) {
                 window.location.href = <?= json_encode($backUrl) ?>;
-            } else if (data.queued) {
-                // Queued while offline — the action-queue banner tells the reviewer.
-            } else {
+            } else if (data.queued) {} else {
                 alert('Error: ' + (data.error ?? 'unknown error'));
             }
         } catch (err) {
-            // Should not reach here — action-queue.js intercepts failed POSTs.
-            // If it does, the action is lost, so surface a clear message.
             alert('Could not reach the server and the action could not be queued. Please check your connection.');
         }
     }
 
-    // ── Mobile sidebar toggle ─────────────────────────────────────────────────────
+    // ===== Mobile sidebar toggle =====
     function toggleSidebar() {
         const sidebar = document.getElementById('annotSidebar');
         const btn = document.getElementById('sidebarToggle');
@@ -709,7 +678,7 @@ include 'includes/header.php';
         btn.setAttribute('aria-expanded', String(!isCollapsed));
     }
 
-    // ── Util ──────────────────────────────────────────────────────────────────────
+    // ===== Util =====
     function escHtml(str) {
         return String(str)
             .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
@@ -718,7 +687,7 @@ include 'includes/header.php';
 
     loadPdf();
 
-    // ── File popup (cert / auth letter) ──────────────────────────────────────────
+    // ===== File popup (cert / auth letter) =====
     const filePopupBackdrop = document.getElementById('filePopupBackdrop');
 
     function openFilePopup(fileUrl, title) {
@@ -740,8 +709,6 @@ include 'includes/header.php';
         if (e.key === 'Escape') closeFilePopup();
     });
 
-    // Re-render annotation boxes whenever the viewport is resized
-    // so they stay aligned with the (CSS-scaled) canvas.
     let _resizeTimer;
     window.addEventListener('resize', () => {
         clearTimeout(_resizeTimer);
@@ -749,7 +716,7 @@ include 'includes/header.php';
     });
 
     <?php if ($isReviewer && $statusKey === 'under review'): ?>
-        // ── Return for Revision modal ─────────────────────────────────────────────
+        // ===== Return for Revision modal =====
         const RETURN_REVISION_API = <?= json_encode(ROOT . '/apply/return_revision') ?>;
         const returnBackdrop = document.getElementById('returnRevisionBackdrop');
         const returnComment = document.getElementById('returnComment');

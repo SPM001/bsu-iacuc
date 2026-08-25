@@ -33,7 +33,6 @@
     okBtn.addEventListener("click", () => settle(true));
     cancelBtn.addEventListener("click", () => settle(false));
 
-    // Click outside the dialog box cancels, same as pressing Esc.
     modalEl.addEventListener("click", (e) => {
       if (e.target === modalEl) settle(false);
     });
@@ -79,12 +78,6 @@
     resolve(result);
   }
 
-  /**
-   * Shows the confirm modal and resolves true/false based on the user's choice.
-   * @param {string} message
-   * @param {{okText?: string, cancelText?: string}} [options]
-   * @returns {Promise<boolean>}
-   */
   window.confirmAction = function (message, options) {
     buildModal();
 
@@ -104,15 +97,6 @@
     });
   };
 
-  /**
-   * Auto-binds any element with [data-confirm-message] so markup-only usage
-   * works without writing a handler per page, e.g.:
-   *
-   *   <a href="..." data-confirm-message="Confirm to log out?">Log out</a>
-   *   <form data-confirm-message="This cannot be undone."> ... </form>
-   *
-   * Add data-confirm-danger="true" to use the red/destructive Yes button style.
-   */
   function bindAutoConfirm() {
     document.addEventListener("click", async (e) => {
       const link = e.target.closest("a[data-confirm-message]");
@@ -148,7 +132,7 @@
     document.addEventListener("submit", async (e) => {
       const form = e.target;
       if (!form.matches || !form.matches("form[data-confirm-message]")) return;
-      if (form.dataset.confirmed === "true") return; // already confirmed, let it through
+      if (form.dataset.confirmed === "true") return;
 
       e.preventDefault();
       const ok = await confirmAction(form.dataset.confirmMessage, {

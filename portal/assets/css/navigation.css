@@ -98,24 +98,11 @@ aside a.active-link svg {
     --icon-detail-color: var(--sidebar-background);
 }
 
-/* RESPONSIVE */
 @media (max-width: 768px) {
     aside {
         display: none;
     }
 }
-
-/* aside div::before {
-    content: '';
-    position: absolute;
-    left: -8px;
-    top: 50%;
-    transform: translateY(-50%);
-
-    border-top: 8px solid transparent;
-    border-bottom: 8px solid transparent;
-    border-right: 10px solid var(--aside-scheme);
-} */
 
 aside a.active-link svg {
     fill: currentColor;
@@ -123,11 +110,9 @@ aside a.active-link svg {
 
 aside a.active-link svg path {
     fill: currentColor;
-    /* All paths get filled */
 }
 
 aside a.active-link svg path.icon-detail {
     fill: none !important;
-    /* Override for the detail path */
     stroke: var(--sidebar-background);
 }

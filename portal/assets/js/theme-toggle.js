@@ -1,7 +1,4 @@
-// =========================== DARK MODE TOGGLE ===========================
-// The initial theme is already set by the inline script in <head> (before
-// paint, to avoid a flash of the wrong theme). This file just wires up the
-// button so the person can switch themes, and remembers their choice.
+// ===== DARK MODE TOGGLE =====
 
 const themeToggleButton = document.querySelector("#theme-toggle");
 
@@ -36,10 +33,9 @@ if (themeToggleButton) {
   });
 }
 
-// keep in sync with the OS-level setting if the person never picked manually
 window
   .matchMedia("(prefers-color-scheme: dark)")
   .addEventListener("change", (e) => {
-    if (localStorage.getItem("theme")) return; // they made an explicit choice, don't override it
+    if (localStorage.getItem("theme")) return;
     setTheme(e.matches ? "dark" : "light");
   });

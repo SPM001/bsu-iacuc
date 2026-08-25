@@ -1,4 +1,4 @@
-// =========================== DROPDOWNS AND SIDEBAR NAVIGATION ===========================
+// ===== DROPDOWNS AND SIDEBAR NAVIGATION =====
 
 const accountButton = document.querySelector(".my-account-dropdown");
 const dropdown = document.querySelector("#account-dropdown");

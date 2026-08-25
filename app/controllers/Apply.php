@@ -29,9 +29,7 @@ class Apply extends Controller
         require_once dirname(__DIR__) . '/models/UserModel.php';
     }
 
-    // ──────────────────────────────────────────────────────────
-    // HELPERS
-    // ──────────────────────────────────────────────────────────
+    // ===== HELPERS =====
 
     private function verifyCsrfHeader(): void
     {
@@ -128,9 +126,7 @@ class Apply extends Controller
         exit;
     }
 
-    // ──────────────────────────────────────────────────────────
-    // UPLOAD FORM  (GET /apply)
-    // ──────────────────────────────────────────────────────────
+    // ===== UPLOAD FORM  (GET /apply) =====
 
     public function index(): void
     {
@@ -138,9 +134,7 @@ class Apply extends Controller
         $this->view('apply');
     }
 
-    // ──────────────────────────────────────────────────────────
-    // FIRST UPLOAD  (POST /apply/submit)
-    // ──────────────────────────────────────────────────────────
+    // ===== FIRST UPLOAD  (POST /apply/submit) =====
 
     public function submit(): void
     {
@@ -235,9 +229,7 @@ class Apply extends Controller
         exit;
     }
 
-    // ──────────────────────────────────────────────────────────
-    // HAS-CERT CHECK  (GET /apply/hascert)
-    // ──────────────────────────────────────────────────────────
+    // ===== HAS-CERT CHECK  (GET /apply/hascert) =====
 
     public function hascert(): void
     {
@@ -251,9 +243,7 @@ class Apply extends Controller
         exit;
     }
 
-    // ──────────────────────────────────────────────────────────
-    // VERSION HISTORY  (GET /apply/versions/{protocolId})
-    // ──────────────────────────────────────────────────────────
+    // ===== VERSION HISTORY  (GET /apply/versions/{protocolId}) =====
 
     public function versions(int $protocolId = 0): void
     {
@@ -284,9 +274,7 @@ class Apply extends Controller
         exit;
     }
 
-    // ──────────────────────────────────────────────────────────
-    // VIEW RESEARCHER'S STORED CERTIFICATE  (GET /apply/cert/{userId})
-    // ──────────────────────────────────────────────────────────
+    // ===== VIEW RESEARCHER'S STORED CERTIFICATE  (GET /apply/cert/{userId}) =====
 
     public function cert(int $userId = 0): void
     {
@@ -327,9 +315,7 @@ class Apply extends Controller
         $this->streamFile($filePath, $cert['cert_original_name'] ?: basename($filePath));
     }
 
-    // ──────────────────────────────────────────────────────────
-    // RE-UPLOAD  (POST /apply/reupload)
-    // ──────────────────────────────────────────────────────────
+    // ===== RE-UPLOAD  (POST /apply/reupload) =====
 
     public function reupload(): void
     {
@@ -379,9 +365,7 @@ class Apply extends Controller
         exit;
     }
 
-    // ──────────────────────────────────────────────────────────
-    // VIEWER  (GET /apply/viewer/{protocolId})
-    // ──────────────────────────────────────────────────────────
+    // ===== VIEWER  (GET /apply/viewer/{protocolId}) =====
 
     public function viewer(int $protocolId = 0): void
     {
@@ -432,9 +416,7 @@ class Apply extends Controller
         ]);
     }
 
-    // ──────────────────────────────────────────────────────────
-    // FILE SERVER  (GET /apply/file/{versionId})
-    // ──────────────────────────────────────────────────────────
+    // ===== FILE SERVER  (GET /apply/file/{versionId}) =====
 
     public function file(int $versionId = 0): void
     {
@@ -474,9 +456,7 @@ class Apply extends Controller
         $this->streamFile($filePath, $version['original_name'] ?: basename($filePath));
     }
 
-    // ──────────────────────────────────────────────────────────
-    // ANNOTATION API  (GET|POST /apply/annotate)
-    // ──────────────────────────────────────────────────────────
+    // ===== ANNOTATION API  (GET|POST /apply/annotate) =====
 
     public function annotate(): void
     {
@@ -573,9 +553,7 @@ class Apply extends Controller
         exit;
     }
 
-    // ──────────────────────────────────────────────────────────
-    // STATUS UPDATE  (POST /apply/status)
-    // ──────────────────────────────────────────────────────────
+    // ===== STATUS UPDATE  (POST /apply/status) =====
 
     public function status(): void
     {
@@ -638,9 +616,7 @@ class Apply extends Controller
         exit;
     }
 
-    // ──────────────────────────────────────────────────────────
-    // CLEARANCE UPLOAD  (POST /apply/clearance_upload)
-    // ──────────────────────────────────────────────────────────
+    // ===== CLEARANCE UPLOAD  (POST /apply/clearance_upload) =====
 
     public function clearance_upload(): void
     {
@@ -689,9 +665,7 @@ class Apply extends Controller
         exit;
     }
 
-    // ──────────────────────────────────────────────────────────
-    // CLEARANCE FILE  (GET /apply/clearance/{protocolId})
-    // ──────────────────────────────────────────────────────────
+    // ===== CLEARANCE FILE  (GET /apply/clearance/{protocolId}) =====
 
     public function clearance(int $protocolId = 0): void
     {
@@ -728,9 +702,7 @@ class Apply extends Controller
         $this->redirect('apply/file/' . (int) $version['id']);
     }
 
-    // ──────────────────────────────────────────────────────────
-    // RETURN FOR REVISION WITH REASONS  (POST /apply/return_revision)
-    // ──────────────────────────────────────────────────────────
+    // ===== RETURN FOR REVISION WITH REASONS  (POST /apply/return_revision) =====
 
     public function return_revision(): void
     {
@@ -785,9 +757,7 @@ class Apply extends Controller
         exit;
     }
 
-    // ──────────────────────────────────────────────────────────
-    // RETURN REASON  (GET /apply/returnreason/{protocolId})
-    // ──────────────────────────────────────────────────────────
+    // ===== RETURN REASON  (GET /apply/returnreason/{protocolId}) =====
 
     public function returnreason(int $protocolId = 0): void
     {
@@ -812,9 +782,7 @@ class Apply extends Controller
         exit;
     }
 
-    // ──────────────────────────────────────────────────────────
-    // REUPLOAD CERTIFICATE  (POST /apply/reuploadcert)
-    // ──────────────────────────────────────────────────────────
+    // ===== REUPLOAD CERTIFICATE  (POST /apply/reuploadcert) =====
 
     public function reuploadcert(): void
     {
@@ -860,9 +828,7 @@ class Apply extends Controller
         exit;
     }
 
-    // ──────────────────────────────────────────────────────────
-    // REUPLOAD AUTH LETTER  (POST /apply/reuploadauth)
-    // ──────────────────────────────────────────────────────────
+    // ===== REUPLOAD AUTH LETTER  (POST /apply/reuploadauth) =====
 
     public function reuploadauth(): void
     {
@@ -904,9 +870,7 @@ class Apply extends Controller
         exit;
     }
 
-    // ──────────────────────────────────────────────────────────
-    // ALL VERSIONS  (GET /apply/allversions/{protocolId})
-    // ──────────────────────────────────────────────────────────
+    // ===== ALL VERSIONS  (GET /apply/allversions/{protocolId}) =====
 
     public function allversions(int $protocolId = 0): void
     {

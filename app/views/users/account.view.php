@@ -8,8 +8,8 @@ $current_role = $old['role'] ?? '';
 $is_staff = in_array($old['role'] ?? '', ['admin', 'reviewer']);
 ?>
 
-<link rel="stylesheet" href="<?= CSSPATH ?>/account.css">
-<link rel="stylesheet" href="<?= CSSPATH ?>/form.css">
+<link rel="stylesheet" href="<?= asset_css('account.css') ?>">
+<link rel="stylesheet" href="<?= asset_css('form.css') ?>">
 
 <div class="body">
     <main class="main-content wide" id="main-content" tabindex="-1">
@@ -30,29 +30,19 @@ $is_staff = in_array($old['role'] ?? '', ['admin', 'reviewer']);
             <?php if (!empty($certificate)): ?>
                 <section class="certificate-section">
                     <div class="certificate-section-header">
-                        <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                            <use href="#upload-icon" />
-                        </svg>
                         <div>
                             <h2>Your IACUC Training Certificate</h2>
-                            <p class="helper">Submitted once and reused automatically for every protocol you submit.</p>
-                        </div>
-                    </div>
-
-                    <div class="certificate-section-body">
-                        <div class="certificate-info">
                             <?php if (!empty($certificate['cert_uploaded_at'])): ?>
-                                <span class="helper">Uploaded <?= htmlspecialchars(date('M j, Y', strtotime($certificate['cert_uploaded_at'])), ENT_QUOTES, 'UTF-8') ?></span>
+                                <p class="helper">Uploaded <?= htmlspecialchars(date('M j, Y', strtotime($certificate['cert_uploaded_at'])), ENT_QUOTES, 'UTF-8') ?></p>
                             <?php endif; ?>
                         </div>
-
                         <button type="button" class="button"
                             data-cert-url="<?= htmlspecialchars(ROOT . '/apply/cert/' . (int) $_SESSION['user']['user_id'], ENT_QUOTES, 'UTF-8') ?>"
                             onclick="openFilePopup(this.dataset.certUrl, 'IACUC Training Certificate')">
-                            <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                                <use href="#review-icon" />
+                            <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                <use href="#open-mail-icon" />
                             </svg>
-                            View Certificate
+                            View
                         </button>
                     </div>
                 </section>
@@ -126,7 +116,7 @@ $is_staff = in_array($old['role'] ?? '', ['admin', 'reviewer']);
                 </ul>
             </div>
 
-            <button type="submit" class="btn-save">Save Changes</button>
+            <button type="submit" class="btn-save btn-green">Save Changes</button>
         </form>
 
         <fieldset class="form-actions">

@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
 
-    <!-- =============== HEADER =============== -->
+    <!-- ===== HEADER ===== -->
     <!-- my profile dropdown -->
     <symbol id="account-dropdown-icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-user-round-icon lucide-circle-user-round">
         <path d="M17.925 20.056a6 6 0 0 0-11.851.001" />
@@ -41,7 +41,7 @@
     </symbol>
 
 
-    <!-- =============== SIDEBAR NAVIGATION =============== -->
+    <!-- ===== SIDEBAR NAVIGATION ===== -->
     <!-- home / dashboard page -->
     <symbol id="home-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-house-icon lucide-house">
         <path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
@@ -75,7 +75,7 @@
     </symbol>
 
 
-    <!-- =============== DASHBOARD / MY PROTOCOLS =============== -->
+    <!-- ===== DASHBOARD / MY PROTOCOLS ===== -->
     <!-- filter (mobile) -->
     <symbol id="filter-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-list-filter-icon lucide-list-filter">
         <path d="M2 5h20" />
@@ -141,13 +141,40 @@
         <path d="m6 6 12 12" />
     </symbol>
 
-    <!-- check mark -->
-    <symbol id="check-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+    <!-- check mark in circle (success) -->
+    <symbol id="check-circle-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
         <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
     </symbol>
 
 
-    <!-- =============== RECORDS PAGE =============== -->
+    <!-- ===== MY PROTOCOLS: STATUS ICONS ===== -->
+    <!-- under review -->
+    <symbol id="clock-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="9" />
+        <path d="M12 7v5l3 3" />
+    </symbol>
+
+    <!-- needs revision -->
+    <symbol id="alert-triangle-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="12,3 21,19 3,19" />
+        <line x1="12" y1="9" x2="12" y2="13" />
+        <line x1="12" y1="16.5" x2="12" y2="16.5" />
+    </symbol>
+
+    <!-- reviewed -->
+    <symbol id="checkbox-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="3" width="18" height="18" rx="3" />
+        <path d="M7 12l3 3 7-7" />
+    </symbol>
+
+    <!-- endorsed -->
+    <symbol id="shield-check-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 3l7 3v6c0 5-3.5 8-7 9-3.5-1-7-4-7-9V6l7-3z" />
+        <path d="M9 12l2 2 4-4" />
+    </symbol>
+
+
+    <!-- ===== RECORDS PAGE ===== -->
     <!-- update record -->
     <symbol id="edit-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
@@ -170,14 +197,38 @@
     </symbol>
 
 
-    <!-- =============== OTHER =============== -->
+    <!-- ===== CONTACT PAGE ===== -->
+    <!-- phone number -->
+    <symbol id="phone-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-phone-icon lucide-phone">
+        <path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384" />
+    </symbol>
+
+    <!-- address / location -->
+    <symbol id="location-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map-pin-icon lucide-map-pin">
+        <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" />
+        <circle cx="12" cy="10" r="3" />
+    </symbol>
+
+    <!-- facebook page link -->
+    <symbol id="facebook-icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M22 12a10 10 0 1 0-11.5 9.87v-6.98H7.9V12h2.6V9.8c0-2.57 1.49-3.99 3.83-3.99 1.11 0 2.27.2 2.27.2v2.5h-1.28c-1.26 0-1.65.78-1.65 1.58V12h2.81l-.45 2.89h-2.36v6.98A10 10 0 0 0 22 12" />
+    </symbol>
+
+    <!-- contact/email -->
+    <symbol id="email-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mail-icon lucide-mail">
+        <path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7" />
+        <rect x="2" y="4" width="20" height="16" rx="2" />
+    </symbol>
+
+
+    <!-- ===== OTHER ===== -->
     <!-- chevron down -->
     <symbol id="chev-down-icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down-icon lucide-chevron-down">
         <path d="m6 9 6 6 6-6" />
     </symbol>
 
     <!-- arrow right -->
-    <symbol id="arrow-right-icon" width="24" height=24" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+    <symbol id="arrow-right-icon" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
         <path stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
             fill="none" d="M13 5l7 7-7 7M5 12h15" />
     </symbol>
@@ -208,10 +259,17 @@
         <circle cx="12" cy="12" r="3" />
     </symbol>
 
+    <!-- eye off icon -->
     <symbol id="eye-off-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye-off-icon lucide-eye-off">
         <path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49" />
         <path d="M14.084 14.158a3 3 0 0 1-4.242-4.242" />
         <path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143" />
         <path d="m2 2 20 20" />
+    </symbol>
+
+    <!-- open icon -->
+    <symbol id="open-mail-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mail-open-icon lucide-mail-open">
+        <path d="M21.2 8.4c.5.38.8.97.8 1.6v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V10a2 2 0 0 1 .8-1.6l8-6a2 2 0 0 1 2.4 0l8 6Z" />
+        <path d="m22 10-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 10" />
     </symbol>
 </svg>

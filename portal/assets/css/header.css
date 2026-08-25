@@ -12,7 +12,6 @@ header {
     padding: 0 20px;
     height: 52px;
 
-    /* position: sticky; */
     top: 0;
     z-index: 1000;
 }
@@ -27,7 +26,6 @@ header a {
     color: inherit;
 }
 
-/* logo */
 header img {
     width: 36px;
     height: 36px;
@@ -43,14 +41,12 @@ header img {
     gap: .5em;
     width: fit-content;
     font-weight: 600;
-    /* margin-left: 50px; */
 }
 
 .header-logo span {
     color: var(--brand-color-light);
 }
 
-/* nav */
 header ul {
     display: flex;
     align-items: center;
@@ -162,7 +158,6 @@ header nav a:hover::after {
     display: none;
 }
 
-/* dark mode toggle */
 .theme-toggle {
     position: relative;
     display: flex;
@@ -192,8 +187,6 @@ header nav a:hover::after {
     background-color: var(--brand-tint-active);
 }
 
-/* variant for placing the toggle directly on a card instead of the green header —
-   the default toggle assumes a green background and white icon, this flips it back */
 .theme-toggle--card {
     color: var(--brand-text);
 }
@@ -238,7 +231,6 @@ header nav a:hover::after {
     transform: rotate(90deg) scale(0.5);
 }
 
-/* auth */
 .auth-btn {
     font-size: .85em;
 }
@@ -265,7 +257,7 @@ header nav a:hover::after {
 
 #headerRegister {
     background: var(--tint-on-brand-soft);
-    border: 1px solid var(--tint-on-brand-border);
+    border: 1px solid var(--tint-on-brand);
     font-weight: 600;
 }
 
@@ -303,7 +295,6 @@ header nav a:hover::after {
     background-color: var(--tint-on-brand);
 }
 
-/* dropdown */
 #account-dropdown {
     position: absolute;
     top: calc(100% + 8px);
@@ -346,8 +337,6 @@ header nav a:hover::after {
     background-color: var(--hover-surface);
 }
 
-
-/* RESPONSIVE */
 @media (max-width: 768px) {
     header .header-logo {
         margin-left: 0;

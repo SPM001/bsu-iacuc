@@ -6,16 +6,13 @@
 }
 
 body {
-    /* font-family: system-ui, -apple-system, sans-serif; */
     background: var(--page-background);
     color: var(--primary-text);
-    /* min-height: 100vh; */
-    /* padding: 2rem 1rem; */
 }
 
-/* ── Layout ── */
+/* ===== Layout ===== */
 .portal {
-    max-width: 700px;
+    max-width: 720px;
     margin: 0 auto;
 }
 
@@ -39,7 +36,7 @@ body {
     margin-bottom: 0;
 }
 
-/* ── Progress stepper ── */
+/* ===== Progress stepper ===== */
 .stepper {
     display: flex;
     align-items: center;
@@ -47,19 +44,24 @@ body {
 }
 
 .step-dot {
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    height: 28px;
     border-radius: 50%;
     border: 1.5px solid var(--input-border);
     background: var(--card-background);
     color: var(--muted-text);
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 600;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
     transition: all 0.25s;
+}
+
+.step-dot svg {
+    width: 14px;
+    height: 14px;
 }
 
 .step-dot.active {
@@ -85,7 +87,7 @@ body {
     background: var(--brand-color-hover);
 }
 
-/* ── Card ── */
+/* ===== Card ===== */
 .card {
     background: var(--card-background);
     border-radius: 14px;
@@ -93,7 +95,7 @@ body {
     padding: 2rem;
 }
 
-/* ── Typography ── */
+/* ===== Typography ===== */
 .page-tag {
     font-size: 11px;
     font-weight: 600;
@@ -110,6 +112,10 @@ body {
     margin-bottom: 1.25rem;
 }
 
+.page-title--center {
+    text-align: center;
+}
+
 .section-label {
     font-size: 11px;
     font-weight: 600;
@@ -120,11 +126,16 @@ body {
     margin-top: 1.25rem;
 }
 
-/* ── Requirement items ── */
+.section-label--lg-top {
+    margin-top: 1.5rem;
+}
+
+/* ===== Requirement items ===== */
 .req-item {
     display: flex;
+    flex-direction: column;
     align-items: flex-start;
-    gap: 10px;
+    gap: 2px;
     padding: 10px 12px;
     background: var(--success-background-soft);
     border-radius: 8px;
@@ -140,7 +151,21 @@ body {
     margin-top: 1px;
 }
 
-/* ── Process steps ── */
+.req-item-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.req-item-head strong {
+    font-size: .85rem;
+}
+
+.req-item-note {
+    margin-left: 24px;
+}
+
+/* ===== Process steps ===== */
 .process-step {
     display: flex;
     align-items: flex-start;
@@ -164,21 +189,24 @@ body {
 }
 
 .process-text {
-    font-size: 14px;
+    font-size: .85rem;
     color: var(--secondary-text);
-    line-height: 1.55;
+    line-height: 1.6;
 }
 
-/* ── Storage notice ── */
+.process-note {
+    font-size: .78rem;
+    color: var(--muted-text);
+}
+
+/* ===== Storage notice ===== */
 .storage-notice {
     display: flex;
     align-items: flex-start;
     gap: 8px;
     padding: 9px 13px;
 
-    /* background: color-mix(in srgb, var(--brand-color-light) 40%, transparent); */
     background: var(--divider-color-subtle);
-    /* border: 1px solid var(--brand-color-light); */
 
     border-radius: 8px;
     font-size: 0.8rem;
@@ -194,7 +222,7 @@ body {
     margin-top: 1px;
 }
 
-/* ── Info bar ── */
+/* ===== Info bar ===== */
 .info-bar {
     display: flex;
     align-items: center;
@@ -218,12 +246,27 @@ body {
     color: var(--status-warning-text);
 }
 
-/* ── Buttons ── */
+.info-bar--title-hint {
+    margin-bottom: 1.25rem;
+    font-size: .78rem;
+}
+
+/* ===== Buttons ===== */
 .btn-row {
     display: flex;
     gap: 10px;
-    margin-top: 1.5rem;
+    margin-top: 1.25rem;
     align-items: center;
+}
+
+.btn-row--lg-top {
+    margin-top: 1.5rem;
+}
+
+.btn-row--pi-choice {
+    margin: 0 0 .75rem;
+    justify-content: flex-start;
+    gap: 10px;
 }
 
 button {
@@ -271,7 +314,23 @@ button {
     opacity: 0.85;
 }
 
-/* ── Terms & conditions ── */
+.btn-link {
+    display: inline-block;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: .82rem;
+    font-weight: 600;
+    text-decoration: none;
+    background: var(--brand-color-hover);
+    color: var(--text-on-brand);
+    transition: opacity 0.15s;
+}
+
+.btn-link:hover {
+    opacity: 0.85;
+}
+
+/* ===== Terms & conditions ===== */
 .tc-scroll {
     height: 160px;
     overflow-y: auto;
@@ -288,10 +347,14 @@ button {
     display: flex;
     align-items: flex-start;
     gap: 10px;
-    margin-top: 10px;
+    margin-top: 1rem;
     font-size: 14px;
     color: var(--secondary-text);
     cursor: pointer;
+}
+
+.check-label+.check-label {
+    margin-top: .5rem;
 }
 
 .check-label input[type="checkbox"] {
@@ -303,7 +366,7 @@ button {
     cursor: pointer;
 }
 
-/* ── Upload ── */
+/* ===== Upload ===== */
 .upload-box {
     display: block;
     border: 2px dashed var(--input-border);
@@ -339,7 +402,6 @@ button {
     margin-top: 4px;
 }
 
-/* Hidden real file input */
 .upload-box input[type="file"] {
     display: none;
 }
@@ -365,14 +427,14 @@ button {
     margin-top: 0;
 }
 
-/* ── Form fields ── */
+/* ===== Form fields ===== */
 .field {
-    margin-bottom: 14px;
+    margin-bottom: .5rem;
 }
 
 .field label {
     display: block;
-    font-size: 12px;
+    font-size: .75rem;
     font-weight: 600;
     color: var(--muted-text);
     margin-bottom: 5px;
@@ -387,7 +449,7 @@ button {
     padding: 9px 12px;
     border: 1px solid var(--input-border);
     border-radius: 8px;
-    font-size: 14px;
+    font-size: .82rem;
     font-family: inherit;
     color: var(--primary-text);
     background: var(--card-background);
@@ -403,11 +465,11 @@ button {
 }
 
 .field textarea {
-    min-height: 80px;
+    min-height: 72px;
     resize: vertical;
 }
 
-/* ── Success page ── */
+/* ===== Success page ===== */
 .success-center {
     text-align: center;
     padding: 1rem 0;
@@ -450,24 +512,6 @@ hr {
     margin: 1rem 0;
 }
 
-
-/* ── Step overrides on top of application.css ── */
-.portal {
-    max-width: 720px;
-}
-
-.step-dot {
-    width: 28px;
-    height: 28px;
-    font-size: 12px;
-}
-
-.step-dot svg {
-    width: 14px;
-    height: 14px;
-}
-
-/* download button */
 .btn-download {
     display: inline-flex;
     align-items: center;
@@ -496,7 +540,6 @@ hr {
     flex-shrink: 0;
 }
 
-/* cert-already notice */
 .notice-bar {
     display: flex;
     align-items: center;
@@ -516,43 +559,6 @@ hr {
     flex-shrink: 0;
 }
 
-.field label {
-    font-size: .75rem;
-    font-weight: 600;
-    color: var(--muted-text);
-    text-transform: uppercase;
-    letter-spacing: .05em;
-    display: block;
-    margin-bottom: 5px;
-}
-
-.field input,
-.field select,
-.field textarea {
-    width: 100%;
-    padding: 9px 12px;
-    border: 1px solid var(--input-border);
-    border-radius: 8px;
-    font-size: .82rem;
-    font-family: inherit;
-    color: var(--primary-text);
-    background: var(--card-background);
-    outline: none;
-    transition: border-color .15s;
-}
-
-.field input:focus,
-.field select:focus,
-.field textarea:focus {
-    border-color: var(--brand-color);
-    box-shadow: 0 0 0 3px var(--focus-ring-tint);
-}
-
-.field textarea {
-    min-height: 72px;
-    resize: vertical;
-}
-
 @media(max-width:1045px) {
     .portal-header {
         margin-top: 20px;
@@ -567,27 +573,64 @@ hr {
     color: var(--danger-color);
 }
 
+.upload-label .req {
+    font-size: .75rem;
+}
+
+.status-required {
+    color: var(--danger-color);
+    font-size: .75rem;
+}
+
+.status-required-badge {
+    color: var(--danger-color);
+    font-size: .75rem;
+    margin-left: 4px;
+    text-transform: none;
+}
+
+.status-done {
+    color: var(--status-success-text);
+    font-size: .75rem;
+}
+
+.status-muted {
+    color: var(--muted-text);
+    font-size: .75rem;
+}
+
+.step-intro-text {
+    font-size: .85rem;
+    color: var(--muted-text);
+    line-height: 1.6;
+    margin-bottom: 1.25rem;
+}
+
+.is-hidden {
+    display: none;
+}
+
 .pi-choice {
     min-width: 80px;
     margin-top: 0;
-
+    border: 1px solid var(--input-border);
     padding: 8px 20px;
     border-radius: 4px;
     box-shadow: 0 1px 2px var(--shadow-color-soft);
 }
 
 .pi-choice:hover {
-    background: var(--brand-tint-active) !important;
+    background: var(--brand-color-hover) !important;
 }
 
 .pi-choice--active {
-    background: var(--brand-tint-strong);
+    background: var(--brand-color-active);
     color: var(--text-on-brand) !important;
     border-color: var(--brand-color) !important;
 }
 
 .error-messages {
     font-size: .85em;
-    margin: 0;
+    margin: .75rem 0 0;
     justify-content: center;
 }

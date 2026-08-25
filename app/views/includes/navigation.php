@@ -4,7 +4,7 @@
 $role = $user['role'] ?? '';
 ?>
 
-<link rel="stylesheet" href="<?= CSSPATH ?>/navigation.css">
+<link rel="stylesheet" href="<?= asset_css('navigation.css') ?>">
 
 <aside>
     <nav aria-label="Main navigation" class="main-navigation">

@@ -20,7 +20,7 @@ session_set_cookie_params([
 session_name('bsu_iacuc');
 session_start();
 
-define('SESSION_TIMEOUT', 1800); // 30 minutes
+define('SESSION_TIMEOUT', 1800);
 
 if (isset($_SESSION['last_activity'])) {
     $idle = time() - $_SESSION['last_activity'];
@@ -39,7 +39,6 @@ if (isset($_SESSION['last_activity'])) {
 }
 
 $_SESSION['last_activity'] = time();
-
 
 require_once 'config.php';
 require_once dirname(__DIR__, 2) . '/vendor/autoload.php';

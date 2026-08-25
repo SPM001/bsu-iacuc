@@ -1,8 +1,8 @@
-<link rel="stylesheet" href="<?= CSSPATH ?>/scroll-top.css">
+<link rel="stylesheet" href="<?= asset_css('scroll-top.css') ?>">
 
 <a href="#" class="scroll-top" id="scroll-top">
-  <img src="<?= IMGPATH ?>/scroll-up.webp" alt="Back to Top" class="back-to-top-btn">
-  <span>Back to Top</span>
+  <img src="<?= IMGPATH ?>/scroll-up.webp" alt="Back to Top" class="back-to-top-btn" title="Back to top">
+  <!-- <span>Back to Top</span> -->
 </a>
 
 <script>

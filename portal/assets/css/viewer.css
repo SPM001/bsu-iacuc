@@ -1,4 +1,4 @@
-/* ── Viewer layout ──────────────────────────────────────────────────────────── */
+/* ===== Viewer layout ===== */
 .viewer-body {
   background: #2b2b2b;
   color: #f0f0f0;
@@ -8,7 +8,7 @@
   overflow: hidden;
 }
 
-/* ── Top bar ────────────────────────────────────────────────────────────────── */
+/* ===== Top bar ===== */
 .viewer-topbar {
   display: flex;
   align-items: center;
@@ -67,7 +67,6 @@
   white-space: nowrap;
 }
 
-/* Status badge */
 .status-badge {
   font-size: 0.75rem;
   padding: 2px 8px;
@@ -102,7 +101,7 @@
   color: #4ade80;
 }
 
-/* ── Annotation hint bar ────────────────────────────────────────────────────── */
+/* ===== Annotation hint bar ===== */
 .annot-toolbar {
   display: flex;
   align-items: center;
@@ -144,7 +143,7 @@
   color: #fcd34d;
 }
 
-/* ── Tool buttons ───────────────────────────────────────────────────────────── */
+/* ===== Tool buttons ===== */
 .tool-btn {
   padding: 0.35rem 0.75rem;
   border: 1px solid #475569;
@@ -188,7 +187,7 @@
   color: #fff;
 }
 
-/* ── Main layout: PDF column + sidebar ─────────────────────────────────────── */
+/* ===== Main layout: PDF column + sidebar ===== */
 .viewer-layout {
   display: flex;
   flex: 1;
@@ -205,14 +204,12 @@
   gap: 1.5rem;
 }
 
-/* ── Per-page wrapper ───────────────────────────────────────────────────────── */
+/* ===== Per-page wrapper ===== */
 .page-wrapper {
   position: relative;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
-  /* Size to the canvas — no explicit width/height so CSS scaling works */
   display: block;
   line-height: 0;
-  /* collapse inline whitespace that creates gaps */
 }
 
 .pdf-canvas {
@@ -221,12 +218,10 @@
   height: auto;
 }
 
-/* ── Annotation overlay ─────────────────────────────────────────────────────── */
-/* Fill the wrapper exactly so annotation hits always align with the canvas */
+/* ===== Annotation overlay ===== */
 .annot-overlay {
   position: absolute;
   inset: 0;
-  /* top:0 right:0 bottom:0 left:0 */
   width: 100%;
   height: 100%;
 }
@@ -264,7 +259,7 @@
   pointer-events: none;
 }
 
-/* ── Annotation sidebar ─────────────────────────────────────────────────────── */
+/* ===== Annotation sidebar ===== */
 .annot-sidebar {
   width: 260px;
   background: #1e293b;
@@ -365,7 +360,7 @@
   padding: 1.5rem 0;
 }
 
-/* ── Modal overrides for dark viewer context ────────────────────────────────── */
+/* ===== Modal overrides for dark viewer context ===== */
 .viewer-body .modal-backdrop {
   position: fixed;
   inset: 0;
@@ -434,7 +429,7 @@
   text-align: center;
 }
 
-/* ── Notice bar (staff submitter info) ─────────────────────────────────────── */
+/* ===== Notice bar (staff submitter info) ===== */
 .notice-bar {
   display: flex;
   align-items: center;
@@ -460,15 +455,14 @@
   color: #fff;
 }
 
-/* ── Mobile sidebar toggle ──────────────────────────────────────────────────── */
+/* ===== Mobile sidebar toggle ===== */
 .sidebar-toggle {
   display: none;
 }
 
-/* ── Responsive ─────────────────────────────────────────────────────────────── */
+/* ===== Responsive ===== */
 @media (max-width: 767px) {
 
-  /* Top bar: stack left+right groups if they overflow */
   .viewer-topbar {
     padding: 0.5rem 0.75rem;
     gap: 0.4rem;
@@ -484,7 +478,6 @@
     font-size: 0.82rem;
   }
 
-  /* Hide version + status badge on very small screens to save space */
   .viewer-topbar-left .ver-badge,
   .viewer-topbar-left .status-badge {
     display: none;
@@ -495,12 +488,10 @@
     padding: 0.3rem 0.6rem;
   }
 
-  /* Hint bar */
   .annot-toolbar {
     padding: 0.4rem 0.75rem;
   }
 
-  /* Layout: stack PDF on top, sidebar below */
   .viewer-layout {
     flex-direction: column;
     overflow: visible;
@@ -516,7 +507,6 @@
     flex: none;
   }
 
-  /* Sidebar becomes a full-width panel below the PDF */
   .annot-sidebar {
     width: 100%;
     border-left: none;
@@ -526,7 +516,6 @@
     flex: none;
   }
 
-  /* Show a toggle button to collapse/expand the sidebar on mobile */
   .sidebar-toggle {
     display: flex;
     align-items: center;
@@ -560,7 +549,6 @@
     display: none;
   }
 
-  /* Notice bar wraps on mobile */
   .notice-bar {
     font-size: 0.75rem;
   }
@@ -571,7 +559,6 @@
     justify-content: center;
   }
 
-  /* Make viewer-body scrollable on mobile */
   .viewer-body {
     height: auto;
     min-height: 100vh;
@@ -594,7 +581,7 @@
   }
 }
 
-/* ── Queued (offline) annotation indicators ──────────────── */
+/* ===== Queued (offline) annotation indicators ===== */
 .annot-box--queued {
   border-color: #b45309;
   background: rgba(180, 83, 9, 0.08);
@@ -621,17 +608,7 @@
   margin-left: auto;
 }
 
-/* ── File popup modal (cert / auth letter) ──────────────────────────────────── */
-.file-popup-card {
-  max-width: 860px;
-  width: 92vw;
-  padding: 0;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  max-height: 90vh;
-}
-
+/* ===== File popup modal (cert / auth letter) — .file-popup-card layout shared via modals.css, colors overridden below for the dark viewer chrome ===== */
 .file-popup-header {
   display: flex;
   align-items: center;
@@ -660,18 +637,7 @@
   background: #fff;
 }
 
-@media (max-width: 767px) {
-  .file-popup-card {
-    width: 98vw;
-    max-height: 95vh;
-  }
-
-  .file-popup-frame {
-    min-height: 320px;
-  }
-}
-
-/* ── Return for Revision modal ──────────────────────────────────────────────── */
+/* ===== Return for Revision modal ===== */
 #returnRevisionBackdrop {
   position: fixed;
   inset: 0;

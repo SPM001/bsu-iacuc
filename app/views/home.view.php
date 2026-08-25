@@ -6,7 +6,7 @@ include "includes/header.php";
 include "includes/scroll-top.php";
 ?>
 
-<link rel="stylesheet" href="<?= CSSPATH ?>/home.css">
+<link rel="stylesheet" href="<?= asset_css('home.css') ?>">
 
 <div class="body">
     <?php include "includes/navigation.php"; ?>
@@ -44,7 +44,7 @@ include "includes/scroll-top.php";
                             commencing any study.
                         </p>
                         <div id="apply-actions">
-                            <a href="<?= ROOT ?>/apply" class="button btn-apply">Apply for IACUC Protocol Review here →</a>
+                            <a href="<?= ROOT ?>/apply" class="button btn-apply">Click to Apply for IACUC Protocol Review</a>
                         </div>
                     </div>
                 </article>
@@ -56,23 +56,29 @@ include "includes/scroll-top.php";
                     <div class="steps-cont">
                         <div class="process-step">
                             <span>1</span>
-                            <p>Download the template and submit your application form through the portal.</p>
+                            <p>Go to the <a href="<?= ROOT ?>/apply" class="underlined">application page</a>. Follow the steps to submit your IACUC protocol form.</p>
                         </div>
 
                         <div class="process-step">
                             <span>2</span>
-                            <p>View reviewer comments through your dashboard and resubmit protocol for as long as revisions are requested.</p>
+                            <p>Track your protocol's status through the dashboard. View reviewer comments and resubmit for as long as revisions are requested. You will be notified of every update through email.</p>
                         </div>
 
                         <div class="process-step">
                             <span>3</span>
-                            <p>Once the protocol has passed review, it will be endorsed to the Bureau of Animal Industry (BAI). Note: An animal research clearance processing fee of <strong>Php 100.00</strong> is required by BAI. Visit the BSU-CCARD office to provide payment or <a href="<?= ROOT ?>/contact" class="underlined">contact the CCARD Director</a> for concerns.</p>
-                            <p></p>
+                            <div>
+                                <p>
+                                    Once the protocol has passed CCARD review, it will be endorsed to the Bureau of Animal Industry (BAI).
+                                </p>
+                                <p class="process-step-note">
+                                    <span class="italic">Note:</span> BAI requires an animal research clearance processing fee of <strong>Php 100.00</strong>. Visit the BSU-CCARD office or <a href="<?= ROOT ?>/contact" class="underlined">contact the CCARD Director</a> to process your payment.
+                                </p>
+                            </div>
                         </div>
 
                         <div class="process-step">
                             <span>4</span>
-                            <p>Wait for your clearance to be released through your dashboard.</p>
+                            <p>Wait for your clearance to be released through your dashboard. You will also be notified through email.</p>
                         </div>
                     </div>
                 </article>
@@ -102,7 +108,7 @@ include "includes/scroll-top.php";
                             </svg>
                         </summary>
                         <div class="faq-answer">
-                            Researchers must have prior IACUC training in order to apply for protocol review.
+                            Researchers (or Principal Investigators) must have prior IACUC training in order to apply for protocol review.
                         </div>
                     </details>
 
@@ -114,7 +120,7 @@ include "includes/scroll-top.php";
                             </svg>
                         </summary>
                         <div class="faq-answer">
-                            Everyone working with animals must receive lecture and laboratory animal handling training. Please refer to the Announcements page or contact or visit the CCARD office and be updated with the scheduled trainings.
+                            Everyone working with animals must receive lecture and laboratory animal handling training. Please refer to the <a href="<?= ROOT ?>/announcements" class="underlined">announcements</a> page or inquire at the CCARD office to be updated with the scheduled trainings.
                         </div>
                     </details>
 
@@ -126,7 +132,7 @@ include "includes/scroll-top.php";
                             </svg>
                         </summary>
                         <div class="faq-answer">
-                            IACUC review is needed for all work involving direct interaction with live animals only.
+                            IACUC review is needed for all work involving direct interaction with <span class="italic">live animals only</span>.
                         </div>
                     </details>
                     <details class="faq-cont">
@@ -137,7 +143,7 @@ include "includes/scroll-top.php";
                             </svg>
                         </summary>
                         <div class="faq-answer">
-                            If you are obtaining animals or tissue that were already dead (rat livers from another laboratory, steaks from the supermarket, tissues from a slaughterhouse) then you do not need an IACUC protocol. However, all work with wild mammal tissue needs an approval from DENR.
+                            If you are obtaining animals or tissue that were already dead (rat livers from another laboratory, steaks from the supermarket, tissues from a slaughterhouse) then you do not need an IACUC protocol. However, all work with wild mammal tissue need an approval from the Department of Environment and Natural Resources (DENR).
                         </div>
                     </details>
 
@@ -149,7 +155,7 @@ include "includes/scroll-top.php";
                             </svg>
                         </summary>
                         <div class="faq-answer">
-                            Protocols are reviewed as soon as protocols are submitted. However, it may take 1-8 weeks to get IACUC review and issuance of Animal Permit by the Bureau of Animal Industry.
+                            Protocols are reviewed as soon as protocols are submitted. However, it may take 1-8 weeks for IACUC review and the issuance of the animal research clearance by BAI.
                         </div>
                     </details>
 
@@ -173,7 +179,7 @@ include "includes/scroll-top.php";
                             </svg>
                         </summary>
                         <div class="faq-answer">
-                            No, there is no fee. However, the Department of Agriculture - Bureau of Animal Industry requires payment of Php 100.00 for the Animal Research Permit, to be paid upon submission of the reviewed or approved IACUC protocol.
+                            There is no fee for CCARD's IACUC review. However, BAI requires a payment of Php 100.00 for the Animal Research Permit, to be paid upon submission of the reviewed IACUC protocol.
                         </div>
                     </details>
 
@@ -185,7 +191,7 @@ include "includes/scroll-top.php";
                             </svg>
                         </summary>
                         <div class="faq-answer">
-                            We encourage Principal Investigators (PIs) to write and submit each IACUC protocol form; however, a staff member may fill out a protocol form with the permission of the PI. The individual listed as PI must sign the assurance form, indicating full responsibility for the protocol.
+                            We encourage Principal Investigators (PIs) to write and submit each IACUC protocol form; however, a staff member may fill out a protocol form with the permission of the PI. The individual listed as PI must sign the assurance form indicating full responsibility for the protocol. The assurance form is downloadable in the application process.
                         </div>
                     </details>
                     <details class="faq-cont">
@@ -196,7 +202,7 @@ include "includes/scroll-top.php";
                             </svg>
                         </summary>
                         <div class="faq-answer">
-                            All revision must be communicated with the IACUC in writings. Please note that even the most MINOR changes MUST be revised/reviewed for approval.
+                            All revision must be communicated with the IACUC in writing. Please note that even the most <strong>minor</strong> changes <strong>must</strong> be revised and reviewed for approval.
                         </div>
                     </details>
                     <details class="faq-cont">
@@ -207,10 +213,9 @@ include "includes/scroll-top.php";
                             </svg>
                         </summary>
                         <div class="faq-answer">
-                            In BSU, you may visit the CCARD office. You may also refer to the <a href="<?= ROOT ?>/contact" class="underlined">Contact</a> page for additional contact information.
+                            In BSU, you may visit the CCARD office. You may also refer to the <a href="<?= ROOT ?>/contact" class="underlined">contact</a> page for additional contact information.
                         </div>
                     </details>
-
 
                     <!-- <details class="faq-cont">
                         <summary class="faq-question">
@@ -230,7 +235,7 @@ include "includes/scroll-top.php";
 </div>
 
 <script>
-    // ===================== SMOOTH FAQ =====================
+    // ===== SMOOTH FAQ =====
     document.querySelectorAll('.faq-cont').forEach(details => {
         const summary = details.querySelector('.faq-question');
         const content = details.querySelector('.faq-answer');
@@ -239,11 +244,10 @@ include "includes/scroll-top.php";
             e.preventDefault();
 
             if (details.open) {
-                // CLOSING
                 details.classList.remove('is-open');
                 const startHeight = content.offsetHeight;
                 content.style.height = startHeight + 'px';
-                getComputedStyle(content).height; // force reflow
+                getComputedStyle(content).height;
                 content.style.transition = 'height 0.25s ease, padding 0.25s ease';
                 content.style.height = '0';
                 content.style.paddingTop = '0';
@@ -255,14 +259,13 @@ include "includes/scroll-top.php";
                     once: true
                 });
             } else {
-                // OPENING
                 details.setAttribute('open', '');
                 details.classList.add('is-open');
                 const targetHeight = content.scrollHeight;
                 content.style.height = '0';
                 content.style.paddingTop = '0';
                 content.style.paddingBottom = '0';
-                getComputedStyle(content).height; // force reflow
+                getComputedStyle(content).height;
                 content.style.transition = 'height 0.25s ease, padding 0.25s ease';
                 content.style.height = targetHeight + 'px';
                 content.style.paddingTop = '13px';
@@ -275,7 +278,7 @@ include "includes/scroll-top.php";
             }
         });
     });
-    // ===================== APPLY BUTTON — Continue vs New =====================
+    // ===== APPLY BUTTON — Continue vs New =====
     (function() {
         const isLoggedIn = <?= isset($_SESSION['user']['user_id']) ? 'true' : 'false' ?>;
         const SAVE_KEY = 'bsu_iacuc_apply_v2';
@@ -284,15 +287,13 @@ include "includes/scroll-top.php";
         const container = document.getElementById('apply-actions');
         if (!container) return;
 
-        if (!isLoggedIn) return; // logged-out users always see the plain Apply button
+        if (!isLoggedIn) return;
         let saved = null;
         try {
             const raw = localStorage.getItem(SAVE_KEY);
             if (raw) saved = JSON.parse(raw);
         } catch (e) {}
 
-        // Consider it "in progress" if there's saved state at step > 0
-        // and the application hasn't been submitted yet (no submittedId)
         const inProgress = saved && !saved.submittedId && (
             saved.step > 0 ||
             saved.agreedTerms ||
@@ -304,7 +305,6 @@ include "includes/scroll-top.php";
         );
 
         if (!inProgress) {
-            // No saved progress — just show the normal Apply button
             container.innerHTML =
                 `<a href="${applyUrl}" class="button btn-apply">Apply for IACUC Protocol Review here →</a>`;
             return;

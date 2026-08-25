@@ -16,12 +16,12 @@ $role = $user['role'] ?? '';
     <?php $default = "BSU-IACUC"; ?>
     <title><?= isset($title) ? "$title - $default" : $default ?></title>
 
-    <link rel="stylesheet" href="<?= CSSPATH ?>/body.css">
-    <link rel="stylesheet" href="<?= CSSPATH ?>/account.css">
-    <link rel="stylesheet" href="<?= CSSPATH ?>/form.css">
-    <link rel="stylesheet" href="<?= CSSPATH ?>/admin/admin.css">
+    <link rel="stylesheet" href="<?= asset_css('body.css') ?>">
+    <link rel="stylesheet" href="<?= asset_css('account.css') ?>">
+    <link rel="stylesheet" href="<?= asset_css('form.css') ?>">
+    <link rel="stylesheet" href="<?= asset_css('admin/admin.css') ?>">
 
-    <script src="<?= JSPATH ?>/password-toggle.js" defer></script>
+    <script src="<?= asset_js('password-toggle.js') ?>" defer></script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

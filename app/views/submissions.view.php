@@ -11,16 +11,60 @@ include 'includes/scroll-top.php';
 
 $count = count($protocols);
 
-// ── Per-status counts for the filter pill badges (mirrors admin dashboard) ──
+// ===== Per-status counts for the filter pill badges (mirrors admin dashboard) =====
 $countsByStatusSlug = [];
 foreach ($protocols as $p) {
     $slug = strtolower(str_replace(' ', '-', $p['status']));
     $countsByStatusSlug[$slug] = ($countsByStatusSlug[$slug] ?? 0) + 1;
 }
 $totalProtocolCount = count($protocols);
+
+// ===== Status metadata: color + icon + plain-language description =====
+$statusMeta = [
+    'under-review' => [
+        'label' => 'Under Review',
+        'color' => '#0072B2',
+        'icon'  => 'clock-icon',
+        'desc'  => 'Being reviewed by the IACUC reviewer. No action needed. You will be notified if changes are required or once a decision is made.',
+    ],
+    'needs-revision' => [
+        'label' => 'Needs Revision',
+        'color' => '#D55E00',
+        'icon'  => 'alert-triangle-icon',
+        'desc'  => 'The reviewer found an issue and sent it back. Click "Show History" to see the feedback, then "Re-submit Protocol" to upload your revised file.',
+    ],
+    'reviewed' => [
+        'label' => 'Reviewed',
+        'color' => '#CC79A7',
+        'icon'  => 'checkbox-icon',
+        'desc'  => 'The reviewer has finished their assessment. No action needed. Pending endorsement to DA-CARFU, then the BAI Central Office.',
+    ],
+    'endorsed' => [
+        'label' => 'Endorsed',
+        'color' => '#E69F00',
+        'icon'  => 'shield-check-icon',
+        'desc'  => 'Your protocol has been endorsed. No action needed. The administrator is preparing your clearance document.',
+    ],
+    'approved' => [
+        'label' => 'Approved',
+        'color' => '#009E73',
+        'icon'  => 'check-circle-icon',
+        'desc'  => 'Congratulations, your protocol has been approved! Click "Download Clearance" to get your official IACUC clearance certificate.',
+    ],
+];
+
+/**
+ * Status icon: references a symbol already defined in sprites.php.
+ */
+function statusIconSvg(string $iconId, int $size = 14): string
+{
+    return '<svg class="status-icon-svg" width="' . $size . '" height="' . $size . '" viewBox="0 0 24 24" aria-hidden="true" focusable="false">'
+        . '<use href="#' . htmlspecialchars($iconId, ENT_QUOTES, 'UTF-8') . '" />'
+        . '</svg>';
+}
 ?>
 
-<link rel="stylesheet" href="<?= CSSPATH ?>/submissions.css">
+<link rel="stylesheet" href="<?= asset_css('submissions.css') ?>">
 
 <div class="body">
     <?php include 'includes/navigation.php'; ?>
@@ -88,52 +132,54 @@ $totalProtocolCount = count($protocols);
             </div>
         </div>
 
-        <!-- ── Status guide for researchers ─────────────────── -->
-        <details class="status-guide">
-            <summary class="status-guide-summary">
-                <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                    <use href="#info-icon" />
-                </svg>
-                What do the statuses mean? What should I do?
-            </summary>
-            <div class="status-guide-body">
-                <div class="status-guide-item">
-                    <span class="protocol-status under-review status-guide-badge">Under Review</span>
-                    <div class="status-guide-text">
-                        <strong>Your protocol is being reviewed by the IACUC reviewer.</strong>
-                        No action needed. You will be notified if changes are required or once a decision is made.
-                    </div>
-                </div>
-                <div class="status-guide-item">
-                    <span class="protocol-status needs-revision status-guide-badge">Needs Revision</span>
-                    <div class="status-guide-text">
-                        <strong>The reviewer found an issue and sent your protocol back.</strong>
-                        Click "Show History" to see the reviewer's feedback, then click "Re-submit Protocol" to upload your revised file. The same form also lets you replace your training certificate or authorization letter if the reviewer flagged either one.
-                    </div>
-                </div>
-                <div class="status-guide-item">
-                    <span class="protocol-status reviewed status-guide-badge">Reviewed</span>
-                    <div class="status-guide-text">
-                        <strong>The reviewer has finished their assessment.</strong>
-                        No action needed. Your protocol is now pending endorsement to the Department of Agriculture - Cordillera Administrative Region (DA-CARFU) Regulatory Division, then to the Bureau of Animal Industry (BAI) Central Office for the processing of your Animal Research Clearance (ARC).
-                    </div>
-                </div>
-                <div class="status-guide-item">
-                    <span class="protocol-status endorsed status-guide-badge">Endorsed</span>
-                    <div class="status-guide-text">
-                        <strong>Your protocol has been endorsed.</strong>
-                        No action needed. The administrator is preparing your clearance document.
-                    </div>
-                </div>
-                <div class="status-guide-item">
-                    <span class="protocol-status approved status-guide-badge">Approved</span>
-                    <div class="status-guide-text">
-                        <strong>Congratulations, your protocol has been approved!</strong>
-                        Click "Download Clearance" to get your official IACUC clearance certificate.
-                    </div>
+        <!-- ===== Status legend ===== -->
+        <div class="status-legend-bar">
+            <span class="legend-title">Current Status</span>
+
+            <div class="legend-items">
+                <?php foreach ($statusMeta as $meta): ?>
+                    <span class="legend-item">
+                        <span class="legend-icon" style="background:<?= $meta['color'] ?>">
+                            <?= statusIconSvg($meta['icon'], 13) ?>
+                        </span>
+                        <?= htmlspecialchars($meta['label'], ENT_QUOTES, 'UTF-8') ?>
+                    </span>
+                <?php endforeach; ?>
+            </div>
+
+            <div class="legend-info-wrapper" id="legendInfoWrapper">
+                <button type="button" class="legend-info-btn" id="legendInfoBtn"
+                    aria-expanded="false" aria-controls="legendInfoPanel"
+                    aria-label="What do the statuses mean? What should I do?">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                        <circle cx="12" cy="12" r="9" />
+                        <line x1="12" y1="11" x2="12" y2="16" />
+                        <line x1="12" y1="7.5" x2="12" y2="7.5" />
+                    </svg>
+                </button>
+
+                <div class="legend-info-panel" id="legendInfoPanel" role="dialog" aria-label="What the statuses mean">
+                    <?php foreach ($statusMeta as $meta): ?>
+                        <div class="legend-info-row">
+                            <span class="legend-icon" style="background:<?= $meta['color'] ?>">
+                                <?= statusIconSvg($meta['icon'], 11) ?>
+                            </span>
+                            <div>
+                                <p class="legend-info-title" style="color:<?= $meta['color'] ?>">
+                                    <?= htmlspecialchars($meta['label'], ENT_QUOTES, 'UTF-8') ?>
+                                </p>
+                                <p class="legend-info-desc">
+                                    <?= htmlspecialchars($meta['desc'], ENT_QUOTES, 'UTF-8') ?>
+                                </p>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
                 </div>
             </div>
-        </details>
+        </div>
+
+        <!-- ===== Status guide (shows description for the active filter) ===== -->
+        <div class="status-guide" id="statusGuide"></div>
 
         <?php if (empty($protocols)): ?>
             <div class="empty-state">
@@ -165,86 +211,79 @@ $totalProtocolCount = count($protocols);
                 ?>
                     <div class="protocol" data-status="<?= $statusKey ?>">
 
-                        <!-- Submission number -->
-                        <div class="center">
-                            <p class="count-label helper">No.</p>
-                            <p class="count"><?= $count ?></p>
-                        </div>
+                        <span class="protocol-status-icon" style="background:<?= $statusMeta[$statusKey]['color'] ?? 'var(--muted-text)' ?>">
+                            <?= statusIconSvg($statusMeta[$statusKey]['icon'] ?? 'check-circle-icon', 19) ?>
+                        </span>
 
-                        <div class="protocol-meta">
-                            <p class="research-title">
-                                <?= htmlspecialchars($protocol['research_title'], ENT_QUOTES, 'UTF-8') ?>
-                            </p>
-                            <?php if ($needsRevision && (!empty($returnIssues) || !empty($protocol['rr_comment']))): ?>
-                                <div class="return-reason-inline">
-                                    <p class="return-reason-by">
-                                        Returned by <?= htmlspecialchars($protocol['rr_reviewer_name'], ENT_QUOTES, 'UTF-8') ?>
-                                    </p>
-                                    <?php if (!empty($returnIssues)): ?>
-                                        <ul class="return-reason-issues">
-                                            <?php foreach ($returnIssues as $issue): ?>
-                                                <li><?= htmlspecialchars($issue, ENT_QUOTES, 'UTF-8') ?></li>
-                                            <?php endforeach; ?>
-                                        </ul>
-                                    <?php endif; ?>
-                                    <?php if (!empty($protocol['rr_comment'])): ?>
-                                        <p class="return-reason-comment"><?= htmlspecialchars($protocol['rr_comment'], ENT_QUOTES, 'UTF-8') ?></p>
-                                    <?php endif; ?>
+                        <div class="protocol-body">
+                            <div class="protocol-meta">
+                                <p class="research-title">
+                                    <?= htmlspecialchars($protocol['research_title'], ENT_QUOTES, 'UTF-8') ?>
+                                </p>
+                                <p class="protocol-meta-line">
+                                    <?= $versionNum ?> &middot; Submitted <?= htmlspecialchars($date, ENT_QUOTES, 'UTF-8') ?>
+                                </p>
+
+                                <?php if ($needsRevision && (!empty($returnIssues) || !empty($protocol['rr_comment']))): ?>
+                                    <div class="return-reason-inline">
+                                        <p class="return-reason-by">
+                                            Returned by <?= htmlspecialchars($protocol['rr_reviewer_name'], ENT_QUOTES, 'UTF-8') ?>
+                                        </p>
+                                        <?php if (!empty($returnIssues)): ?>
+                                            <ul class="return-reason-issues">
+                                                <?php foreach ($returnIssues as $issue): ?>
+                                                    <li><?= htmlspecialchars($issue, ENT_QUOTES, 'UTF-8') ?></li>
+                                                <?php endforeach; ?>
+                                            </ul>
+                                        <?php endif; ?>
+                                        <?php if (!empty($protocol['rr_comment'])): ?>
+                                            <p class="return-reason-comment"><?= htmlspecialchars($protocol['rr_comment'], ENT_QUOTES, 'UTF-8') ?></p>
+                                        <?php endif; ?>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+
+                            <!-- Actions -->
+                            <div class="actions">
+                                <?php if ($needsRevision): ?>
+                                    <button class="button button--primary"
+                                        data-protocol-id="<?= $protocolIdInt ?>"
+                                        data-title="<?= htmlspecialchars($protocol['research_title'], ENT_QUOTES, 'UTF-8') ?>"
+                                        data-is-pi="<?= !empty($protocol['is_pi']) ? 'true' : 'false' ?>"
+                                        data-wrong-cert="<?= !empty($protocol['rr_wrong_cert']) ? 'true' : 'false' ?>"
+                                        data-wrong-auth="<?= !empty($protocol['rr_wrong_auth']) ? 'true' : 'false' ?>"
+                                        data-other-reason="<?= !empty($protocol['rr_other_reason']) ? 'true' : 'false' ?>"
+                                        onclick="openReuploadModal(+this.dataset.protocolId, this.dataset.title, this.dataset.isPi === 'true', this.dataset)">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                            <use href="#upload-icon" />
+                                        </svg>
+                                        Re-submit Protocol
+                                    </button>
+                                <?php endif; ?>
+
+                                <?php if ($isApproved): ?>
+                                    <a class="download-clearance-btn button button--primary"
+                                        href="<?= ROOT ?>/apply/clearance/<?= $protocolIdInt ?>" target="_blank" rel="noopener">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                            <use href="#download-icon" />
+                                        </svg>
+                                        Download Clearance
+                                    </a>
+                                <?php endif; ?>
+
+                                <div class="actions-secondary">
+                                    <a class="action-link" href="<?= ROOT ?>/apply/viewer/<?= $protocolIdInt ?>"
+                                        onclick="event.preventDefault(); openProtocol(<?= $protocolIdInt ?>)">
+                                        View
+                                    </a>
+                                    <button class="action-link"
+                                        data-protocol-id="<?= $protocolIdInt ?>"
+                                        data-title="<?= htmlspecialchars($protocol['research_title'], ENT_QUOTES, 'UTF-8') ?>"
+                                        onclick="openHistoryModal(+this.dataset.protocolId, this.dataset.title)">
+                                        Show History
+                                    </button>
                                 </div>
-                            <?php endif; ?>
-                        </div>
-
-                        <div class="status-cont">
-                            <span class="ver-badge"><?= $versionNum ?></span>
-                            <p class="protocol-status <?= $statusKey ?>"><?= $statusLabel ?></p>
-                            <p class="protocol-date helper">Submitted: <?= htmlspecialchars($date, ENT_QUOTES, 'UTF-8') ?></p>
-                        </div>
-
-                        <!-- Actions -->
-                        <div class="actions">
-                            <a class="button" href="<?= ROOT ?>/apply/viewer/<?= $protocolIdInt ?>"
-                                onclick="event.preventDefault(); openProtocol(<?= $protocolIdInt ?>)">
-                                <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                                    <use href="#review-icon" />
-                                </svg>
-                                View
-                            </a>
-
-                            <?php if ($needsRevision): ?>
-                                <button class="button button--primary"
-                                    data-protocol-id="<?= $protocolIdInt ?>"
-                                    data-title="<?= htmlspecialchars($protocol['research_title'], ENT_QUOTES, 'UTF-8') ?>"
-                                    data-is-pi="<?= !empty($protocol['is_pi']) ? 'true' : 'false' ?>"
-                                    data-wrong-cert="<?= !empty($protocol['rr_wrong_cert']) ? 'true' : 'false' ?>"
-                                    data-wrong-auth="<?= !empty($protocol['rr_wrong_auth']) ? 'true' : 'false' ?>"
-                                    data-other-reason="<?= !empty($protocol['rr_other_reason']) ? 'true' : 'false' ?>"
-                                    onclick="openReuploadModal(+this.dataset.protocolId, this.dataset.title, this.dataset.isPi === 'true', this.dataset)">
-                                    <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                                        <use href="#upload-icon" />
-                                    </svg>
-                                    Re-submit Protocol
-                                </button>
-                            <?php endif; ?>
-
-                            <?php if ($isApproved): ?>
-                                <a class="download-clearance-btn button button--primary"
-                                    href="<?= ROOT ?>/apply/clearance/<?= $protocolIdInt ?>" target="_blank" rel="noopener">
-                                    <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                                        <use href="#download-icon" />
-                                    </svg>
-                                    Download Clearance
-                                </a>
-                            <?php endif; ?>
-
-                            <button class="button"
-                                data-protocol-id="<?= $protocolIdInt ?>"
-                                data-title="<?= htmlspecialchars($protocol['research_title'], ENT_QUOTES, 'UTF-8') ?>"
-                                onclick="openHistoryModal(+this.dataset.protocolId, this.dataset.title)">
-                                <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                                    <use href="#history-icon" />
-                                </svg>
-                                Show History
-                            </button>
+                            </div>
                         </div>
                     </div>
                 <?php $count--;
@@ -335,15 +374,42 @@ $totalProtocolCount = count($protocols);
 <script>
     const ROOT_URL = <?= json_encode(ROOT) ?>;
     const researcherHasCertOnFile = <?= $hasCertOnFile ? 'true' : 'false' ?>;
+    const statusMeta = <?= json_encode($statusMeta) ?>;
     const filterBtns = document.querySelectorAll('.status-card');
     const protocolCards = document.querySelectorAll('.protocol');
     const mobileFilter = document.querySelector('.mobile-status-filters');
     const statusFilters = document.querySelector('.status-filters');
     let currentFilter = 'all';
 
+    function hexToRgba(hex, alpha) {
+        const h = hex.replace('#', '');
+        const r = parseInt(h.substring(0, 2), 16);
+        const g = parseInt(h.substring(2, 4), 16);
+        const b = parseInt(h.substring(4, 6), 16);
+        return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+    }
+
+    function updateStatusGuide(selected) {
+        const guide = document.getElementById('statusGuide');
+        if (!guide) return;
+
+        const meta = statusMeta[selected];
+        if (!meta) {
+            guide.classList.remove('open');
+            guide.style.background = '';
+            guide.innerHTML = '';
+            return;
+        }
+
+        guide.innerHTML = `<p class="status-guide-text">${meta.desc}</p>`;
+        guide.style.background = hexToRgba(meta.color, 0.12);
+        guide.classList.add('open');
+    }
+
     function applySubmissionsFilter(selected) {
         currentFilter = selected;
         filterBtns.forEach(b => b.classList.toggle('active', b.dataset.status === selected));
+        updateStatusGuide(selected);
 
         const activeBtn = [...filterBtns].find(b => b.dataset.status === selected);
         const mobileFilterLabel = document.getElementById('mobileFilterLabel');
@@ -394,7 +460,7 @@ $totalProtocolCount = count($protocols);
         }
     })();
 
-    // ── Re-submit protocol modal (protocol file + optional cert + optional auth letter) ──
+    // ===== Re-submit protocol modal (protocol file + optional cert + optional auth letter) =====
     const resubmitModal = document.getElementById('reuploadModalBackdrop');
     const reuploadCertField = document.getElementById('reuploadCertField');
     const reuploadAuthField = document.getElementById('reuploadAuthField');
@@ -407,8 +473,6 @@ $totalProtocolCount = count($protocols);
         const wrongAuth = dataset?.wrongAuth === 'true';
         const otherReason = dataset?.otherReason === 'true';
 
-        // Protocol file is required only if the protocol itself was flagged (other reason)
-        // or if there are no specific flags (reviewer gave no specific reason)
         const noSpecificFlags = !wrongCert && !wrongAuth && !otherReason;
         protocolFileRequired = otherReason || noSpecificFlags;
 
@@ -496,9 +560,6 @@ $totalProtocolCount = count($protocols);
                 if (!authResult.success) throw new Error(authResult.error ?? 'Authorization letter upload failed. Please try again.');
             }
 
-            // Always call reupload last — it transitions status back to Under Review.
-            // If no protocol file was chosen, the endpoint skips inserting a new version
-            // but still updates the status.
             const protocolResult = await uploadProtocolFile('/apply/reupload', 'protocol_file', protocolFile);
             if (!protocolResult.success) throw new Error(protocolResult.error ?? 'Upload failed. Please try again.');
 
@@ -510,7 +571,7 @@ $totalProtocolCount = count($protocols);
         }
     }
 
-    // ── Continue vs New Application ──────────────────────────────────────────────
+    // ===== Continue vs New Application =====
     (function() {
         const saveKey = 'bsu_iacuc_apply_v2_u<?= (int) ($_SESSION['user']['user_id'] ?? 0) ?>';
         const applyUrl = '<?= ROOT ?>/apply';
@@ -562,7 +623,7 @@ $totalProtocolCount = count($protocols);
         });
     })();
 
-    // ── History modal ────────────────────────────────────────────────────────────
+    // ===== History modal =====
     const historyBackdrop = document.getElementById('historyModalBackdrop');
 
     function openHistoryModal(protocolId, title) {
@@ -600,7 +661,7 @@ $totalProtocolCount = count($protocols);
         }
     });
 
-    // ── File popup (cert / auth letter / protocol versions) ─────────────────────
+    // ===== File popup (cert / auth letter / protocol versions) =====
     const filePopupBackdrop = document.getElementById('filePopupBackdrop');
 
     function openFilePopup(fileUrl, title) {
@@ -672,7 +733,6 @@ $totalProtocolCount = count($protocols);
 
         let html = '';
 
-        // Show reviewer return reason banner if protocol needs revision
         if (data.return_reason) {
             const reason = data.return_reason;
             const issueLabels = [];
@@ -703,7 +763,41 @@ $totalProtocolCount = count($protocols);
         body.innerHTML = html;
     }
 
-    // ── Auto-dismiss flash messages ──────────────────────────────────────────────
+    // ===== Status legend info panel (hover on desktop, tap on touch) =====
+    (function() {
+        const wrapper = document.getElementById('legendInfoWrapper');
+        const btn = document.getElementById('legendInfoBtn');
+        const panel = document.getElementById('legendInfoPanel');
+        if (!wrapper || !btn || !panel) return;
+
+        function openPanel() {
+            panel.classList.add('open');
+            btn.setAttribute('aria-expanded', 'true');
+        }
+
+        function closePanel() {
+            panel.classList.remove('open');
+            btn.setAttribute('aria-expanded', 'false');
+        }
+
+        wrapper.addEventListener('mouseenter', openPanel);
+        wrapper.addEventListener('mouseleave', closePanel);
+        btn.addEventListener('focus', openPanel);
+
+        btn.addEventListener('click', e => {
+            e.stopPropagation();
+            panel.classList.contains('open') ? closePanel() : openPanel();
+        });
+
+        document.addEventListener('click', e => {
+            if (!wrapper.contains(e.target)) closePanel();
+        });
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') closePanel();
+        });
+    })();
+
+    // ===== Auto-dismiss flash messages =====
     (function() {
         function dismissFlash(elementId, delayMs) {
             const el = document.getElementById(elementId);

@@ -6,8 +6,8 @@ $hideHeader     = true;
 include dirname(__DIR__) . '/includes/header.php';
 ?>
 
-<link rel="stylesheet" href="<?= CSSPATH ?>/account.css">
-<link rel="stylesheet" href="<?= CSSPATH ?>/form.css">
+<link rel="stylesheet" href="<?= asset_css('account.css') ?>">
+<link rel="stylesheet" href="<?= asset_css('form.css') ?>">
 
 <div class="body">
     <main class="main-content" id="main-content" tabindex="-1">

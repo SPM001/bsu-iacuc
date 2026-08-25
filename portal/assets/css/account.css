@@ -1,4 +1,4 @@
-/* ── GENERAL ───────────────── */
+/* ===== GENERAL ===== */
 
 body {
     position: relative;
@@ -18,7 +18,6 @@ body::before {
 
     filter: blur(3px);
     z-index: -1;
-    /* transform: scale(1); */
 }
 
 .body {
@@ -58,6 +57,14 @@ main form {
     margin: 40px auto 0;
 }
 
+.form-actions .btn-red:hover {
+    background-color: var(--danger-color-hover);
+}
+
+.btn-green:hover {
+    background-color: var(--brand-color-active);
+}
+
 h1 {
     font-family: var(--font-title);
     font-weight: lighter;
@@ -91,8 +98,7 @@ input:focus-visible {
     box-shadow: 0 1px 4px var(--shadow-color-soft);
 }
 
-/* ── Password show/hide toggle ───────────── */
-/* Wraps any <input type="password"> — injected by password-toggle.js. */
+/* ===== Password show/hide toggle ===== */
 .password-field-wrap {
     position: relative;
     width: 80%;
@@ -152,24 +158,32 @@ form>a {
     margin-bottom: 1em;
 }
 
-
-/* ── BUTTONS ───────────────── */
+/* ===== BUTTONS ===== */
 
 main button {
     width: 200px;
-    margin-bottom: 1em;
+    margin-bottom: .4em;
     font-size: 1em;
     background-color: var(--brand-color-hover);
-    color: whitesmoke;
+    color: var(--text-on-brand);
 }
 
 main button:hover {
-    /* color: var(--primary-text); */
-    color: var(--text-on-brand-muted);
+    color: var(--text-on-brand);
 }
 
 .btn-back {
     margin-left: 10px;
+}
+
+.btn-deactivate {
+    margin-top: 0;
+}
+
+.btn-logout {
+    background-color: var(--page-background);
+    color: green;
+    border: 1px solid green;
 }
 
 #account-back {
@@ -184,8 +198,7 @@ main button:hover {
     background-color: var(--danger-tint-strong);
 }
 
-
-/* ── MESSAGES ───────────────── */
+/* ===== MESSAGES ===== */
 
 .success-message {
     text-align: center;
@@ -196,8 +209,7 @@ main button:hover {
     margin: 0 20px 20px 20px;
 }
 
-
-/* ── INFO POPUP ───────────────── */
+/* ===== INFO POPUP ===== */
 
 .info-wrapper {
     position: relative;
@@ -233,8 +245,7 @@ main button:hover {
     align-items: center;
 }
 
-
-/* ── PASSWORD ───────────────── */
+/* ===== PASSWORD ===== */
 
 .password-requirements {
     width: 60%;
@@ -249,8 +260,7 @@ main button:hover {
     margin-top: 0.3em;
 }
 
-
-/* ── OTHER ───────────────── */
+/* ===== OTHER ===== */
 
 .form-label {
     color: var(--secondary-text);
@@ -267,17 +277,16 @@ main button:hover {
 
 .staff-login-link {
     position: fixed;
-    bottom: 60px;
-    right: 20px;
-    color: whitesmoke;
+    bottom: 20px;
+    right: 25px;
+    color: var(--text-on-image);
 }
 
 .staff-login-link a.underlined {
     color: var(--brand-color-light);
 }
 
-
-/* ── FORM ───────────────── */
+/* ===== FORM ===== */
 .label-group {
     display: flex;
     align-items: flex-start;
@@ -313,8 +322,7 @@ main button:hover {
     display: block;
 }
 
-
-/* ── CERTIFICATE SECTION ───────────────── */
+/* ===== CERTIFICATE SECTION ===== */
 
 .certificate-section {
     width: 80%;
@@ -328,14 +336,19 @@ main button:hover {
 .certificate-section-header {
     display: flex;
     align-items: flex-start;
+    justify-content: space-between;
     gap: 10px;
-    margin-bottom: 14px;
+    flex-wrap: wrap;
 }
 
 .certificate-section-header svg {
     flex-shrink: 0;
     color: var(--brand-color-hover);
     margin-top: 2px;
+}
+
+.certificate-section-header button:hover svg {
+    color: var(--text-on-brand);
 }
 
 .certificate-section-header h2 {
@@ -348,34 +361,21 @@ main button:hover {
 
 .certificate-section-header .helper {
     margin-top: 2px;
+    text-align: left;
 }
 
-.certificate-section-body {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    flex-wrap: wrap;
-}
-
-.certificate-info {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    min-width: 0;
-}
-
-.certificate-section-body .button {
-    margin-top: 0;
+.certificate-section-header .button {
+    margin: 0;
     flex-shrink: 0;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
+    width: 80px;
+    align-items: baseline;
     white-space: nowrap;
+    display: flex;
+    gap: 4px;
+    justify-content: center;
 }
 
-
-/* ── RESPONSIVE ───────────────── */
+/* ===== RESPONSIVE ===== */
 
 @media (max-width: 600px) {
     main {
@@ -433,87 +433,5 @@ main button:hover {
 
     .form-actions {
         padding: 20px 24px;
-    }
-}
-
-/* ── File popup modal ── */
-.modal-backdrop {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: var(--backdrop-color);
-    z-index: 9000;
-    align-items: center;
-    justify-content: center;
-}
-
-.modal-backdrop.open {
-    display: flex;
-}
-
-.modal-card {
-    background: var(--card-background);
-    border-radius: 12px;
-    padding: 2rem;
-    max-width: 440px;
-    width: 90%;
-    box-shadow: 0 8px 32px var(--shadow-color-modal);
-}
-
-.file-popup-card {
-    max-width: 860px;
-    width: 92vw;
-    padding: 0;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    max-height: 90vh;
-}
-
-.file-popup-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    padding: 0.75rem 1rem;
-    background: var(--divider-color-subtle);
-    border-bottom: 1px solid var(--divider-color);
-    flex-shrink: 0;
-}
-
-.file-popup-title {
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: var(--primary-text);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.file-popup-close {
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 0.8rem;
-    padding: 6px 10px;
-}
-
-.file-popup-frame {
-    flex: 1;
-    width: 100%;
-    min-height: 520px;
-    border: none;
-    background: var(--card-background);
-}
-
-@media (max-width: 768px) {
-    .file-popup-card {
-        width: 98vw;
-        max-height: 95vh;
-    }
-
-    .file-popup-frame {
-        min-height: 320px;
     }
 }

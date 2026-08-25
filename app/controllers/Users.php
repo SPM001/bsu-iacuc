@@ -75,7 +75,7 @@ class Users extends Controller
     return $errors;
   }
 
-  // =========================== LOG IN ===========================
+  // ===== LOG IN =====
 
   public function login()
   {
@@ -107,7 +107,7 @@ class Users extends Controller
     $ip       = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
 
     $MAX_ATTEMPTS = 5;
-    $WINDOW       = 900; // 15 minutes
+    $WINDOW       = 900;
 
     $ipAttempts   = $this->model->countRecentAttempts($ip, $WINDOW);
     $userAttempts = $this->model->countRecentAttempts($input, $WINDOW);
@@ -179,7 +179,7 @@ class Users extends Controller
     $this->redirect('submissions');
   }
 
-  // =========================== REGISTER ===========================
+  // ===== REGISTER =====
 
   public function register()
   {
@@ -246,7 +246,7 @@ class Users extends Controller
     }
   }
 
-  // =========================== LOG OUT ===========================
+  // ===== LOG OUT =====
 
   public function logout()
   {
@@ -261,7 +261,7 @@ class Users extends Controller
     $this->redirect('home');
   }
 
-  // =========================== MANAGE ACCOUNT ===========================
+  // ===== MANAGE ACCOUNT =====
 
   public function account()
   {

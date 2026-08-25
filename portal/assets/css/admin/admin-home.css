@@ -1,10 +1,10 @@
-/* ============================================================
-   STAFF DASHBOARD — admin-home.css
-   Sizes match submissions.css conventions: em units, 18px root.
-   ============================================================ */
+/* ===== STAFF DASHBOARD — admin-home.css ===== */
 
+main {
+    padding: 52px 16px;
+}
 
-/* ── Page header ─────────────────────────────────────────── */
+/* ===== Page header ===== */
 .dashboard-page-header {
     display: flex;
     align-items: center;
@@ -21,8 +21,7 @@
     margin: 0;
 }
 
-
-/* ── Metric cards ────────────────────────────────────────── */
+/* ===== Metric cards ===== */
 .metrics-row {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -59,8 +58,7 @@
     margin-left: 4px;
 }
 
-
-/* ── Search toolbar ──────────────────────────────────────── */
+/* ===== Search toolbar ===== */
 .inbox-toolbar {
     display: flex;
     align-items: center;
@@ -96,7 +94,6 @@
     background: var(--card-background);
     color: var(--primary-text);
     transition: border-color 0.2s;
-    /* override body.css main input defaults */
     margin-bottom: 0;
     display: block;
     height: auto;
@@ -117,7 +114,6 @@
     cursor: pointer;
     color: var(--muted-text);
     display: none;
-    /* override body.css button defaults */
     background: none;
     border: none;
     box-shadow: none;
@@ -153,8 +149,7 @@
     }
 }
 
-
-/* ── Filter pills ────────────────────────────────────────── */
+/* ===== Filter pills ===== */
 .filter-pills-row {
     display: flex;
     gap: 10px;
@@ -172,7 +167,6 @@
     color: var(--muted-text);
     cursor: pointer;
     transition: background 0.15s, border-color 0.15s, color 0.15s;
-    /* override body.css button defaults */
     box-shadow: 0 1px 3px var(--shadow-color-soft);
     margin: 0;
     font-family: var(--font-body);
@@ -216,13 +210,8 @@
     color: var(--text-on-brand);
 }
 
+/* ===== Protocol table — desktop ===== */
 
-/* ── Protocol table — desktop ────────────────────────────── */
-
-/*
- * The outer wrapper clips corners. The inner scroll div handles horizontal
- * overflow so the border-radius is preserved while buttons never clip.
- */
 .protocol-table-wrap {
     border: 1px solid var(--divider-color);
     border-radius: 10px;
@@ -277,8 +266,7 @@
     vertical-align: middle;
 }
 
-
-/* ── Column widths ───────────────────────────────────────── */
+/* ===== Column widths ===== */
 .protocol-table .col-title {
     width: 40%;
 }
@@ -299,8 +287,7 @@
     width: 20%;
 }
 
-
-/* ── Table cell types ────────────────────────────────────── */
+/* ===== Table cell types ===== */
 .protocol-title-cell {
     font-size: 1em;
     font-weight: 600;
@@ -312,10 +299,6 @@
     word-break: break-word;
 }
 
-/*
- * Secondary meta line (researcher · date) — hidden on desktop because those
- * columns exist in the table. Shown on mobile when the columns collapse.
- */
 .protocol-title-meta {
     display: none;
     font-size: 0.75em;
@@ -354,8 +337,7 @@
     flex-wrap: wrap;
 }
 
-
-/* ── Status badges ───────────────────────────────────────── */
+/* ===== Status badges ===== */
 .status-badge {
     display: inline-flex;
     align-items: center;
@@ -422,9 +404,7 @@
     background: var(--status-success-text);
 }
 
-
-/* ── Row action buttons ──────────────────────────────────── */
-/* Specific selector overrides body.css `main button { display:block; margin-top:1em }` */
+/* ===== Row action buttons ===== */
 .row-actions .row-btn {
     display: inline-flex;
     align-items: center;
@@ -448,7 +428,6 @@
 }
 
 .row-actions .row-btn:hover {
-    /* background: var(--muted-text); */
     background: var(--brand-color-hover);
     color: var(--text-on-brand);
 }
@@ -468,8 +447,7 @@
     flex-shrink: 0;
 }
 
-
-/* ── No-results message ──────────────────────────────────── */
+/* ===== No-results message ===== */
 .inbox-no-results {
     text-align: center;
     padding: 36px;
@@ -477,8 +455,7 @@
     font-size: 0.85em;
 }
 
-
-/* ── Pagination ──────────────────────────────────────────── */
+/* ===== Pagination ===== */
 .pagination-bar {
     display: flex;
     align-items: center;
@@ -511,7 +488,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    /* override body.css */
     box-shadow: none;
     margin: 0;
     font-family: var(--font-body);
@@ -555,55 +531,7 @@
     margin: 0;
 }
 
-
-/* ── Modal base — defined here because submissions.css is not loaded ── */
-.modal-backdrop {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: var(--backdrop-color);
-    z-index: 9000;
-    align-items: center;
-    justify-content: center;
-}
-
-.modal-backdrop.open {
-    display: flex;
-}
-
-.modal-card {
-    background: var(--card-background);
-    border-radius: 12px;
-    padding: 2rem;
-    max-width: 440px;
-    width: 90%;
-    box-shadow: 0 8px 32px var(--shadow-color-modal);
-    max-height: 90vh;
-    overflow-y: auto;
-}
-
-.modal-card h2 {
-    font-size: 1.1em;
-    margin-bottom: 0.35rem;
-}
-
-.modal-actions {
-    display: flex;
-    gap: 0.75rem;
-    justify-content: flex-end;
-    margin-top: 1.5rem;
-}
-
-.modal-actions button,
-.modal-actions .button {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    margin: 0;
-}
-
-
-/* ── History modal ───────────────────────────────────────── */
+/* ===== History modal ===== */
 .history-modal-card {
     max-width: 560px;
     padding: 0;
@@ -750,8 +678,7 @@
     margin: 0;
 }
 
-
-/* ── Upload Clearance modal ──────────────────────────────── */
+/* ===== Upload Clearance modal ===== */
 .clearance-modal-subtitle {
     margin-bottom: 1rem;
 }
@@ -782,8 +709,7 @@
     margin-bottom: 0;
 }
 
-
-/* ── Empty protocols state ───────────────────────────────── */
+/* ===== Empty protocols state ===== */
 .empty-state {
     display: flex;
     flex-direction: column;
@@ -815,10 +741,8 @@
     font-size: 0.9em;
 }
 
+/* ===== Responsive ===== */
 
-/* ── Responsive ──────────────────────────────────────────── */
-
-/* Tablet: 2-col metrics, hide Submitted column */
 @media (max-width: 900px) {
     .metrics-row {
         grid-template-columns: repeat(2, 1fr);
@@ -830,12 +754,6 @@
     }
 }
 
-/*
- * Narrow desktop / large tablet (900px–1100px): the actions column gets
- * cramped when buttons wrap. Give actions more room by hiding Researcher
- * column (info is still in the title meta line at mobile, and the table
- * width itself is constrained at this range). Also shrink pill padding.
- */
 @media (max-width: 1100px) {
     .filter-pill {
         padding: 8px 14px;
@@ -847,7 +765,6 @@
         display: none;
     }
 
-    /* Show researcher name under the title since the column is gone */
     .protocol-title-meta {
         display: flex;
     }
@@ -861,23 +778,12 @@
     }
 }
 
-/*
- * Mobile card layout — 640px and below
- *
- * The table structure stays in the DOM (JS still drives filtering/pagination
- * against it), but we reformat each <tr> as a stacked card and each <td> as
- * a full-width block. Columns we'd normally hide (researcher, date) are
- * already baked into .protocol-title-meta inside the first <td>, so they
- * surface naturally without any extra JS.
- */
 @media (max-width: 640px) {
 
-    /* Remove table scrolling — cards don't need it */
     .protocol-table-scroll {
         overflow-x: visible;
     }
 
-    /* Strip table-layout so rows behave as block cards */
     .protocol-table,
     .protocol-table thead,
     .protocol-table tbody,
@@ -888,12 +794,10 @@
         width: 100%;
     }
 
-    /* Hide the column header row entirely */
     .protocol-table thead {
         display: none;
     }
 
-    /* Each row becomes a card */
     .protocol-table tbody tr {
         padding: 14px 16px;
         border-bottom: 1px solid var(--divider-color);
@@ -906,30 +810,25 @@
         border-bottom: none;
     }
 
-    /* Normalize all cells */
     .protocol-table tbody td {
         padding: 0;
         width: 100%;
     }
 
-    /* Show the meta line (researcher · date) that's hidden on desktop */
     .protocol-title-meta {
         display: flex;
     }
 
-    /* Hide the separate researcher and date columns — info is in the meta line */
     .protocol-table tbody td.researcher-cell,
     .protocol-table tbody td.date-cell {
         display: none;
     }
 
-    /* Status badge left-aligned */
     .protocol-table tbody td:nth-child(4) {
         display: flex;
         align-items: center;
     }
 
-    /* Actions: stack vertically, full width */
     .actions-cell {
         text-align: left;
     }
@@ -949,7 +848,6 @@
         font-size: 0.8em;
     }
 
-    /* Pagination */
     .pagination-bar {
         flex-direction: column;
         align-items: flex-start;
@@ -976,64 +874,5 @@
 
     .metric-card-value {
         font-size: 1.1em;
-    }
-}
-
-/* ── File popup modal ── */
-.file-popup-card {
-    max-width: 860px;
-    width: 92vw;
-    padding: 0;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    max-height: 90vh;
-}
-
-.file-popup-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    padding: 0.75rem 1rem;
-    background: var(--divider-color-subtle);
-    border-bottom: 1px solid var(--divider-color);
-    flex-shrink: 0;
-}
-
-.file-popup-title {
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: var(--primary-text);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.file-popup-close {
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 0.8rem;
-    padding: 6px 10px;
-}
-
-.file-popup-frame {
-    flex: 1;
-    width: 100%;
-    min-height: 520px;
-    border: none;
-    background: var(--card-background);
-}
-
-@media (max-width: 768px) {
-    .file-popup-card {
-        width: 98vw;
-        max-height: 95vh;
-    }
-
-    .file-popup-frame {
-        min-height: 320px;
     }
 }

@@ -46,7 +46,6 @@ $flash_error     = $flash_error     ?? '';
 $offset      = ($page - 1) * $perPage;
 $hasFilters  = $search !== '' || $school !== '' || $animalType !== '' || $gender !== '' || $researcherType !== '';
 
-// Build pagination query string helper
 function pageUrl(int $p, string $search, string $school, string $animalType, string $gender, string $researcherType): string
 {
     return '?' . http_build_query(array_filter([
@@ -60,15 +59,15 @@ function pageUrl(int $p, string $search, string $school, string $animalType, str
 }
 ?>
 
-<link rel="stylesheet" href="<?= CSSPATH ?>/admin/admin-home.css">
-<link rel="stylesheet" href="<?= CSSPATH ?>/admin/records.css">
+<link rel="stylesheet" href="<?= asset_css('admin/admin-home.css') ?>">
+<link rel="stylesheet" href="<?= asset_css('admin/records.css') ?>">
 
 <div class="body">
     <?php include dirname(__DIR__) . '/includes/navigation.php'; ?>
 
     <main class="main-content" id="main-content" tabindex="-1">
 
-        <!-- ── Flash messages ───────────────────────────────────────── -->
+        <!-- ===== Flash messages ===== -->
         <?php if ($flash_success): ?>
             <div class="alert success-message" id="flashSuccess">
                 <?= htmlspecialchars($flash_success, ENT_QUOTES, 'UTF-8') ?>
@@ -80,7 +79,7 @@ function pageUrl(int $p, string $search, string $school, string $animalType, str
             </div>
         <?php endif; ?>
 
-        <!-- ── Page header ──────────────────────────────────────────── -->
+        <!-- ===== Page header ===== -->
         <div class="dashboard-page-header records-page-header">
             <div>
                 <h1 class="dashboard-page-title">Records</h1>
@@ -112,10 +111,7 @@ function pageUrl(int $p, string $search, string $school, string $animalType, str
             <?php endif; ?>
         </div>
 
-
-
-
-        <!-- ── Metric cards ─────────────────────────────────────────── -->
+        <!-- ===== Metric cards ===== -->
         <div class="metrics-row records-metrics">
             <div class="metric-card">
                 <div class="metric-card-label">Total Records</div>
@@ -137,7 +133,7 @@ function pageUrl(int $p, string $search, string $school, string $animalType, str
             </div>
         </div>
 
-        <!-- ── Filters ─────────────────────────────────────────────── -->
+        <!-- ===== Filters ===== -->
         <form method="GET" action="" id="recordsFilterForm">
 
             <?php if ($hasFilters): ?>
@@ -181,13 +177,13 @@ function pageUrl(int $p, string $search, string $school, string $animalType, str
             <input type="hidden" name="page" value="1">
         </form>
 
-        <!-- ── Table ────────────────────────────────────────────────── -->
+        <!-- ===== Table ===== -->
         <div class="protocol-table-wrap records-table-wrap">
             <div class="protocol-table-scroll">
                 <table class="protocol-table records-table">
                     <thead>
                         <tr>
-                            <!-- ACTION BUTTONS column — first so it's always visible without scrolling -->
+                            <!-- ACTION BUTTONS column -->
                             <?php if ($role === 'admin'): ?>
                                 <th class="col-actions">Actions</th>
                             <?php elseif ($role === 'reviewer'): ?>
@@ -224,7 +220,7 @@ function pageUrl(int $p, string $search, string $school, string $animalType, str
                         <?php else: ?>
                             <?php foreach ($records as $i => $r): ?>
                                 <tr>
-                                    <!-- ACTION BUTTONS — first column, always visible -->
+                                    <!-- ACTION BUTTONS -->
                                     <td class="actions-cell">
                                         <?php if ($role === 'admin'): ?>
                                             <div class="row-actions">
@@ -273,7 +269,7 @@ function pageUrl(int $p, string $search, string $school, string $animalType, str
             </div>
         </div>
 
-        <!-- ── Pagination ────────────────────────────────────────────── -->
+        <!-- ===== Pagination ===== -->
         <?php if ($totalPages > 1): ?>
             <div class="pagination-bar">
                 <div class="pagination-info">
@@ -314,9 +310,7 @@ function pageUrl(int $p, string $search, string $school, string $animalType, str
     </main>
 </div>
 
-<!-- ══════════════════════════════════════════════════════════
-     ADD RECORD MODAL
-══════════════════════════════════════════════════════════ -->
+<!-- ===== ADD RECORD MODAL ===== -->
 <div class="modal-backdrop" id="addModal" role="dialog" aria-modal="true" aria-labelledby="addModalTitle">
     <div class="modal-card records-modal-card">
         <div class="records-modal-header">
@@ -327,7 +321,7 @@ function pageUrl(int $p, string $search, string $school, string $animalType, str
             <div class="alert error-messages" id="addError" hidden></div>
             <div class="records-form-grid">
                 <div class="records-form-group records-form-full">
-                    <label for="add_reference_no">Reference No. <span class="records-required">*</span></label>
+                    <label for="add_reference_no">IPN <span class="records-required">*</span></label>
                     <input type="text" id="add_reference_no" name="reference_no" placeholder="e.g. BSU-IACUC-2025-001">
                 </div>
                 <div class="records-form-group records-form-full">
@@ -398,9 +392,7 @@ function pageUrl(int $p, string $search, string $school, string $animalType, str
     </div>
 </div>
 
-<!-- ══════════════════════════════════════════════════════════
-     EDIT RECORD MODAL
-══════════════════════════════════════════════════════════ -->
+<!-- ===== EDIT RECORD MODAL ===== -->
 <div class="modal-backdrop" id="editModal" role="dialog" aria-modal="true" aria-labelledby="editModalTitle">
     <div class="modal-card records-modal-card">
         <div class="records-modal-header">
@@ -410,11 +402,9 @@ function pageUrl(int $p, string $search, string $school, string $animalType, str
         <div class="records-modal-body">
             <div class="alert error-messages" id="editError" hidden></div>
             <div class="records-form-grid">
-                <!-- Hidden field carries the row's id so the controller knows which row to update. -->
                 <input type="hidden" id="edit_id">
                 <div class="records-form-group records-form-full">
-                    <label for="edit_reference_no">Reference No.</label>
-                    <!-- Editable: admin fills this in once the official number is assigned. -->
+                    <label for="edit_reference_no">IPN</label>
                     <input type="text" id="edit_reference_no" name="reference_no" placeholder="e.g. BSU-IACUC-2025-001">
                 </div>
                 <div class="records-form-group records-form-full">
@@ -490,13 +480,10 @@ function pageUrl(int $p, string $search, string $school, string $animalType, str
         const ROOT = '<?= ROOT ?>';
         const CSRF = '<?= htmlspecialchars($csrf, ENT_QUOTES) ?>';
 
-        // ── Modal helpers ─────────────────────────────────────────────────────
+        // ===== Modal helpers =====
         function openModal(id) {
             const modal = document.getElementById(id);
             modal.classList.add('open');
-            // Move focus into the modal so keyboard/screen-reader users land
-            // on the first interactive element (e.g. the confirm button for
-            // delete, or the first input for add/edit).
             const focusable = modal.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
             if (focusable) focusable.focus();
         }
@@ -514,7 +501,7 @@ function pageUrl(int $p, string $search, string $school, string $animalType, str
             });
         });
 
-        // ── Search clear ──────────────────────────────────────────────────────
+        // ===== Search clear =====
         const searchInput = document.getElementById('recordSearch');
         const clearSearch = document.getElementById('clearSearch');
         if (searchInput && clearSearch) {
@@ -527,7 +514,7 @@ function pageUrl(int $p, string $search, string $school, string $animalType, str
             });
         }
 
-        // ── AJAX helper ───────────────────────────────────────────────────────
+        // ===== AJAX helper =====
         function post(url, body) {
             body.csrf_token = CSRF;
             const fd = new FormData();
@@ -554,7 +541,7 @@ function pageUrl(int $p, string $search, string $school, string $animalType, str
             }
         }
 
-        // ── ADD ───────────────────────────────────────────────────────────────
+        // ===== ADD =====
         const addRecordBtn = document.getElementById('addRecordBtn');
         if (addRecordBtn) {
             addRecordBtn.addEventListener('click', () => {
@@ -571,7 +558,7 @@ function pageUrl(int $p, string $search, string $school, string $animalType, str
                 const ref = document.getElementById('add_reference_no').value.trim();
                 const title = document.getElementById('add_title').value.trim();
                 if (!ref) {
-                    showErr('addError', 'Reference number is required.');
+                    showErr('addError', 'IPN is required.');
                     return;
                 }
                 if (!title) {
@@ -605,7 +592,7 @@ function pageUrl(int $p, string $search, string $school, string $animalType, str
             });
         }
 
-        // ── EDIT ──────────────────────────────────────────────────────────────
+        // ===== EDIT =====
         document.querySelectorAll('.edit-record-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 hideErr('editError');
@@ -666,10 +653,7 @@ function pageUrl(int $p, string $search, string $school, string $animalType, str
             }).catch(() => showErr('editError', 'Network error. Please try again.'));
         });
 
-        // ── DELETE ────────────────────────────────────────────────────────────
-        // Uses confirmAction() from modals.js (loaded globally via header.php).
-        // danger:true focuses Cancel by default in modals.js, which is the safe
-        // choice — the user must actively move to Delete to confirm.
+        // ===== DELETE =====
         document.querySelectorAll('.delete-record-btn').forEach(btn => {
             btn.addEventListener('click', async () => {
                 const title = btn.dataset.title || '#' + btn.dataset.id;
@@ -696,9 +680,7 @@ function pageUrl(int $p, string $search, string $school, string $animalType, str
             });
         });
 
-        // ── Drag-to-scroll table ─────────────────────────────────────────────────
-        // The table is wide, so let people click-and-drag the scroll area
-        // instead of hunting for a thin horizontal scrollbar.
+        // ===== Drag-to-scroll table =====
         (function() {
             const scrollEl = document.querySelector('.records-table-wrap .protocol-table-scroll');
             if (!scrollEl) return;
@@ -708,8 +690,6 @@ function pageUrl(int $p, string $search, string $school, string $animalType, str
             let startScrollLeft = 0;
 
             scrollEl.addEventListener('mousedown', e => {
-                // Let buttons/links inside the table keep working normally —
-                // only start a drag when the click begins on empty table space.
                 if (e.target.closest('button, a, input, select, textarea')) return;
                 isDragging = true;
                 scrollEl.classList.add('dragging');
@@ -734,7 +714,7 @@ function pageUrl(int $p, string $search, string $school, string $animalType, str
             });
         })();
 
-        // ── sessionStorage flash (after reload) ───────────────────────────────
+        // ===== sessionStorage flash (after reload) =====
         const pendingFlash = sessionStorage.getItem('records_flash');
         if (pendingFlash) {
             sessionStorage.removeItem('records_flash');
@@ -747,7 +727,7 @@ function pageUrl(int $p, string $search, string $school, string $animalType, str
             setTimeout(() => flash.remove(), 4000);
         }
 
-        // ── Auto-dismiss PHP flash messages ──────────────────────────────────
+        // ===== Auto-dismiss PHP flash messages =====
         function dismissFlash(id, delay) {
             const el = document.getElementById(id);
             if (!el) return;

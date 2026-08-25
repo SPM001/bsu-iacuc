@@ -1,7 +1,135 @@
-.contact-card {
-    margin: 20px;
+main h1 {
+    margin-bottom: 30px;
 }
 
-h2 {
-    font-size: 1.2em;
+.contact-grid {
+    /* display: flex; */
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.contact-card {
+    margin: 1.5em 0;
+    padding: 20px 24px;
+    max-width: 840px;
+    background-color: var(--card-background);
+    border-radius: 8px;
+    box-shadow: 0 1px 4px var(--shadow-color-soft);
+}
+
+/* ===== CARD HEADER (logo + title) ===== */
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.card-logo {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.card-logo-icon {
+    width: 32px;
+    height: 32px;
+    padding: 4px;
+    color: var(--brand-text);
+    background-color: var(--brand-surface-tint);
+    border-radius: 50%;
+    box-sizing: border-box;
+}
+
+.contact-card h2 {
+    font-size: 1.1em;
+    color: var(--brand-text);
+    margin: 0;
+}
+
+/* ===== LABEL / VALUE PAIRS ===== */
+.contact-details {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.contact-row {
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    gap: 8px;
+}
+
+.contact-row dt {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 600;
+    color: var(--secondary-text);
+}
+
+.contact-row dd {
+    margin: 0;
+    color: var(--primary-text);
+    line-height: 1.5;
+}
+
+.contact-row a {
+    color: var(--brand-text);
+}
+
+.contact-row a:hover {
+    color: var(--brand-color-hover);
+}
+
+.row-icon {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+}
+
+/* ===== NOTABLE PEOPLE ===== */
+.people-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.person-name {
+    display: block;
+    font-weight: 600;
+    color: var(--primary-text);
+}
+
+.person-role {
+    display: block;
+    font-size: 0.85em;
+    color: var(--secondary-text);
+}
+
+@media (max-width: 700px) {
+    .contact-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .contact-row {
+        grid-template-columns: 1fr;
+        gap: 2px;
+    }
+}
+
+.notable-people {
+    /* border-top: 1px solid black; */
+    margin-top: 1em;
+    display: flex;
+}
+
+.notable-people dt {
+    margin-left: 1em;
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }

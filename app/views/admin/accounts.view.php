@@ -7,9 +7,9 @@ $user = $user ?? $_SESSION['user'] ?? [];
 $csrf = $csrf ?? '';
 ?>
 
-<link rel="stylesheet" href="<?= CSSPATH ?>/admin/admin.css">
-<link rel="stylesheet" href="<?= CSSPATH ?>/admin/admin-home.css">
-<link rel="stylesheet" href="<?= CSSPATH ?>/admin/accounts.css">
+<link rel="stylesheet" href="<?= asset_css('admin/admin.css') ?>">
+<link rel="stylesheet" href="<?= asset_css('admin/admin-home.css') ?>">
+<link rel="stylesheet" href="<?= asset_css('admin/accounts.css') ?>">
 
 <div class="body">
     <?php include dirname(__DIR__) . '/includes/navigation.php'; ?>

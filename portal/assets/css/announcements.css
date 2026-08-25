@@ -3,15 +3,23 @@
 }
 
 .announcements-title {
-  font-size: 1.8em;
   font-weight: 700;
-  color: var(--brand-text);
   margin: 0 0 0.2em;
 }
 
 .announcements-subtitle {
   font-size: 0.85em;
   color: var(--secondary-text);
+  margin-bottom: 1em;
+}
+
+.announcements-sections {
+  display: flex;
+  justify-content: space-between;
+}
+
+h2 {
+  font-size: 1.4em;
 }
 
 .fb-pages-grid {

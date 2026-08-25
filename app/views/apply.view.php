@@ -7,7 +7,7 @@ include "includes/header.php";
 include "includes/scroll-top.php";
 ?>
 
-<link rel="stylesheet" href="<?= CSSPATH ?>/application.css">
+<link rel="stylesheet" href="<?= asset_css('application.css') ?>">
 
 <div class="body">
     <main class="main-content" id="main-content" tabindex="-1">
@@ -46,23 +46,18 @@ include "includes/scroll-top.php";
 </div>
 
 <script>
-    /* ═══════════════════════════════════════════════════════════════
-   CONSTANTS
-═══════════════════════════════════════════════════════════════ */
+    // ===== CONSTANTS =====
     const ROOT = '<?= ROOT ?>';
     const STEPS = ['Requirements', 'Terms', 'Documents', 'Download Form', 'Upload & Submit', 'Done'];
     const SAVE_KEY = 'bsu_iacuc_apply_v2_u<?= (int) ($_SESSION['user']['user_id'] ?? 0) ?>';
 
-    /* ═══════════════════════════════════════════════════════════════
-       STATE  (hydrated from localStorage on load)
-    ═══════════════════════════════════════════════════════════════ */
+    // ===== STATE  (hydrated from localStorage on load) =====
     let state = {
-        step: 0, // 0-4
+        step: 0,
         agreedTerms: false,
         agreedPrivacy: false,
-        isPi: null, // null = not answered yet; true = yes PI; false = not PI
-        certAlready: false, // server told us they have a cert on file
-        /* uploaded file metadata (actual File objects can't be stored) */
+        isPi: null,
+        certAlready: false,
         certName: null,
         authName: null,
         protocolName: null,
@@ -70,16 +65,13 @@ include "includes/scroll-top.php";
         submittedId: null,
     };
 
-    /* Actual File references — not persisted */
     let files = {
         cert: null,
         auth: null,
         protocol: null
     };
 
-    /* ═══════════════════════════════════════════════════════════════
-       PERSISTENCE
-    ═══════════════════════════════════════════════════════════════ */
+    // ===== PERSISTENCE =====
     function saveState() {
         try {
             localStorage.setItem(SAVE_KEY, JSON.stringify(state));
@@ -99,9 +91,7 @@ include "includes/scroll-top.php";
         } catch (e) {}
     }
 
-    /* ═══════════════════════════════════════════════════════════════
-       NAVIGATION
-    ═══════════════════════════════════════════════════════════════ */
+    // ===== NAVIGATION =====
     function goTo(n) {
         state.step = Math.max(0, Math.min(STEPS.length - 1, n));
         saveState();
@@ -112,16 +102,9 @@ include "includes/scroll-top.php";
         });
     }
 
-    /* ═══════════════════════════════════════════════════════════════
-       LEAVE GUARD
-       — Custom modal intercepts all in-page navigation clicks.
-       — A minimal beforeunload is kept ONLY for tab-close / hard
-         reload (browsers block custom UI there; we cannot avoid it,
-         but we make it fire as rarely as possible).
-    ═══════════════════════════════════════════════════════════════ */
+    // ===== LEAVE GUARD =====
     let _guardArmed = false;
 
-    /* Minimal native fallback – only reached on tab-close / reload */
     function _beforeUnloadHandler(e) {
         e.preventDefault();
         return (e.returnValue = '');
@@ -141,17 +124,13 @@ include "includes/scroll-top.php";
         document.removeEventListener('click', _interceptClicks, true);
     }
 
-    /* Intercept any <a> click that would navigate away from this page */
     function _interceptClicks(e) {
         const anchor = e.target.closest('a[href]');
         if (!anchor) return;
 
         const href = anchor.getAttribute('href');
-        /* Ignore anchors, javascript: links, or the explicit askLeave handler */
         if (!href || href.startsWith('#') || href.startsWith('javascript:')) return;
-        /* Ignore download links */
         if (anchor.hasAttribute('download')) return;
-        /* Ignore links that already call askLeave */
         if (anchor.id === 'btn-home') return;
 
         e.preventDefault();
@@ -159,9 +138,7 @@ include "includes/scroll-top.php";
         askLeave(e, href);
     }
 
-    /* ═══════════════════════════════════════════════════════════════
-       LEAVE DIALOG
-    ═══════════════════════════════════════════════════════════════ */
+    // ===== LEAVE DIALOG =====
     let _leaveHref = ROOT + '/submissions';
 
     function askLeave(e, overrideHref) {
@@ -181,9 +158,7 @@ include "includes/scroll-top.php";
         });
     }
 
-    /* ═══════════════════════════════════════════════════════════════
-       STEPPER
-    ═══════════════════════════════════════════════════════════════ */
+    // ===== STEPPER =====
     function renderStepper() {
         const el = document.getElementById('stepper');
         const checkSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
@@ -199,9 +174,7 @@ include "includes/scroll-top.php";
         el.innerHTML = html;
     }
 
-    /* ═══════════════════════════════════════════════════════════════
-       HELPERS
-    ═══════════════════════════════════════════════════════════════ */
+    // ===== HELPERS =====
     const esc = s => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
     function uploadBox(key, label, subtitle, required = false) {
@@ -215,36 +188,33 @@ include "includes/scroll-top.php";
             <button class="file-badge-remove" onclick="removeFile('${key}')" title="Remove">✕</button>
         </div>`;
         }
-        // PDF only for protocol, more formats for others
         const accept = key === 'protocol' ? 'application/pdf,.pdf' : '.pdf,.jpg,.jpeg,.png';
-        return `<label class="upload-box" style="cursor:pointer;">
-        <input type="file" accept="${accept}" onchange="handleUpload(event,'${key}')" style="display:none;">
+        return `<label class="upload-box">
+        <input type="file" accept="${accept}" onchange="handleUpload(event,'${key}')">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
             <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/>
         </svg>
-        <div class="upload-label">${label}${required ? ' <span style="color:#dc2626;font-size:.75rem;">*</span>' : ''}</div>
+        <div class="upload-label">${label}${required ? ' <span class="req">*</span>' : ''}</div>
         <div class="upload-sub">${subtitle}</div>
     </label>`;
     }
 
-    /* ═══════════════════════════════════════════════════════════════
-       STEP 0 — Requirements & Process
-    ═══════════════════════════════════════════════════════════════ */
+    // ===== STEP 0 — Requirements & Process =====
     function step0() {
         const requirements = [{
                 label: 'IACUC Training Certificate',
                 note: state.certAlready ?
-                    '<span style="color:#065f46;font-size:.75rem;">✓ You have already submitted your certificate.</span>' : '<span style="color:#dc2626;font-size:.75rem;">Required for first-time submitters.</span>',
+                    '<span class="status-done">✓ You have already submitted your certificate.</span>' : '<span class="status-required">Required for first-time submitters.</span>',
             },
             {
                 label: 'Authorization Letter by the Principal Investigator',
-                note: '<span style="color:#6b7280;font-size:.75rem;">Required only if you are not the PI of the study.</span>',
+                note: '<span class="status-muted">Required only if you are not the PI of the study.</span>',
             },
         ];
 
         const process = [
             `Attach requirements (if applicable). <br>
-         <span style="font-size:.78rem;color:#6b7280;">
+         <span class="process-note">
            Your training certificate is required unless you have already submitted one previously.
            If you are not the Principal Investigator, attach an authorization letter.
          </span>`,
@@ -258,31 +228,29 @@ include "includes/scroll-top.php";
 
     <div class="section-label">Requirements</div>
     ${requirements.map(r => `
-    <div class="req-item" style="flex-direction:column;align-items:flex-start;gap:2px;">
-        <div style="display:flex;align-items:center;gap:8px;">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" style="width:16px;height:16px;flex-shrink:0;">
+    <div class="req-item">
+        <div class="req-item-head">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
             </svg>
-            <strong style="font-size:.85rem;">${r.label}</strong>
+            <strong>${r.label}</strong>
         </div>
-        <div style="margin-left:24px;">${r.note}</div>
+        <div class="req-item-note">${r.note}</div>
     </div>`).join('')}
 
-    <div class="section-label" style="margin-top:1.5rem;">Process</div>
+    <div class="section-label section-label--lg-top">Process</div>
     ${process.map((s, i) => `
     <div class="process-step">
         <div class="process-num">${i + 1}</div>
-        <div class="process-text" style="font-size:.85rem;line-height:1.6;">${s}</div>
+        <div class="process-text">${s}</div>
     </div>`).join('')}
 
-    <div class="btn-row" style="margin-top:1.5rem;">
+    <div class="btn-row btn-row--lg-top">
         <button class="btn-primary" onclick="goTo(1)">Proceed →</button>
     </div>`;
     }
 
-    /* ═══════════════════════════════════════════════════════════════
-       STEP 1 — Terms & Conditions
-    ═══════════════════════════════════════════════════════════════ */
+    // ===== STEP 1 — Terms & Conditions =====
     function step1() {
         return `
     <div class="page-tag">Step 2 of 5</div>
@@ -302,7 +270,7 @@ include "includes/scroll-top.php";
         relevant regulatory authorities.
     </div>
 
-    <div class="section-label" style="margin-top:1.25rem;">Privacy policy</div>
+    <div class="section-label section-label--lg-top">Privacy policy</div>
     <div class="tc-scroll">
         Personal information collected through this application will be used solely for processing your
         IACUC protocol submission. Data may be shared with relevant institutional offices, the Bureau
@@ -312,24 +280,22 @@ include "includes/scroll-top.php";
         any inaccuracies by contacting the IACUC office.
     </div>
 
-    <label class="check-label" style="margin-top:1rem;">
+    <label class="check-label">
         <input type="checkbox" id="chk-terms" ${state.agreedTerms ? 'checked' : ''}>
         I have read and agree to the Terms &amp; Conditions
     </label>
-    <label class="check-label" style="margin-top:.5rem;">
+    <label class="check-label">
         <input type="checkbox" id="chk-privacy" ${state.agreedPrivacy ? 'checked' : ''}>
         I have read and agree to the Privacy Policy
     </label>
 
-    <div class="btn-row" style="margin-top:1.25rem;">
-        <button class="btn-secondary" onclick="goTo(0)" style="border:1px solid #d1d5db;">← Previous</button>
+    <div class="btn-row">
+        <button class="btn-secondary" onclick="goTo(0)">← Previous</button>
         <button class="btn-primary" onclick="proceedFromTerms()">Next →</button>
     </div>`;
     }
 
-    /* ═══════════════════════════════════════════════════════════════
-       STEP 2 — Attach Documents
-    ═══════════════════════════════════════════════════════════════ */
+    // ===== STEP 2 — Attach Documents =====
     function step2() {
         const certRequired = !state.certAlready;
 
@@ -340,7 +306,7 @@ include "includes/scroll-top.php";
     <div class="section-label">
         IACUC Training Certificate
         ${certRequired
-            ? '<span style="color:#dc2626;font-size:.75rem;margin-left:4px;text-transform:none;">Required</span>'
+            ? '<span class="status-required-badge">Required</span>'
             : ''}
     </div>
     ${state.certAlready
@@ -353,34 +319,32 @@ include "includes/scroll-top.php";
         : uploadBox('cert', 'Click to upload certificate', 'PDF, JPG, PNG · max 10 MB', certRequired)
     }
 
-    <div class="section-label" style="margin-top:1.25rem;">Are you the Principal Investigator?</div>
-    <div class="btn-row" style="margin:0 0 .75rem;justify-content:flex-start;gap:10px;">
+    <div class="section-label section-label--lg-top">Are you the Principal Investigator?</div>
+    <div class="btn-row btn-row--pi-choice">
         <button type="button" class="pi-choice ${state.isPi === true ? 'pi-choice--active' : ''}"
-                style="border:1px solid #d1d5db;" onclick="setIsPi(true)">Yes</button>
+                onclick="setIsPi(true)">Yes</button>
         <button type="button" class="pi-choice ${state.isPi === false ? 'pi-choice--active' : ''}"
-                style="border:1px solid #d1d5db;" onclick="setIsPi(false)">No</button>
+                onclick="setIsPi(false)">No</button>
     </div>
 
     ${state.isPi === false ? `
     <div id="auth-section">
         <div class="section-label">
             Authorization Letter by PI
-            <span style="color:#dc2626;font-size:.75rem;margin-left:4px;text-transform:none;">Required</span>
+            <span class="status-required-badge">Required</span>
         </div>
         ${uploadBox('auth', 'Click to upload authorization letter', 'PDF, JPG, PNG · max 10 MB', true)}
     </div>` : ''}
 
-    <div id="doc-error" class="error-messages" style="display:none;margin-top:.75rem;"></div>
+    <div id="doc-error" class="error-messages is-hidden"></div>
 
-    <div class="btn-row" style="margin-top:1.25rem;">
-        <button class="btn-secondary" onclick="goTo(1)" style="border:1px solid #d1d5db;">← Previous</button>
+    <div class="btn-row">
+        <button class="btn-secondary" onclick="goTo(1)">← Previous</button>
         <button class="btn-primary" onclick="proceedFromDocs()">Next →</button>
     </div>`;
     }
 
-    /* ═══════════════════════════════════════════════════════════════
-       STEP 3 — Download Protocol Form
-    ═══════════════════════════════════════════════════════════════ */
+    // ===== STEP 3 — Download Protocol Form =====
     function step3() {
         const formPdfUrl = ROOT + '/assets/forms/BSU-IACUC_Application_for_Protocol_Review_Form.pdf';
         const formDocxUrl = ROOT + '/assets/forms/BSU-IACUC_Application_for_Protocol_Review_Form.docx';
@@ -389,7 +353,7 @@ include "includes/scroll-top.php";
     <div class="page-tag">Step 4 of 5</div>
     <div class="page-title">Download Protocol Form</div>
 
-    <p style="font-size:.85rem;color:#6b7280;line-height:1.6;margin-bottom:1.25rem;">
+    <p class="step-intro-text">
         Choose to fill in either the fillable PDF or the DOCX format of the official BSU-IACUC protocol form below. Incomplete forms will be returned for revision. Once done, proceed to
         the next step to upload your completed form.
     </p>
@@ -408,49 +372,45 @@ include "includes/scroll-top.php";
         Download BSU-IACUC Protocol Form (.DOCX)
     </a>
 
-    <div class="btn-row" style="margin-top:1.25rem;">
-        <button class="btn-secondary" onclick="goTo(2)" style="border:1px solid #d1d5db;">← Previous</button>
+    <div class="btn-row">
+        <button class="btn-secondary" onclick="goTo(2)">← Previous</button>
         <button class="btn-primary" onclick="goTo(4)">Next →</button>
     </div>`;
     }
 
-    /* ═══════════════════════════════════════════════════════════════
-       STEP 4 — Upload Protocol Form & Enter Title
-    ═══════════════════════════════════════════════════════════════ */
+    // ===== STEP 4 — Upload Protocol Form & Enter Title =====
     function step4() {
         return `
     <div class="page-tag">Step 5 of 5</div>
     <div class="page-title">Upload Completed Form</div>
 
     <div class="section-label">Protocol title <span class="req">*</span></div>
-    <div class="field" style="margin-bottom:.5rem;">
+    <div class="field">
         <input type="text" id="inp-title" value="${esc(state.title)}"
                placeholder="e.g. Effects of X on Y in Z model" maxlength="255">
     </div>
-    <div class="info-bar orange" style="margin-bottom:1.25rem;font-size:.78rem;">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="width:15px;height:15px;flex-shrink:0;">
+    <div class="info-bar orange info-bar--title-hint">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"/>
         </svg>
-        Make sure this title matches the Protocol Title written on your downloaded form exactly.
+        Make sure this title matches the Protocol Title on your form exactly.
     </div>
 
     <div class="section-label">Completed protocol form <span class="req">*</span></div>
     ${uploadBox('protocol', 'Click to upload completed form', 'PDF only · max 10 MB', true)}
 
-    <div id="upload-error" class="error-messages" style="display:none;margin-top:.75rem;"></div>
+    <div id="upload-error" class="error-messages is-hidden"></div>
 
-    <div class="btn-row" style="margin-top:1.25rem;">
-        <button class="btn-secondary" onclick="goTo(3)" style="border:1px solid #d1d5db;">← Previous</button>
+    <div class="btn-row">
+        <button class="btn-secondary" onclick="goTo(3)">← Previous</button>
         <button class="btn-success" id="btn-submit" onclick="submitProtocol()">
             <span id="submit-label">Submit Protocol</span>
-            <span id="submit-spinner" style="display:none;">Submitting…</span>
+            <span id="submit-spinner" class="is-hidden">Submitting…</span>
         </button>
     </div>`;
     }
 
-    /* ═══════════════════════════════════════════════════════════════
-       STEP 5 — Done
-    ═══════════════════════════════════════════════════════════════ */
+    // ===== STEP 5 — Done =====
     function step5() {
         return `
     <div class="success-center">
@@ -459,24 +419,21 @@ include "includes/scroll-top.php";
                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
             </svg>
         </div>
-        <div class="page-title" style="text-align:center;">Protocol Submitted!</div>
+        <div class="page-title page-title--center">Protocol Submitted!</div>
         <p class="success-desc">
             Your protocol has been received and will be assigned to a reviewer at BSU-CCARD.<br>
             Expect feedback within <strong>5–7 business days</strong>. You will be notified via email.
         </p>
         <div class="success-btn-row">
-            <a href="${ROOT}/submissions?submitted=1" class="btn-primary" style="padding:10px 22px;border-radius:8px;text-decoration:none;font-size:.82rem;font-weight:600;background:#2d7a3a;color:#fff;" onclick="clearState(); disarmGuard();">
+            <a href="${ROOT}/submissions?submitted=1" class="btn-link" onclick="clearState(); disarmGuard();">
                 Go to My Protocols
             </a>
         </div>
     </div>`;
     }
 
-    /* ═══════════════════════════════════════════════════════════════
-       RENDER
-    ═══════════════════════════════════════════════════════════════ */
+    // ===== RENDER =====
     function render() {
-        // Clear stale file name state when File objects are gone (navigating back/forward loses them).
         if (!files.protocol && state.protocolName) {
             state.protocolName = null;
             saveState();
@@ -497,7 +454,6 @@ include "includes/scroll-top.php";
     }
 
     function attachStepListeners() {
-        /* terms checkboxes */
         const ct = document.getElementById('chk-terms');
         const cp = document.getElementById('chk-privacy');
         if (ct) ct.addEventListener('change', e => {
@@ -509,7 +465,6 @@ include "includes/scroll-top.php";
             saveState();
         });
 
-        /* protocol title — save on every keystroke so Back preserves it */
         const ti = document.getElementById('inp-title');
         if (ti) ti.addEventListener('input', e => {
             state.title = e.target.value;
@@ -517,9 +472,7 @@ include "includes/scroll-top.php";
         });
     }
 
-    /* ═══════════════════════════════════════════════════════════════
-       STEP LOGIC
-    ═══════════════════════════════════════════════════════════════ */
+    // ===== STEP LOGIC =====
     function proceedFromTerms() {
         const t = document.getElementById('chk-terms');
         const p = document.getElementById('chk-privacy');
@@ -536,13 +489,12 @@ include "includes/scroll-top.php";
     function setIsPi(val) {
         state.isPi = val;
         saveState();
-        /* clear auth file if user switches to "Yes / I am the PI" */
         if (val === true) {
             files.auth = null;
             state.authName = null;
             saveState();
         }
-        render(); // re-render so auth section appears/disappears cleanly
+        render();
     }
 
     function proceedFromDocs() {
@@ -573,15 +525,12 @@ include "includes/scroll-top.php";
         const file = event.target.files[0];
         if (!file) return;
 
-        // Only allow PDF for protocol
         if (key === 'protocol') {
-            // Check MIME type
             if (file.type !== 'application/pdf') {
                 alert('Only PDF files are accepted for the protocol form.');
-                event.target.value = ''; // Clear the file input
+                event.target.value = '';
                 return;
             }
-            // Also check extension as additional validation
             const ext = file.name.split('.').pop().toLowerCase();
             if (ext !== 'pdf') {
                 alert('Only PDF files are accepted for the protocol form.');
@@ -589,14 +538,12 @@ include "includes/scroll-top.php";
                 return;
             }
         } else {
-            // For cert and auth files
             const allowedTypes = ['application/pdf', 'image/jpeg', 'image/png'];
             if (!allowedTypes.includes(file.type)) {
                 alert('Only PDF, JPG, or PNG files are accepted.');
                 event.target.value = '';
                 return;
             }
-            // Check extensions
             const ext = file.name.split('.').pop().toLowerCase();
             if (!['pdf', 'jpg', 'jpeg', 'png'].includes(ext)) {
                 alert('Only PDF, JPG, or PNG files are accepted.');
@@ -614,7 +561,6 @@ include "includes/scroll-top.php";
         files[key] = file;
         state[key + 'Name'] = file.name;
 
-        // Capture the title field before touching the DOM (step 4 only)
         const titleInp = document.getElementById('inp-title');
         if (titleInp) {
             state.title = titleInp.value;
@@ -622,8 +568,6 @@ include "includes/scroll-top.php";
 
         saveState();
 
-        // Surgically replace only the upload widget so the File object in
-        // `files[key]` is never lost by a full re-render wiping the DOM.
         const wrapper = event.target.closest('.upload-box, .info-bar');
         if (wrapper) {
             const tmp = document.createElement('div');
@@ -642,9 +586,7 @@ include "includes/scroll-top.php";
         render();
     }
 
-    /* ═══════════════════════════════════════════════════════════════
-       SUBMIT
-    ═══════════════════════════════════════════════════════════════ */
+    // ===== SUBMIT =====
     async function submitProtocol() {
         const errBox = document.getElementById('upload-error');
         const btnLabel = document.getElementById('submit-label');
@@ -653,7 +595,6 @@ include "includes/scroll-top.php";
 
         errBox.style.display = 'none';
 
-        /* save title (field now lives on this step) */
         const titleInp = document.getElementById('inp-title');
         if (titleInp) {
             state.title = titleInp.value.trim();
@@ -713,21 +654,14 @@ include "includes/scroll-top.php";
         }
     }
 
-    /* ═══════════════════════════════════════════════════════════════
-       INIT
-    ═══════════════════════════════════════════════════════════════ */
+    // ===== INIT =====
     loadState();
 
-    /*
-     * Check with the server whether this user already has a cert on file.
-     */
+    // ===== * Check with the server whether this user already has a cert on file. =====
     fetch(ROOT + '/apply/hascert')
         .then(r => r.json())
         .then(d => {
             state.certAlready = !!d.has_cert;
-            // Don't saveState() here — certAlready is always re-fetched from the
-            // server on load, so persisting it would create a stale {step:0} entry
-            // in localStorage that falsely triggers "Continue Application" elsewhere.
             render();
         })
         .catch(() => {
@@ -737,7 +671,6 @@ include "includes/scroll-top.php";
 
     render();
 
-    /* Arm the leave guard — disarmed on confirmed in-page navigation, submit success, and the Done-step link. */
     armGuard();
 </script>
 

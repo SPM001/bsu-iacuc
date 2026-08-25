@@ -1,19 +1,11 @@
-/* ============================================================
-   RECORDS PAGE — records.css
-   Extends admin-home.css conventions: em units, 18px root.
-   admin-home.css is loaded first and provides the table,
-   filter-pill, pagination, and modal-backdrop base styles.
-   ============================================================ */
+/* ===== RECORDS PAGE — records.css ===== */
 
-/* ── Page header row ─────────────────────────────────────── */
-/* layout (flex/gap/etc) comes from .dashboard-page-header in admin-home.css */
+/* ===== Page header row ===== */
 
-/* Reuse row-btn from admin-home but make the Add button
-   sit tightly in the header */
 .records-page-header .row-btn {
   margin: 0;
   background: var(--brand-color);
-  color: whitesmoke;
+  color: var(--text-on-brand);
 
   display: inline-flex;
   align-items: center;
@@ -32,13 +24,13 @@
   color: var(--text-on-brand);
 }
 
-/* ── Metric cards: only 3 cards on this page ─────────────── */
+/* ===== Metric cards: only 3 cards on this page ===== */
 .records-metrics {
   grid-template-columns: repeat(3, minmax(0, 1fr));
   max-width: 600px;
 }
 
-/* ── Filter selects row ──────────────────────────────────── */
+/* ===== Filter selects row ===== */
 .records-filters-row {
   display: flex;
   align-items: center;
@@ -60,7 +52,6 @@
   background: var(--card-background);
   color: var(--secondary-text);
   cursor: pointer;
-  /* override body.css */
   margin: 0;
   height: auto;
 }
@@ -71,12 +62,11 @@
   box-shadow: 0 0 0 2px var(--focus-ring-tint);
 }
 
-/* ── Clear-all button ────────────────────────────────────── */
+/* ===== Clear-all button ===== */
 .records-clear-btn {
   white-space: nowrap;
   color: var(--muted-text);
   font-size: 0.8em;
-  /* override row-btn defaults */
   border-color: var(--input-border);
   padding: 7px 14px;
 }
@@ -86,14 +76,6 @@
   color: var(--secondary-text);
 }
 
-/* ── Table wrapper ───────────────────────────────────────── */
-.records-table-wrap {
-  /* inherits protocol-table-wrap */
-}
-
-/* The table is wide, so the scroll area is click-and-drag scrollable
-   (see the JS at the bottom of records.view.php). The grab/grabbing
-   cursor signals that affordance to the user. */
 .records-table-wrap .protocol-table-scroll {
   cursor: grab;
 }
@@ -104,27 +86,7 @@
   scroll-behavior: auto;
 }
 
-/* ── Column widths ───────────────────────────────────────────
- *
- * To adjust a column, change its width value below.
- * The table uses horizontal scroll so total width can exceed 100%.
- *
- * col-actions  — Edit / Delete buttons. Fixed first column.
- * col-ref      — Reference number badge.
- * col-title    — Research title. Wider = less wrapping.
- * col-school   — School / department name.
- * col-animal   — Animal type.
- * col-count    — Animal count number.
- * col-pi       — Principal investigator name.
- * col-gender   — Gender (Male / Female / Mixed).
- * col-rtype    — Researcher type (Student / Faculty etc.).
- * col-adviser  — Research adviser name.
- * col-vet      — Veterinarian name.
- * col-duration — Research duration text.
- * col-date     — Date released.
- * col-recv     — Received-by officer name.
- *
- * ─────────────────────────────────────────────────────────── */
+/* ===== Column widths ===== */
 .records-table .col-actions {
   width: 140px;
   white-space: nowrap;
@@ -139,7 +101,6 @@
   min-width: 300px;
 }
 
-/* ← increase for wider title column */
 .records-table .col-school {
   width: 130px;
 }
@@ -186,7 +147,6 @@
   width: 130px;
 }
 
-/* Ref badge */
 .records-ref {
   font-family: monospace;
   font-size: 0.78em;
@@ -195,14 +155,14 @@
   white-space: nowrap;
 }
 
-/* ── Delete button danger variant ────────────────────────── */
+/* ===== Delete button danger variant ===== */
 .delete-record-btn:hover {
   background: var(--danger-color) !important;
   border-color: var(--danger-color) !important;
   color: var(--text-on-brand) !important;
 }
 
-/* ── Record modal ────────────────────────────────────────── */
+/* ===== Record modal ===== */
 .records-modal-card {
   max-width: 720px;
   width: 94vw;
@@ -266,7 +226,7 @@
   margin: 0;
 }
 
-/* ── Form grid inside modal ──────────────────────────────── */
+/* ===== Form grid inside modal ===== */
 .records-form-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -305,7 +265,6 @@
   border-radius: var(--radius);
   background: var(--card-background);
   color: var(--primary-text);
-  /* override body.css */
   margin: 0;
   width: 100%;
   height: auto;
@@ -325,13 +284,13 @@
   min-height: 70px;
 }
 
-/* ── Alert inside modal ──────────────────────────────────── */
+/* ===== Alert inside modal ===== */
 .records-modal-body .alert {
   margin-bottom: 0.8rem;
   font-size: 0.82em;
 }
 
-/* ── Responsive ──────────────────────────────────────────── */
+/* ===== Responsive ===== */
 @media (max-width: 600px) {
   .records-metrics {
     grid-template-columns: 1fr 1fr;

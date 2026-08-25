@@ -147,9 +147,7 @@ class ProtocolModel extends Model
         return $stmt->execute();
     }
 
-    // ──────────────────────────────────────────────────────────
-    // PROTOCOL VERSIONS
-    // ──────────────────────────────────────────────────────────
+    // ===== PROTOCOL VERSIONS =====
 
     public function insertVersion(
         int $protocolId,
@@ -250,9 +248,7 @@ class ProtocolModel extends Model
         return $stmt->get_result()->fetch_assoc() ?: null;
     }
 
-    // ──────────────────────────────────────────────────────────
-    // ANNOTATIONS
-    // ──────────────────────────────────────────────────────────
+    // ===== ANNOTATIONS =====
 
     public function getAnnotations(int $versionId): array
     {
@@ -285,7 +281,6 @@ class ProtocolModel extends Model
         string $comment,
         int $createdBy
     ): int | false {
-        // Clamp ratios to valid range
         $x      = max(0.0, min(1.0, $x));
         $y      = max(0.0, min(1.0, $y));
         $width  = max(0.0, min(1.0, $width));
@@ -324,11 +319,6 @@ class ProtocolModel extends Model
         $stmt->bind_param('i', $annotationId);
         return $stmt->execute();
     }
-
-    // ──────────────────────────────────────────────────────────
-    // RETURN REASONS
-    // Stores reviewer feedback when sending back for revision.
-    // ──────────────────────────────────────────────────────────
 
     public function insertReturnReason(
         int $protocolId,

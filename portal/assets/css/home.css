@@ -1,3 +1,7 @@
+main {
+    padding-top: 60px;
+}
+
 main img {
     width: 80px;
     height: 80px;
@@ -6,8 +10,12 @@ main img {
 }
 
 article {
-    margin: 40px 0;
+    margin: 16px 0 40px 0;
     width: 100%;
+}
+
+.process-section {
+    margin-top: 40px;
 }
 
 .articles {
@@ -15,22 +23,13 @@ article {
     gap: 5em;
 }
 
-h1,
-h2 {
-    font-family: "PT Serif", serif;
-    text-shadow: 0 0 1px var(--heading-shadow);
-    color: var(--heading-fill);
-}
-
-/* ===================== BANNER ===================== */
+/* ===== BANNER ===== */
 
 .banner {
     display: flex;
     align-items: center;
     gap: 2.5rem;
-
-    /* padding: 2.5rem 0 3rem; */
-    padding: 0 0 2rem 1rem;
+    padding: 0 0 1rem 1rem;
     margin-bottom: 1.2rem;
 
     position: relative;
@@ -41,7 +40,6 @@ h2 {
     position: absolute;
     left: 0;
     right: 0;
-    /* bottom: -20px; */
     bottom: 0;
 
     height: 1px;
@@ -70,7 +68,7 @@ h2 {
     margin: 0;
     font-size: clamp(2rem, 2.2vw, 3.2rem);
     line-height: 1.15;
-    max-width: 850px;
+    max-width: 1100px;
 }
 
 @media (max-width: 900px) {
@@ -113,16 +111,13 @@ h2 {
     }
 }
 
-/* end BANNER */
-
-
 .btn-apply {
     display: block;
     margin-top: 20px;
     text-align: center;
     padding: 16px;
 
-    font-size: 1em;
+    font-size: 1.05em;
     font-weight: 800;
 
     background-color: var(--brand-color-hover);
@@ -136,7 +131,11 @@ h2 {
 }
 
 .btn-apply:hover {
-    background-color: var(--brand-color-deep);
+    background-color: var(--brand-color-active);
+}
+
+#apply-actions .btn-apply {
+    border: 5px outset var(--brand-color-hover);
 }
 
 .home-iacuc p {
@@ -144,11 +143,11 @@ h2 {
     margin: .5em;
 }
 
-.process-step a {
-    /* color: var(--brand-color-hover); */
+h2 {
+    font-size: 1.5em;
 }
 
-/* #region FAQ */
+/* ===== FAQ ===== */
 .faq-section {
     width: 100%;
 }
@@ -197,14 +196,13 @@ h2 {
 }
 
 .faq-question:hover {
-    background: var(--brand-color-hover);
+    background: var(--brand-color-active);
     color: var(--text-on-brand);
 
     border-radius: 8px;
 }
 
 .faq-cont.is-open .faq-question {
-    /* font-style: italic; */
     color: var(--text-on-brand);
     background: var(--brand-color);
     border-bottom: 1px solid var(--brand-color);
@@ -222,70 +220,51 @@ h2 {
     font-weight: 600;
 }
 
-/* #endregion */
-
-
-/* responsive */
-
 @media (max-width: 1200px) {
     .articles {
-        gap: 3em;
+        gap: 0;
         flex-wrap: wrap;
     }
 
-    article {
+    /* article {
         margin: 0;
-    }
+    } */
 
     .faq-section {
         width: 100%;
+        margin-top: 0;
     }
 }
 
-/* #region PROCESS */
+/* ===== PROCESS ===== */
 .process-section h2 {
     margin: 40px 0 20px;
 }
 
 .steps-cont {
-    /*  */
-    border-radius: 18px;
-    border: 1px solid var(--brand-color);
+    border-radius: 8px;
+    border: 5px double var(--brand-color);
     background-color: var(--brand-surface-tint);
 }
 
 .process-step {
-    /*  */
     display: flex;
     align-items: center;
     gap: 12px;
-
     padding: 20px;
+}
 
-    /* background-color: var(--brand-color-hover); */
-    /* color: whitesmoke; */
+.process-step-note {
+    margin-top: .5em;
 }
 
 .process-step:not(:last-child) {
-    border-bottom: 1px solid var(--brand-color);
-    /* border-bottom: 1px solid whitesmoke; */
+    border-bottom: 4px double var(--brand-color);
 }
 
-.process-step span {
-    /*  */
+.process-step>span {
     background-color: var(--brand-color);
-    color: whitesmoke;
-
-    /* background-color: whitesmoke; */
-    /* color: var(--brand-color); */
-
+    color: var(--text-on-brand);
     padding: 10px 15px;
     border-radius: 50%;
 }
-
-.process-step p {
-    /*  */
-    /* font-size: .95em; */
-}
-
-/* #endregion */

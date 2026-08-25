@@ -19,7 +19,6 @@ $hideHeader     = $hideHeader     ?? false;
   <?php $default = "BSU-IACUC"; ?>
   <title><?= isset($title) ? "$title - $default" : $default ?></title>
 
-  <!-- set the theme before anything paints, so there's no flash of the wrong theme -->
   <script>
     (function() {
       var savedTheme = localStorage.getItem('theme');
@@ -29,19 +28,19 @@ $hideHeader     = $hideHeader     ?? false;
     })();
   </script>
 
-  <link rel="stylesheet" href="<?= CSSPATH ?>/header.css">
-  <link rel="stylesheet" href="<?= CSSPATH ?>/body.css">
-  <link rel="stylesheet" href="<?= CSSPATH ?>/modals.css">
-  <link rel="stylesheet" href="<?= CSSPATH ?>/action-queue.css">
+  <link rel="stylesheet" href="<?= asset_css('header.css') ?>">
+  <link rel="stylesheet" href="<?= asset_css('body.css') ?>">
+  <link rel="stylesheet" href="<?= asset_css('modals.css') ?>">
+  <link rel="stylesheet" href="<?= asset_css('action-queue.css') ?>">
 
   <link rel="icon" href="<?= IMGPATH ?>/favicon.ico" type="image/x-icon">
 
-  <script src="<?= JSPATH ?>/header.js" defer></script>
-  <script src="<?= JSPATH ?>/theme-toggle.js" defer></script>
-  <script src="<?= JSPATH ?>/modals.js" defer></script>
-  <script src="<?= JSPATH ?>/action-queue.js" defer></script>
-  <script src="<?= JSPATH ?>/sw-register.js" data-root="<?= ROOT ?>" defer></script>
-  <script src="<?= JSPATH ?>/password-toggle.js" defer></script>
+  <script src="<?= asset_js('header.js') ?>" defer></script>
+  <script src="<?= asset_js('theme-toggle.js') ?>" defer></script>
+  <script src="<?= asset_js('modals.js') ?>" defer></script>
+  <script src="<?= asset_js('action-queue.js') ?>" defer></script>
+  <script src="<?= asset_js('sw-register.js') ?>" data-root="<?= ROOT ?>" defer></script>
+  <script src="<?= asset_js('password-toggle.js') ?>" defer></script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -146,8 +145,8 @@ $hideHeader     = $hideHeader     ?? false;
 
             <!-- LOG IN/REGISTER (NOT LOGGED IN) -->
           <?php } else { ?>
-            <a href="<?= ROOT ?>/users/login" id="headerLogin" class="auth-btn">Login</a>
-            <a href="<?= ROOT ?>/users/register" id="headerRegister" class="auth-btn">Register</a>
+            <a href="<?= ROOT ?>/users/login" id="headerLogin" class="auth-btn">Log In</a>
+            <a href="<?= ROOT ?>/users/register" id="headerRegister" class="auth-btn">Create Account</a>
           <?php } ?>
 
           <!-- MOBILE HAMBURGER ICON -->

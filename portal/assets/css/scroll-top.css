@@ -5,9 +5,9 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background: var(--brand-color);
+  background: var(--brand-color-hover);
   color: var(--text-on-brand);
-  padding: 0.75rem 1rem;
+  padding: 0.75rem 0.85rem;
   border-radius: 2rem;
   text-decoration: none;
   opacity: 0;
@@ -23,7 +23,7 @@
 }
 
 .scroll-top:hover {
-  background: var(--brand-color-light);
+  background: var(--brand-color-active);
   color: var(--primary-text);
 }
 
@@ -42,7 +42,6 @@
   .scroll-top {
     bottom: 1rem;
     right: 1rem;
-    padding: 0.6rem 0.9rem;
   }
 
   .scroll-top span {

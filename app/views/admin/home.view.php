@@ -13,7 +13,7 @@ $user      = $user      ?? $_SESSION['user'] ?? [];
 $csrf      = $csrf      ?? '';
 $protocols = $protocols ?? [];
 
-// ── Map internal status strings to human-readable display labels ──────────
+// ===== Map internal status strings to human-readable display labels =====
 $statusDisplayMap = [
     'under review'   => 'To Review',
     'needs revision' => 'Returned for Revision',
@@ -22,7 +22,6 @@ $statusDisplayMap = [
     'approved'       => 'Approved',
 ];
 
-// CSS badge modifier keyed by internal status
 $badgeClassMap = [
     'under review'   => 'badge-to-review',
     'needs revision' => 'badge-returned',
@@ -31,7 +30,6 @@ $badgeClassMap = [
     'approved'       => 'badge-approved',
 ];
 
-// data-status slug used by the filter pills
 $filterSlugMap = [
     'under review'   => 'to-review',
     'needs revision' => 'returned-for-revision',
@@ -49,7 +47,7 @@ foreach ($protocols as &$protocol) {
 }
 unset($protocol);
 
-// ── Compute per-status counts for metric cards and filter pill badges ─────
+// ===== Compute per-status counts for metric cards and filter pill badges =====
 $countsBySlug = [];
 foreach ($protocols as $p) {
     $slug = $p['filter_slug'];
@@ -63,7 +61,6 @@ $reviewedCount  = $countsBySlug['reviewed']              ?? 0;
 $endorsedCount  = $countsBySlug['endorsed']              ?? 0;
 $approvedCount  = $countsBySlug['approved']              ?? 0;
 
-// "Approved this month" for the metric card
 $approvedThisMonth = 0;
 $currentMonth = date('Y-m');
 foreach ($protocols as $p) {
@@ -74,14 +71,14 @@ foreach ($protocols as $p) {
 
 ?>
 
-<link rel="stylesheet" href="<?= CSSPATH ?>/admin/admin-home.css">
+<link rel="stylesheet" href="<?= asset_css('admin/admin-home.css') ?>">
 
 <div class="body">
     <?php include dirname(__DIR__) . '/includes/navigation.php'; ?>
 
     <main class="main-content" id="main-content" tabindex="-1">
 
-        <!-- ── Page header with search bar ─────────────────────────────────────── -->
+        <!-- ===== Page header with search bar ===== -->
         <div class="dashboard-page-header">
             <h1 class="dashboard-page-title">Protocol Inbox</h1>
 
@@ -99,7 +96,7 @@ foreach ($protocols as $p) {
             </div>
         </div>
 
-        <!-- ── Flash messages ──────────────────────────────────── -->
+        <!-- ===== Flash messages ===== -->
         <?php if (!empty($_SESSION['flash_success'])): ?>
             <div class="alert success-message" id="flashSuccess">
                 <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -117,7 +114,7 @@ foreach ($protocols as $p) {
             <?php unset($_SESSION['flash_error']); ?>
         <?php endif; ?>
 
-        <!-- ── Metric cards ────────────────────────────────────── -->
+        <!-- ===== Metric cards ===== -->
         <div class="metrics-row">
             <div class="metric-card">
                 <div class="metric-card-label">To review</div>
@@ -141,7 +138,7 @@ foreach ($protocols as $p) {
         </div>
 
         <?php if (empty($protocols)): ?>
-            <!-- ── Empty state ─────────────────────────────────── -->
+            <!-- ===== Empty state ===== -->
             <div class="empty-state">
                 <h3>
                     <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -159,7 +156,7 @@ foreach ($protocols as $p) {
 
             </div> -->
 
-            <!-- ── Filter pills ────────────────────────────────── -->
+            <!-- ===== Filter pills ===== -->
             <div class="filter-pills-row" id="filterPillsRow">
                 <button class="filter-pill" data-filter="all">
                     All <span class="pill-count"><?= $totalCount ?></span>
@@ -181,7 +178,7 @@ foreach ($protocols as $p) {
                 </button>
             </div>
 
-            <!-- ── Protocol table ───────────────────────────────── -->
+            <!-- ===== Protocol table ===== -->
             <div class="protocol-table-wrap">
                 <div class="protocol-table-scroll">
                     <table class="protocol-table" id="protocolTable">
@@ -221,7 +218,6 @@ foreach ($protocols as $p) {
                                 );
                                 $title = htmlspecialchars($protocol['research_title'], ENT_QUOTES, 'UTF-8');
 
-                                // Determine primary action button per status and role
                                 $userRole = $user['role'] ?? '';
                                 $actions = [];
 
@@ -425,7 +421,7 @@ foreach ($protocols as $p) {
                 </div><!-- /.protocol-table-scroll -->
             </div><!-- /.protocol-table-wrap -->
 
-            <!-- ── Pagination ───────────────────────────────────── -->
+            <!-- ===== Pagination ===== -->
             <div class="pagination-bar" id="paginationBar">
                 <span class="pagination-info" id="paginationInfo"></span>
                 <div class="pagination-buttons" id="paginationButtons"></div>
@@ -444,9 +440,7 @@ foreach ($protocols as $p) {
     </main>
 </div>
 
-<!-- ────────────────────────────────────────────────────────── -->
-<!-- JavaScript                                                 -->
-<!-- ────────────────────────────────────────────────────────── -->
+<!-- ===== JavaScript ===== -->
 <script>
     const protocolsData = <?= json_encode($protocols) ?>;
     const ROOT_URL = <?= json_encode(ROOT) ?>;
@@ -456,7 +450,7 @@ foreach ($protocols as $p) {
     const CLEARANCE_UPLOAD_API = ROOT_URL + '/apply/clearance_upload';
     const CLEARANCE_VIEW_URL = ROOT_URL + '/apply/clearance/';
 
-    // ── DOM refs ─────────────────────────────────────────────
+    // ===== DOM refs =====
     const tableBody = document.getElementById('protocolTableBody');
     const noResultsRow = document.getElementById('noResultsRow');
     const filterPills = document.querySelectorAll('.filter-pill');
@@ -473,7 +467,7 @@ foreach ($protocols as $p) {
     let currentPage = 1;
     let rowsPerPage = 10;
 
-    // ── Filter pills ─────────────────────────────────────────
+    // ===== Filter pills =====
     filterPills.forEach(pill => {
         pill.addEventListener('click', () => {
             filterPills.forEach(p => p.classList.remove('active'));
@@ -487,7 +481,7 @@ foreach ($protocols as $p) {
         });
     });
 
-    // ── Search ───────────────────────────────────────────────
+    // ===== Search =====
     searchInput?.addEventListener('input', () => {
         searchQuery = searchInput.value.trim().toLowerCase();
         searchClearBtn.classList.toggle('visible', searchQuery.length > 0);
@@ -504,14 +498,14 @@ foreach ($protocols as $p) {
         searchInput.focus();
     });
 
-    // ── Rows-per-page selector ────────────────────────────────
+    // ===== Rows-per-page selector =====
     rowsPerPageSel?.addEventListener('change', () => {
         rowsPerPage = parseInt(rowsPerPageSel.value, 10);
         currentPage = 1;
         renderTable();
     });
 
-    // ── Restore filter from URL param (?status=...) ───────────
+    // ===== Restore filter from URL param (?status=...) =====
     (function restoreFilterFromUrl() {
         const requestedStatus = new URLSearchParams(window.location.search).get('status');
         if (requestedStatus) {
@@ -528,9 +522,8 @@ foreach ($protocols as $p) {
         }
     })();
 
-    // ── Main render ───────────────────────────────────────────
+    // ===== Main render =====
     function renderTable() {
-        // 1. Determine which rows match the current filter + search
         const visibleRows = allRows.filter(row => {
             const slug = row.dataset.filterSlug;
             const title = row.querySelector('.protocol-title-cell')?.textContent.toLowerCase() ?? '';
@@ -547,10 +540,8 @@ foreach ($protocols as $p) {
             return matchesFilter && matchesSearch;
         });
 
-        // 2. Hide all rows
         allRows.forEach(row => row.classList.add('protocol-row-hidden'));
 
-        // 3. Pagination slice
         const totalRows = visibleRows.length;
         const totalPages = Math.max(1, Math.ceil(totalRows / rowsPerPage));
         if (currentPage > totalPages) currentPage = totalPages;
@@ -560,12 +551,10 @@ foreach ($protocols as $p) {
 
         pageRows.forEach(row => row.classList.remove('protocol-row-hidden'));
 
-        // 4. No-results message
         if (noResultsRow) {
             noResultsRow.hidden = totalRows !== 0;
         }
 
-        // 5. Pagination info
         if (paginationInfo) {
             if (totalRows === 0) {
                 paginationInfo.textContent = 'No protocols found';
@@ -576,7 +565,6 @@ foreach ($protocols as $p) {
             }
         }
 
-        // 6. Pagination buttons
         renderPaginationButtons(totalPages);
     }
 
@@ -602,7 +590,6 @@ foreach ($protocols as $p) {
             return span;
         }
 
-        // Prev arrow
         const prevBtn = document.createElement('button');
         prevBtn.className = 'pagination-btn';
         prevBtn.innerHTML = '&#8249;';
@@ -616,7 +603,6 @@ foreach ($protocols as $p) {
         });
         paginationBtns.appendChild(prevBtn);
 
-        // Page number buttons (show up to 5 around current)
         const pageSet = buildPageSet(currentPage, totalPages);
         let prevPageNum = null;
         pageSet.forEach(pageNum => {
@@ -627,7 +613,6 @@ foreach ($protocols as $p) {
             prevPageNum = pageNum;
         });
 
-        // Next arrow
         const nextBtn = document.createElement('button');
         nextBtn.className = 'pagination-btn';
         nextBtn.innerHTML = '&#8250;';
@@ -652,7 +637,7 @@ foreach ($protocols as $p) {
         return [...pages].sort((a, b) => a - b);
     }
 
-    // ── Row action buttons ────────────────────────────────────
+    // ===== Row action buttons =====
     tableBody?.addEventListener('click', function(e) {
         const btn = e.target.closest('[data-action]');
         if (!btn) return;
@@ -694,7 +679,7 @@ foreach ($protocols as $p) {
         }
     });
 
-    // ── Status change API call ────────────────────────────────
+    // ===== Status change API call =====
     async function submitStatusChange(protocolId, newStatus) {
         try {
             const res = await fetch(STATUS_API, {
@@ -712,14 +697,11 @@ foreach ($protocols as $p) {
             if (data.ok) {
                 window.location.reload();
             } else if (data.queued) {
-                // Queued while offline — the action-queue banner explains it.
             } else {
                 alert('Error: ' + (data.error ?? 'Could not update status.'));
             }
         } catch (err) {
             if (!navigator.onLine) {
-                // Should not normally reach here — action-queue.js intercepts
-                // these requests. Surface a clear message just in case.
                 alert('You are offline. The action could not be queued. Please try again when reconnected.');
             } else {
                 alert('Network error. Please try again.');
@@ -727,7 +709,7 @@ foreach ($protocols as $p) {
         }
     }
 
-    // ── Flash message auto-dismiss ────────────────────────────
+    // ===== Flash message auto-dismiss =====
     (function() {
         function dismissFlash(id, delay) {
             const el = document.getElementById(id);
@@ -742,12 +724,11 @@ foreach ($protocols as $p) {
         dismissFlash('flashError', 7000);
     })();
 
-    // ── Initial render ────────────────────────────────────────
+    // ===== Initial render =====
     renderTable();
 </script>
 
-
-<!-- ── History modal ──────────────────────────────────────── -->
+<!-- ===== History modal ===== -->
 <div class="modal-backdrop" id="historyModalBackdrop">
     <div class="modal-card history-modal-card">
         <div class="history-modal-header">
@@ -864,7 +845,7 @@ foreach ($protocols as $p) {
     }
 </script>
 
-<!-- ââ File popup modal (cert / auth letter / protocol versions) ââ -->
+<!-- ===== File popup modal (cert / auth letter / protocol versions) ===== -->
 <div class="modal-backdrop" id="filePopupBackdrop">
     <div class="modal-card file-popup-card">
         <div class="file-popup-header">
@@ -900,7 +881,7 @@ foreach ($protocols as $p) {
     });
 </script>
 
-<!-- ── Upload Clearance modal (admin only) ────────────────── -->
+<!-- ===== Upload Clearance modal (admin only) ===== -->
 <div class="modal-backdrop" id="clearanceModalBackdrop">
     <div class="modal-card clearance-modal-card">
         <h2>Upload Clearance</h2>

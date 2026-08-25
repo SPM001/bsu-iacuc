@@ -1,71 +1,62 @@
-/* #region UNIVERSAL */
+/* ===== UNIVERSAL ===== */
 :root {
     --radius: 4px;
     --btn-radius: 8px;
 
-    /* ── FONTS ───────────────── */
+    /* ===== FONTS ===== */
     --font-title: "Alfa Slab One", serif;
     --font-body: "Akt", serif;
     --font-default: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
 
-    /* ── BRAND (the IACUC green — stays consistent across both themes) ── */
+    /* ===== BRAND (BSU green) ===== */
     --brand-color: rgb(22, 71, 11);
-    --brand-color-hover: rgb(61, 129, 46);
+    --brand-color-hover: rgb(53, 112, 40);
     --brand-color-active: rgb(44, 96, 33);
-    --brand-color-deep: rgb(0, 72, 0);
     --brand-color-light: #c8e6c0;
     --brand-surface-tint: rgba(202, 214, 204, 0.716);
     --focus-ring-color: rgb(48, 159, 23);
 
-    /* brand green used for TEXT/ICONS sitting directly on a page/card surface
-       (headings, nav icons, outline-button labels). Unlike --brand-color,
-       this one flips in dark mode so it stays readable against dark backgrounds. */
     --brand-text: var(--brand-color);
 
-    /* light-tinted overlays used on top of brand-colored surfaces (buttons in the header/footer) */
     --tint-on-brand: rgba(255, 255, 255, 0.25);
     --tint-on-brand-soft: rgba(255, 255, 255, 0.15);
-    --tint-on-brand-border: rgba(255, 255, 255, 0.3);
     --brand-tint-active: rgba(77, 116, 70, 0.25);
     --brand-tint-strong: rgba(22, 71, 11, 0.382);
 
-    /* ── SURFACES (flip between themes) ───────────────── */
+    /* ===== SURFACES (flip between themes) ===== */
     --page-background: #f5f5f5;
     --card-background: #ffffff;
     --card-background-translucent: rgba(255, 255, 255, 0.912);
     --sidebar-background: #e2e5e2e1;
     --backdrop-color: rgba(0, 0, 0, 0.5);
 
-    /* ── TEXT (flip between themes) ───────────────── */
+    /* ===== TEXT (flip between themes) ===== */
     --primary-text: #1a1a1a;
     --secondary-text: #666666;
     --text-on-brand: #f5f5f5;
 
-    /* ── BORDERS & HOVER SURFACES (flip between themes) ── */
+    /* ===== BORDERS & HOVER SURFACES (flip between themes) ===== */
     --divider-color: #e4e4e4;
     --divider-color-subtle: #f0f0f0;
     --divider-color-strong: #000000;
     --hover-surface: #d0d0d0;
     --hover-surface-soft: #f9fbf9;
 
-    /* ── DECORATIVE ────────────── */
+    /* ===== DECORATIVE ===== */
     --heading-fill: rgba(0, 0, 0, 0.15);
     --heading-shadow: rgba(0, 0, 0, 1);
 
-    /* text sitting on top of the fixed background photo, and tooltips —
-       these stay the same in both themes since what's behind them doesn't change */
     --text-on-image: #f5f5f5;
-    --text-on-brand-muted: rgba(233, 233, 233, 0.778);
     --tooltip-background: rgba(0, 0, 0, 0.9);
     --tooltip-text: #ffffff;
     --focus-ring-tint: rgba(44, 96, 33, 0.12);
 
-    /* ── SHADOWS (flip between themes) ───────────────── */
+    /* ===== SHADOWS (flip between themes) ===== */
     --shadow-color: rgba(0, 0, 0, 0.3);
     --shadow-color-soft: rgba(0, 0, 0, 0.15);
     --shadow-color-modal: rgba(0, 0, 0, 0.25);
 
-    /* ── FEEDBACK COLORS (flip between themes) ───────────────── */
+    /* ===== FEEDBACK COLORS (flip between themes) ===== */
     --required-color: red;
     --danger-color: #b91c1c;
     --danger-color-hover: #8f1d17;
@@ -75,11 +66,8 @@
     --warning-background-strong: #991b1b;
     --success-background: #b8d7b8;
     --success-text: #062b04;
-    --error-background: #f8d7da;
-    --error-border: #f5c6cb;
-    --error-text: #721c24;
 
-    /* ── STATUS BADGES (protocol review states) ── */
+    /* ===== STATUS BADGES (protocol review states) ===== */
     --status-warning-bg: #fef3e2;
     --status-warning-text: #92600a;
     --status-danger-bg: #fde8e8;
@@ -93,19 +81,16 @@
     --warning-text: #b45309;
     --brand-surface-faint: rgba(22, 71, 11, 0.03);
 
-    /* ── ADDITIONAL NEUTRALS & TINTS (flip between themes) ── */
+    /* ===== ADDITIONAL NEUTRALS & TINTS (flip between themes) ===== */
     --muted-text: #8a8a8a;
     --input-border: #cccccc;
     --success-background-soft: #eaf7e6;
     --success-border-soft: #a7f3d0;
     --danger-tint-strong: rgba(149, 25, 25, 0.8);
 
-    /* ── FONT SIZES ────────────── */
+    /* ===== FONT SIZES ===== */
 }
 
-/* Dark theme: same variable names, different values.
-   Everything above stays a light-mode default; this block is the only
-   place that needs to change to retheme the whole site. */
 [data-theme="dark"] {
     --page-background: #12181f;
     --card-background: #1c242d;
@@ -141,10 +126,6 @@
     --warning-background-strong: #7a1717;
     --success-background: #1d3320;
     --success-text: #a7d7ae;
-    --error-background: #3a1f22;
-    --error-border: #5c2b30;
-    --error-text: #f2b8bd;
-
     --status-warning-bg: #453014;
     --status-warning-text: #f5c064;
     --status-danger-bg: #4a1f1f;
@@ -165,8 +146,6 @@
     --danger-tint-strong: rgba(239, 68, 68, 0.55);
 }
 
-/* Smooth crossfade whenever the theme changes.
-   Respects reduced-motion preferences. */
 @media (prefers-reduced-motion: no-preference) {
     html[data-theme] * {
         transition: background-color 0.25s ease, color 0.25s ease,
@@ -217,11 +196,18 @@ main {
     flex: 1;
 }
 
-/* #endregion */
+/* ===== GENERAL ELEMENTS ===== */
+h1,
+h2 {
+    font-family: "PT Serif", serif;
+    text-shadow: 0 0 1px var(--heading-shadow);
+    color: var(--heading-fill);
+}
 
+h2 {
+    font-size: 1.8em;
+}
 
-
-/* #region GENERAL ELEMENTS */
 button,
 .button {
     text-decoration: none;
@@ -247,7 +233,6 @@ button:hover,
 button:active,
 .button:active {
     transform: translateY(2px);
-    /* transform: scale(0.97); */
     box-shadow: 0 1px 2px var(--shadow-color-soft);
 }
 
@@ -295,6 +280,10 @@ main a.underlined:hover {
     font-weight: bold;
 }
 
+.italic {
+    font-style: italic;
+}
+
 .helper {
     font-size: 0.7em;
     font-style: italic;
@@ -308,11 +297,7 @@ main a.underlined:hover {
     text-align: center;
 }
 
-/* #endregion */
-
-
-
-/* #region SPECIFIC ELEMENTS */
+/* ===== SPECIFIC ELEMENTS ===== */
 
 .required-asterisk {
     color: var(--required-color);
@@ -334,10 +319,7 @@ main a.underlined:hover {
     top: 1rem;
 }
 
-/* #endregion */
-
-
-/* #region MESSAGES */
+/* ===== MESSAGES ===== */
 
 .success-message,
 .error-message {
@@ -370,9 +352,9 @@ main a.underlined:hover {
 }
 
 .error-messages {
-    background-color: var(--error-background);
-    border: 1px solid var(--error-border);
-    color: var(--error-text);
+    background-color: var(--danger-background-soft);
+    border: 1px solid var(--danger-border-soft);
+    color: var(--danger-color);
     padding: 12px;
     border-radius: 4px;
     margin: auto 20px 20px;
@@ -384,10 +366,7 @@ main a.underlined:hover {
     font-size: .9em;
 }
 
-/* #endregion */
-
-
-/* #region STATUS FILTERS */
+/* ===== STATUS FILTERS ===== */
 .filter-wrapper {
     position: relative;
     width: fit-content;
@@ -395,51 +374,54 @@ main a.underlined:hover {
 
 .status-filters {
     display: flex;
-    gap: 1em;
+    align-items: baseline;
+    gap: 24px;
     margin: 20px 0;
+    border-bottom: 1px solid var(--divider-color);
 }
 
 .status-card {
-    background-color: var(--card-background);
-    color: var(--primary-text);
-    padding: 12px 38px;
-    box-shadow: 0 1px 4px var(--shadow-color-soft);
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    background: none;
+    color: var(--secondary-text);
+    padding: 0 0 10px;
+    box-shadow: none;
     font-size: 1em;
-    border-radius: 4px;
+    border-radius: 0;
+    border-bottom: 2px solid transparent;
 }
 
 .status-card:hover {
     background: none;
-    color: inherit;
+    color: var(--primary-text);
 }
 
 .status-card.active {
-    background: var(--brand-color-active);
-    color: var(--text-on-brand);
+    background: none;
+    color: var(--primary-text);
+    font-weight: 500;
+    border-bottom-color: var(--brand-color);
     transform: none;
-    transform: scale(0.95);
 }
 
 .status-card .status-count {
     display: inline-block;
-    background: var(--hover-surface);
-    color: var(--secondary-text);
-    border-radius: 10px;
-    padding: 1px 8px;
-    font-size: 0.8em;
-    font-weight: 600;
-    margin-left: 4px;
+    background: none;
+    color: var(--muted-text);
+    border-radius: 0;
+    padding: 0;
+    font-size: 0.85em;
+    font-weight: 400;
+    margin-left: 0;
 }
 
 .status-card.active .status-count {
-    background: var(--tint-on-brand);
-    color: var(--text-on-brand);
+    background: none;
+    color: var(--secondary-text);
 }
 
-/* #endregion */
-
-
-/* RESPONSIVE */
 @media (max-width: 768px) {
     html {
         font-size: 16px;

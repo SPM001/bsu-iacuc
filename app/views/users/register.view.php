@@ -8,8 +8,8 @@ include dirname(__DIR__) . '/includes/header.php';
     <meta http-equiv="refresh" content="2; url=<?= ROOT ?>/users/login">
 <?php endif; ?>
 
-<link rel="stylesheet" href="<?= CSSPATH ?>/account.css">
-<link rel="stylesheet" href="<?= CSSPATH ?>/form.css">
+<link rel="stylesheet" href="<?= asset_css('account.css') ?>">
+<link rel="stylesheet" href="<?= asset_css('form.css') ?>">
 
 <div class="body">
     <main class="main-content wide" id="main-content" tabindex="-1">

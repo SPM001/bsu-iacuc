@@ -4,7 +4,7 @@ class UserModel extends Model
 {
   public $table = 'users';
 
-  // =========================== GETTING USERS ===========================
+  // ===== GETTING USERS =====
 
   public function getUserByEmail($email)
   {
@@ -30,7 +30,7 @@ class UserModel extends Model
     return $stmt->get_result()->fetch_assoc() ?: null;
   }
 
-  // =========================== IACUC TRAINING CERTIFICATE ===========================
+  // ===== IACUC TRAINING CERTIFICATE =====
 
   public function getCert(int $userId): ?array
   {
@@ -59,7 +59,7 @@ class UserModel extends Model
     return $stmt->execute();
   }
 
-  // =========================== CREATE UPDATE DELETE ===========================
+  // ===== CREATE UPDATE DELETE =====
 
   public function insertUser(
     string $username,
@@ -116,7 +116,7 @@ class UserModel extends Model
     return $stmt->execute();
   }
 
-  // =========================== OTHER ===========================
+  // ===== OTHER =====
 
   public function getPendingUsers(): array
   {
@@ -146,7 +146,7 @@ class UserModel extends Model
     return $stmt->execute();
   }
 
-  // =========================== FORGOT PASSWORD ===========================
+  // ===== FORGOT PASSWORD =====
 
   public function createPasswordReset(int $user_id, string $token): bool
   {
@@ -193,7 +193,7 @@ class UserModel extends Model
     return $stmt->execute();
   }
 
-  // =========================== LOGIN ATTEMPTS ===========================
+  // ===== LOGIN ATTEMPTS =====
 
   public function countRecentAttempts(string $identifier, int $windowSeconds = 900): int
   {
@@ -225,7 +225,7 @@ class UserModel extends Model
     $stmt->execute();
   }
 
-  // =========================== ADMIN INVITE TOKENS ===========================
+  // ===== ADMIN INVITE TOKENS =====
 
   public function createInviteToken(string $role = 'reviewer', int $hoursValid = 48): string
   {

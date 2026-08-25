@@ -13,7 +13,7 @@ class Admin extends Controller
         $this->model = new UserModel();
     }
 
-    // ===================== ACCESS CONTROL =====================
+    // ===== ACCESS CONTROL =====
 
     private function requireAdmin(bool $ajax = false): void
     {
@@ -47,7 +47,7 @@ class Admin extends Controller
         exit;
     }
 
-    // ===================== ADMIN PAGES =====================
+    // ===== ADMIN PAGES =====
 
     public function home(): void
     {
@@ -107,7 +107,7 @@ class Admin extends Controller
         unset($_SESSION['flash_success'], $_SESSION['flash_error']);
     }
 
-    // ── Records AJAX: add ─────────────────────────────────────────────────
+    // ===== Records AJAX: add =====
 
     public function records_add(): void
     {
@@ -120,10 +120,10 @@ class Admin extends Controller
         $ref   = trim($_POST['reference_no'] ?? '');
 
         if ($ref === '') {
-            $this->jsonError(422, 'Reference number is required.');
+            $this->jsonError(422, 'IPN is required.');
         }
         if ($model->refExists($ref)) {
-            $this->jsonError(422, 'That reference number already exists.');
+            $this->jsonError(422, 'That IPN already exists.');
         }
 
         $d                 = $this->sanitizeRecordPost();
@@ -139,7 +139,7 @@ class Admin extends Controller
         exit;
     }
 
-    // ── Records AJAX: get (for edit modal) ────────────────────────────────
+    // ===== Records AJAX: get (for edit modal) =====
 
     public function records_get(): void
     {
@@ -158,7 +158,7 @@ class Admin extends Controller
         exit;
     }
 
-    // ── Records AJAX: edit ────────────────────────────────────────────────
+    // ===== Records AJAX: edit =====
 
     public function records_edit(): void
     {
@@ -188,7 +188,7 @@ class Admin extends Controller
         exit;
     }
 
-    // ── Records AJAX: delete ──────────────────────────────────────────────
+    // ===== Records AJAX: delete =====
 
     public function records_delete(): void
     {
@@ -234,7 +234,7 @@ class Admin extends Controller
         ];
     }
 
-    // ===================== OTHER PAGES =====================
+    // ===== OTHER PAGES =====
 
     public function announcements(): void
     {
@@ -255,7 +255,7 @@ class Admin extends Controller
         ]);
     }
 
-    // ===================== LOG IN =====================
+    // ===== LOG IN =====
 
     public function login(): void
     {
@@ -284,7 +284,7 @@ class Admin extends Controller
         $ip       = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
 
         $MAX_ATTEMPTS = 5;
-        $WINDOW       = 900; // 15 minutes
+        $WINDOW       = 900;
 
         if (
             $this->model->countRecentAttempts($ip, $WINDOW) >= $MAX_ATTEMPTS
@@ -342,7 +342,7 @@ class Admin extends Controller
         $this->redirect('admin/home');
     }
 
-    // ===================== LOG OUT =====================
+    // ===== LOG OUT =====
 
     public function logout(): void
     {
@@ -354,7 +354,7 @@ class Admin extends Controller
         $this->redirect('admin/login');
     }
 
-    // ===================== REGISTRATION (token-gated) =====================
+    // ===== REGISTRATION (token-gated) =====
 
     private function getValidInvite(string $token): array
     {
@@ -496,7 +496,7 @@ class Admin extends Controller
         ]);
     }
 
-    // ===================== APPROVE / REJECT =====================
+    // ===== APPROVE / REJECT =====
 
     public function approve(): void
     {
@@ -552,7 +552,7 @@ class Admin extends Controller
         $this->redirect('admin/accounts');
     }
 
-    // ===================== FORGOT / RESET PASSWORD =====================
+    // ===== FORGOT / RESET PASSWORD =====
 
     public function forgot_password(): void
     {

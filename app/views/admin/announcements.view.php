@@ -8,7 +8,7 @@ $csrf = $csrf ?? '';
 $first_name = $user['first_name'];
 ?>
 
-<!-- <link rel="stylesheet" href="<?= CSSPATH ?>/admin-home.css"> -->
+<!-- <link rel="stylesheet" href="<?= asset_css('admin-home.css') ?>"> -->
 
 <div class="body">
     <?php include dirname(__DIR__) . '/includes/navigation.php'; ?>

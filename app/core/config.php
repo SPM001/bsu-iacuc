@@ -5,28 +5,43 @@ EnvLoader::load();
 
 $isLocal = ($_SERVER['SERVER_NAME'] == 'localhost');
 
-// Paths
 if ($isLocal) {
-  define('ROOT', EnvLoader::get('LOCAL_ROOT', 'http://localhost/mvc-8-stripped/portal'));
+  define('ROOT', EnvLoader::get('LOCAL_ROOT', 'http://localhost/mvc-august/portal'));
   define('DBNAME', EnvLoader::get('LOCAL_DBNAME', 'bsu_iacuc'));
   define('DBSERVER', EnvLoader::get('LOCAL_DBSERVER', 'localhost'));
   define('DBUSER', EnvLoader::get('LOCAL_DBUSER', 'root'));
   define('DBPASS', EnvLoader::get('LOCAL_DBPASS', ''));
 } else {
-  define('ROOT', EnvLoader::get('PROD_ROOT', 'https://iacuc.infinityfree.me/v7/portal'));
+  define('ROOT', EnvLoader::get('PROD_ROOT', 'https://iacuc.infinityfree.me/portal'));
   define('DBNAME', EnvLoader::get('PROD_DBNAME'));
   define('DBSERVER', EnvLoader::get('PROD_DBSERVER'));
   define('DBUSER', EnvLoader::get('PROD_DBUSER'));
   define('DBPASS', EnvLoader::get('PROD_DBPASS'));
 }
 
-// Assets
 define('VIEWSPATH', dirname(__DIR__) . '/views/');
 define('CSSPATH', ROOT . '/assets/css');
 define('JSPATH', ROOT . '/assets/js');
 define('IMGPATH', ROOT . '/assets/images');
 
-// Brevo SMTP
+define('ASSETS_FS_PATH', dirname(__DIR__, 2) . '/portal/assets');
+
+function asset_css(string $file): string
+{
+  $path = ASSETS_FS_PATH . '/css/' . $file;
+  clearstatcache(true, $path);
+  $v = @filemtime($path);
+  return CSSPATH . '/' . $file . ($v ? '?v=' . $v : '');
+}
+
+function asset_js(string $file): string
+{
+  $path = ASSETS_FS_PATH . '/js/' . $file;
+  clearstatcache(true, $path);
+  $v = @filemtime($path);
+  return JSPATH . '/' . $file . ($v ? '?v=' . $v : '');
+}
+
 define('MAIL_HOST', EnvLoader::get('MAIL_HOST'));
 define('MAIL_PORT', EnvLoader::get('MAIL_PORT', 587));
 define('MAIL_USERNAME', EnvLoader::get('MAIL_USERNAME'));
