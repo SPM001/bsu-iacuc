@@ -122,9 +122,11 @@ class Apply extends Controller
             }
         } else {
             if (!isset($mimeMap[$ext]) || !in_array($mime, $mimeMap[$ext], true)) {
-                $reason = 'That file isn\'t actually a ' . strtoupper($ext) . ' (it looks like it\'s ' . $this->describeMime($mime) . '), even though it\'s named .' . $ext . '. '
-                    . 'This can happen with images saved from Messenger or Facebook, which sometimes convert images to WebP behind the scenes. '
-                    . 'Try re-saving or exporting the image as a PNG or JPG and upload it again.';
+                $reason = 'Invalid file format: '
+                    . 'The file extension does not match the actual file format. '
+                    . 'This can happen with images downloaded from Facebook or Messenger. '
+                    . 'Please save or export the file as PNG or JPG, then upload it again. '
+                    . 'PDF files are also accepted.';
                 return false;
             }
         }
@@ -206,29 +208,32 @@ class Apply extends Controller
         }
 
         $tmpDir    = $this->protocolDir(0);
-        $docUpload = $this->saveUpload('protocol_file', $tmpDir, ['pdf'], required: true);
+        $docReason = null;
+        $docUpload = $this->saveUpload('protocol_file', $tmpDir, ['pdf'], required: true, reason: $docReason);
         if ($docUpload === false) {
-            $this->jsonError(422, 'Protocol file upload failed. Only PDF files are accepted (max 10 MB).');
+            $this->jsonError(422, $docReason ?? 'Protocol file upload failed. Only PDF files are accepted (max 10 MB).');
         }
         [$docPathTmp, $docOriginalName] = $docUpload;
 
         $certPathTmp = $certOriginalName = null;
         if (!$existingCert) {
-            $certUpload = $this->saveUpload('cert', $tmpDir, ['pdf', 'jpg', 'jpeg', 'png'], required: true);
+            $certReason = null;
+            $certUpload = $this->saveUpload('cert', $tmpDir, ['pdf', 'jpg', 'jpeg', 'png'], required: true, reason: $certReason);
             if ($certUpload === false) {
                 @unlink($docPathTmp);
-                $this->jsonError(422, 'Certificate upload failed. Accepted formats: PDF, JPG, PNG (max 10 MB).');
+                $this->jsonError(422, $certReason ?? 'Certificate upload failed. Accepted formats: PDF, JPG, PNG (max 10 MB).');
             }
             [$certPathTmp, $certOriginalName] = $certUpload;
         }
 
         $authPathTmp = $authOriginalName = null;
         if (!$isPi) {
-            $authUpload = $this->saveUpload('auth', $tmpDir, ['pdf', 'jpg', 'jpeg', 'png'], required: true);
+            $authReason = null;
+            $authUpload = $this->saveUpload('auth', $tmpDir, ['pdf', 'jpg', 'jpeg', 'png'], required: true, reason: $authReason);
             if ($authUpload === false) {
                 @unlink($docPathTmp);
                 @unlink($certPathTmp);
-                $this->jsonError(422, 'Authorization letter upload failed. Accepted formats: PDF, JPG, PNG (max 10 MB).');
+                $this->jsonError(422, $authReason ?? 'Authorization letter upload failed. Accepted formats: PDF, JPG, PNG (max 10 MB).');
             }
             [$authPathTmp, $authOriginalName] = $authUpload;
         }
@@ -385,9 +390,10 @@ class Apply extends Controller
             $this->jsonError(422, 'This protocol is not awaiting revision.');
         }
 
-        $docUpload = $this->saveUpload('protocol_file', $this->protocolDir($protocolId), ['pdf'], required: false);
+        $docReason = null;
+        $docUpload = $this->saveUpload('protocol_file', $this->protocolDir($protocolId), ['pdf'], required: false, reason: $docReason);
         if ($docUpload === false) {
-            $this->jsonError(422, 'Upload failed. Only PDF files are accepted (max 10 MB).');
+            $this->jsonError(422, $docReason ?? 'Upload failed. Only PDF files are accepted (max 10 MB).');
         }
 
         if ($docUpload !== null) {
@@ -687,9 +693,10 @@ class Apply extends Controller
             $this->jsonError(422, 'Only endorsed protocols can be marked approved.');
         }
 
-        $docUpload = $this->saveUpload('clearance_file', $this->protocolDir($protocolId), ['pdf'], required: true);
+        $docReason = null;
+        $docUpload = $this->saveUpload('clearance_file', $this->protocolDir($protocolId), ['pdf'], required: true, reason: $docReason);
         if ($docUpload === false) {
-            $this->jsonError(422, 'Upload failed. Only PDF files are accepted (max 10 MB).');
+            $this->jsonError(422, $docReason ?? 'Upload failed. Only PDF files are accepted (max 10 MB).');
         }
         [$docPath, $docOriginalName] = $docUpload;
 
@@ -852,9 +859,10 @@ class Apply extends Controller
             $this->jsonError(422, 'Certificate can only be reuploaded when the protocol needs revision.');
         }
 
-        $certUpload = $this->saveUpload('cert_file', $this->protocolDir($protocolId), ['pdf', 'jpg', 'jpeg', 'png'], required: true);
+        $certReason = null;
+        $certUpload = $this->saveUpload('cert_file', $this->protocolDir($protocolId), ['pdf', 'jpg', 'jpeg', 'png'], required: true, reason: $certReason);
         if ($certUpload === false) {
-            $this->jsonError(422, 'Upload failed. Accepted formats: PDF, JPG, PNG (max 10 MB).');
+            $this->jsonError(422, $certReason ?? 'Upload failed. Accepted formats: PDF, JPG, PNG (max 10 MB).');
         }
         [$certPath, $certOriginalName] = $certUpload;
 
@@ -898,9 +906,10 @@ class Apply extends Controller
             $this->jsonError(422, 'Authorization letter can only be reuploaded when the protocol needs revision.');
         }
 
-        $authUpload = $this->saveUpload('auth_file', $this->protocolDir($protocolId), ['pdf', 'jpg', 'jpeg', 'png'], required: true);
+        $authReason = null;
+        $authUpload = $this->saveUpload('auth_file', $this->protocolDir($protocolId), ['pdf', 'jpg', 'jpeg', 'png'], required: true, reason: $authReason);
         if ($authUpload === false) {
-            $this->jsonError(422, 'Upload failed. Accepted formats: PDF, JPG, PNG (max 10 MB).');
+            $this->jsonError(422, $authReason ?? 'Upload failed. Accepted formats: PDF, JPG, PNG (max 10 MB).');
         }
         [$authPath, $authOriginalName] = $authUpload;
 

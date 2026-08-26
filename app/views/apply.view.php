@@ -48,10 +48,10 @@ include "includes/scroll-top.php";
 <script>
     // ===== CONSTANTS =====
     const ROOT = '<?= ROOT ?>';
-    const STEPS = ['Requirements', 'Terms', 'Documents', 'Download Form', 'Upload & Submit', 'Done'];
+    const STEPS = ['Requirements', 'Terms', 'Documents', 'Download form', 'Upload and submit', 'Done'];
     const SAVE_KEY = 'bsu_iacuc_apply_v2_u<?= (int) ($_SESSION['user']['user_id'] ?? 0) ?>';
 
-    // ===== STATE  (hydrated from localStorage on load) =====
+    // ===== STATE =====
     let state = {
         step: 0,
         agreedTerms: false,
@@ -94,9 +94,7 @@ include "includes/scroll-top.php";
         } catch (e) {}
     }
 
-    // ===== FILE PERSISTENCE (IndexedDB) =====
-    // localStorage can't hold File objects, so the actual file blobs live here.
-    // This is what lets an upload survive a refresh.
+    // ===== FILE PERSISTENCE =====
     const IDB_NAME = 'bsu_iacuc_apply_files';
     const IDB_STORE = 'files';
     const IDB_KEY_PREFIX = SAVE_KEY + '_';
@@ -158,9 +156,6 @@ include "includes/scroll-top.php";
         await Promise.all(FILE_KEYS.map(idbDeleteFile));
     }
 
-    // Rehydrate `files` from IndexedDB on load. Only clear a saved filename
-    // if the blob genuinely isn't recoverable (e.g. first load on a new
-    // browser/device, matching the "saved in this browser only" notice).
     async function hydrateFiles() {
         for (const key of FILE_KEYS) {
             if (state[key + 'Name'] && !files[key]) {
@@ -270,39 +265,116 @@ include "includes/scroll-top.php";
         return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
     }
 
+    // ===== TERMS / PRIVACY MODAL =====
+    function openDocModal(e, id) {
+        if (e) e.preventDefault();
+        const el = document.getElementById(id);
+        if (el) el.classList.add('open');
+    }
+
+    function closeDocModal(id) {
+        const el = document.getElementById(id);
+        if (el) el.classList.remove('open');
+    }
+
+    document.addEventListener('click', e => {
+        if (e.target.classList && e.target.classList.contains('modal-backdrop') && e.target.classList.contains('open')) {
+            e.target.classList.remove('open');
+        }
+    });
+
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') {
+            document.querySelectorAll('.modal-backdrop.open').forEach(el => el.classList.remove('open'));
+        }
+    });
+
     function uploadBox(key, label, subtitle, required = false) {
         const name = state[key + 'Name'];
         if (name) {
             const size = formatFileSize(state[key + 'Size']);
             return `<div class="info-bar">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <use href="#check-circle-icon" />
             </svg>
             <span class="file-badge-name">${esc(name)}${size ? ` <span class="file-badge-size">(${size})</span>` : ''}</span>
-            <button class="file-badge-remove" onclick="removeFile('${key}')" title="Remove">✕</button>
+            <button class="file-badge-remove" onclick="removeFile('${key}')" title="Remove">
+                <svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <use href="#close-icon" />
+                </svg>
+            </button>
         </div>`;
         }
         const accept = key === 'protocol' ? 'application/pdf,.pdf' : '.pdf,.jpg,.jpeg,.png';
         return `<label class="upload-box">
         <input type="file" accept="${accept}" onchange="handleUpload(event,'${key}')">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/>
+        <svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <use href="#upload-icon" />
         </svg>
         <div class="upload-label">${label}${required ? ' <span class="req">*</span>' : ''}</div>
         <div class="upload-sub">${subtitle}</div>
     </label>`;
     }
 
+    function docRow(key, opts) {
+        const name = state[key + 'Name'];
+        const accept = key === 'protocol' ? 'application/pdf,.pdf' : '.pdf,.jpg,.jpeg,.png';
+        const checkSvg = `<svg width="17" height="17" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <use href="#check-circle-icon" />
+        </svg>`;
+
+        let subLine, action;
+
+        if (opts.alreadyOnFile) {
+            subLine = `<span class="doc-row-sub done">${opts.alreadyNote}</span>`;
+            action = `<div class="doc-row-done">${checkSvg}<span>On file</span></div>`;
+        } else if (name) {
+            const size = formatFileSize(state[key + 'Size']);
+            subLine = `<span class="doc-row-sub done">${esc(name)}${size ? ` · ${size}` : ''}</span>`;
+            action = `<div class="doc-row-done">
+            ${checkSvg}
+            <label class="doc-row-replace">
+                Replace
+                <input type="file" accept="${accept}" onchange="handleUpload(event,'${key}')">
+            </label>
+        </div>`;
+        } else {
+            subLine = `<span class="doc-row-sub">${opts.subtitle}</span>`;
+            action = `<label class="btn-upload-inline">
+            <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <use href="#upload-icon" />
+            </svg>
+            Upload
+            <input type="file" accept="${accept}" onchange="handleUpload(event,'${key}')">
+        </label>`;
+        }
+
+        return `<div class="doc-row">
+        <div class="doc-row-info">
+            <div class="doc-row-title">${opts.title}${opts.required ? ' <span class="req">*</span>' : ''}</div>
+            ${subLine}
+        </div>
+        <div class="doc-row-action">${action}</div>
+    </div>`;
+    }
+
     // ===== STEP 0 — Requirements & Process =====
     function step0() {
+        const checkSvgSm = `<svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <use href="#check-circle-icon" />
+        </svg>`;
+
         const requirements = [{
-                label: 'IACUC Training Certificate',
-                note: state.certAlready ?
-                    '<span class="status-done">✓ You have already submitted your certificate.</span>' : '<span class="status-required">Required for first-time submitters.</span>',
+                title: 'IACUC training certificate',
+                subtitle: state.certAlready ?
+                    'You have already submitted your certificate.' : 'Required for first-time submitters.',
+                pill: state.certAlready ?
+                    `<span class="status-pill status-pill-done">${checkSvgSm}On file</span>` : `<span class="status-pill status-pill-required">Required</span>`,
             },
             {
-                label: 'Authorization Letter by the Principal Investigator',
-                note: '<span class="status-muted">Required only if you are not the PI of the study.</span>',
+                title: 'Authorization letter by the Principal Investigator',
+                subtitle: 'Only needed if you are not the PI of the study.',
+                pill: `<span class="status-pill status-pill-muted">If applicable</span>`,
             },
         ];
 
@@ -318,21 +390,21 @@ include "includes/scroll-top.php";
 
         return `
     <div class="page-tag">Step 1 of 5</div>
-    <div class="page-title">Requirements &amp; Process</div>
+    <div class="page-title">Requirements and process</div>
 
-    <div class="section-label">Requirements</div>
+    <div class="section-label">You'll need</div>
+    <div class="doc-list">
     ${requirements.map(r => `
-    <div class="req-item">
-        <div class="req-item-head">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-            </svg>
-            <strong>${r.label}</strong>
+    <div class="doc-row">
+        <div class="doc-row-info">
+            <div class="doc-row-title">${r.title}</div>
+            <span class="doc-row-sub">${r.subtitle}</span>
         </div>
-        <div class="req-item-note">${r.note}</div>
+        <div class="doc-row-action">${r.pill}</div>
     </div>`).join('')}
+    </div>
 
-    <div class="section-label section-label--lg-top">Process</div>
+    <div class="section-label section-label--lg-top">How it works</div>
     ${process.map((s, i) => `
     <div class="process-step">
         <div class="process-num">${i + 1}</div>
@@ -340,14 +412,19 @@ include "includes/scroll-top.php";
     </div>`).join('')}
 
     <div class="info-bar orange">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"/>
+        <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <use href="#alert-triangle-icon" />
         </svg>
         <span><span class="bold">All uploads will be thoroughly examined.</span> Make sure documents are legible, complete, and accurate before submitting.</span>
     </div>
 
     <div class="btn-row btn-row--lg-top">
-        <button class="btn-primary" onclick="goTo(1)">Proceed →</button>
+        <button class="btn-primary" onclick="goTo(1)">
+            Continue
+            <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <use href="#arrow-right-icon" />
+            </svg>
+        </button>
     </div>`;
     }
 
@@ -355,46 +432,77 @@ include "includes/scroll-top.php";
     function step1() {
         return `
     <div class="page-tag">Step 2 of 5</div>
-    <div class="page-title">Terms &amp; Conditions</div>
+    <div class="page-title">Terms and conditions</div>
+    <p class="step-intro-text">Please review the following before continuing with your application.</p>
 
-    <div class="section-label">Terms of use</div>
-    <div class="tc-scroll">
-        By submitting this application, you agree to comply with all applicable laws, regulations, and
-        institutional policies governing the use of animals in research, teaching, and testing.
-        Information provided must be accurate and complete. Any misrepresentation may result in denial
-        or revocation of approval.<br><br>
-        All animal use activities must be conducted exactly as described and approved. Changes to the
-        approved protocol must be submitted and approved before implementation. You are responsible for
-        ensuring all personnel are appropriately trained and listed on this protocol.<br><br>
-        The IACUC reserves the right to inspect and audit animal use activities at any time.
-        Non-compliance may result in suspension or termination of the protocol and reporting to
-        relevant regulatory authorities.
+    <div class="consent-list">
+        <label class="consent-item">
+            <input type="checkbox" class="consent-checkbox" id="chk-terms" ${state.agreedTerms ? 'checked' : ''}>
+            <span>I have read and agree to the
+                <a href="#" class="underlined" onclick="openDocModal(event,'terms-modal')">terms of use</a>
+            </span>
+        </label>
+        <label class="consent-item">
+            <input type="checkbox" class="consent-checkbox" id="chk-privacy" ${state.agreedPrivacy ? 'checked' : ''}>
+            <span>I have read and agree to the
+                <a href="#" class="underlined" onclick="openDocModal(event,'privacy-modal')">privacy policy</a>
+            </span>
+        </label>
     </div>
-
-    <div class="section-label section-label--lg-top">Privacy policy</div>
-    <div class="tc-scroll">
-        Personal information collected through this application will be used solely for processing your
-        IACUC protocol submission. Data may be shared with relevant institutional offices, the Bureau
-        of Animal Industry, and accrediting bodies as required by law.<br><br>
-        Submitted protocols are confidential institutional documents and will not be disclosed to
-        unauthorized parties. You have the right to request access to your personal data and correct
-        any inaccuracies by contacting the IACUC office.
-    </div>
-
-    <label class="check-label">
-        <input type="checkbox" id="chk-terms" ${state.agreedTerms ? 'checked' : ''}>
-        I have read and agree to the Terms &amp; Conditions
-    </label>
-    <label class="check-label">
-        <input type="checkbox" id="chk-privacy" ${state.agreedPrivacy ? 'checked' : ''}>
-        I have read and agree to the Privacy Policy
-    </label>
 
     <div id="terms-error" class="error-messages is-hidden"></div>
 
     <div class="btn-row">
-        <button class="btn-secondary" onclick="goTo(0)">← Previous</button>
-        <button class="btn-primary" onclick="proceedFromTerms()">Next →</button>
+        <button class="btn-secondary" onclick="goTo(0)">
+            <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <use href="#back-icon" />
+            </svg>
+            Back
+        </button>
+        <button class="btn-primary" onclick="proceedFromTerms()">
+            Continue
+            <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <use href="#arrow-right-icon" />
+            </svg>
+        </button>
+    </div>
+
+    <div class="modal-backdrop" id="terms-modal">
+        <div class="modal-card">
+            <h2>Terms of use</h2>
+            <div class="tc-scroll">
+                By submitting this application, you agree to comply with all applicable laws, regulations, and
+                institutional policies governing the use of animals in research, teaching, and testing.
+                Information provided must be accurate and complete. Any misrepresentation may result in denial
+                or revocation of approval.<br><br>
+                All animal use activities must be conducted exactly as described and approved. Changes to the
+                approved protocol must be submitted and approved before implementation. You are responsible for
+                ensuring all personnel are appropriately trained and listed on this protocol.<br><br>
+                The IACUC reserves the right to inspect and audit animal use activities at any time.
+                Non-compliance may result in suspension or termination of the protocol and reporting to
+                relevant regulatory authorities.
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="btn-primary" onclick="closeDocModal('terms-modal')">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-backdrop" id="privacy-modal">
+        <div class="modal-card">
+            <h2>Privacy policy</h2>
+            <div class="tc-scroll">
+                Personal information collected through this application will be used solely for processing your
+                IACUC protocol submission. Data may be shared with relevant institutional offices, the Bureau
+                of Animal Industry, and accrediting bodies as required by law.<br><br>
+                Submitted protocols are confidential institutional documents and will not be disclosed to
+                unauthorized parties. You have the right to request access to your personal data and correct
+                any inaccuracies by contacting the IACUC office.
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="btn-primary" onclick="closeDocModal('privacy-modal')">Close</button>
+            </div>
+        </div>
     </div>`;
     }
 
@@ -402,53 +510,64 @@ include "includes/scroll-top.php";
     function step2() {
         const certRequired = !state.certAlready;
 
+        const rows = [
+            docRow('cert', {
+                title: 'IACUC training certificate',
+                subtitle: 'PDF, JPG, or PNG · max 10 MB',
+                required: certRequired,
+                alreadyOnFile: state.certAlready,
+                alreadyNote: 'You have already submitted your certificate.'
+            }),
+            `<div class="doc-row">
+        <div class="doc-row-info">
+            <div class="doc-row-title">Are you the Principal Investigator?</div>
+        </div>
+        <div class="doc-row-action">
+            <div class="toggle-group">
+                <button type="button" class="toggle-btn ${state.isPi === true ? 'active' : ''}"
+                        onclick="setIsPi(true)">Yes</button>
+                <button type="button" class="toggle-btn ${state.isPi === false ? 'active' : ''}"
+                        onclick="setIsPi(false)">No</button>
+            </div>
+        </div>
+    </div>`,
+        ];
+
+        if (state.isPi === false) {
+            rows.push(docRow('auth', {
+                title: 'Authorization letter by PI',
+                subtitle: 'PDF, JPG, or PNG · max 10 MB',
+                required: true
+            }));
+        }
+
         return `
     <div class="page-tag">Step 3 of 5</div>
-    <div class="page-title">Attach Documents</div>
+    <div class="page-title">Attach documents</div>
 
-    <div class="section-label">
-        IACUC Training Certificate
-        ${certRequired
-            ? '<span class="status-required-badge">Required</span>'
-            : ''}
-    </div>
     ${!state.certAlready ? `
     <p class="step-intro-text">
-        This is the certificate issued upon completion of your IACUC (animal care and use) training course or seminar.
-        If you have not yet completed this training, contact the IACUC office before continuing with your application.
+        The training certificate is issued upon completion of your IACUC (animal care and use) course or seminar.
+        If you haven't completed this training yet, contact the IACUC office before continuing.
     </p>` : ''}
-    ${state.certAlready
-        ? `<div class="notice-bar">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                </svg>
-                You have a stored IACUC training certificate.
-           </div>`
-        : uploadBox('cert', 'Click to upload certificate', 'PDF, JPG, or PNG · max 10 MB', certRequired)
-    }
 
-    <div class="section-label section-label--lg-top">Are you the Principal Investigator?</div>
-    <div class="btn-row btn-row--pi-choice">
-        <button type="button" class="pi-choice ${state.isPi === true ? 'pi-choice--active' : ''}"
-                onclick="setIsPi(true)">Yes</button>
-        <button type="button" class="pi-choice ${state.isPi === false ? 'pi-choice--active' : ''}"
-                onclick="setIsPi(false)">No</button>
-    </div>
-
-    ${state.isPi === false ? `
-    <div id="auth-section">
-        <div class="section-label">
-            Authorization Letter by PI
-            <span class="status-required-badge">Required</span>
-        </div>
-        ${uploadBox('auth', 'Click to upload authorization letter', 'PDF, JPG, or PNG · max 10 MB', true)}
-    </div>` : ''}
+    <div class="doc-list">${rows.join('')}</div>
 
     <div id="doc-error" class="error-messages is-hidden"></div>
 
     <div class="btn-row">
-        <button class="btn-secondary" onclick="goTo(1)">← Previous</button>
-        <button class="btn-primary" onclick="proceedFromDocs()">Next →</button>
+        <button class="btn-secondary" onclick="goTo(1)">
+            <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <use href="#back-icon" />
+            </svg>
+            Back
+        </button>
+        <button class="btn-primary" onclick="proceedFromDocs()">
+            Continue
+            <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <use href="#arrow-right-icon" />
+            </svg>
+        </button>
     </div>`;
     }
 
@@ -457,33 +576,66 @@ include "includes/scroll-top.php";
         const formPdfUrl = ROOT + '/assets/forms/BSU-IACUC_Application_for_Protocol_Review_Form.pdf';
         const formDocxUrl = ROOT + '/assets/forms/BSU-IACUC_Application_for_Protocol_Review_Form.docx';
 
+        const formats = [{
+                title: 'Word document (.DOCX)',
+                subtitle: 'Editable format — convert to PDF once complete.',
+                url: formDocxUrl,
+            },
+            {
+                title: 'Fillable PDF',
+                subtitle: 'Fill in directly and save as PDF.',
+                url: formPdfUrl,
+            },
+        ];
+
         return `
     <div class="page-tag">Step 4 of 5</div>
-    <div class="page-title">Download Protocol Form</div>
+    <div class="page-title">Download protocol form</div>
 
     <p class="step-intro-text">
-        Choose to fill in ONE BSU-IACUC protocol form below, in either the DOCX or fillable PDF format. Convert the DOCX file as PDF for submission in the next step. An incomplete form will be returned for revision. 
+        Download and complete the official BSU-IACUC protocol form in either format below, then upload
+        the finished PDF in the next step.
     </p>
 
-    <div class="section-label">Official Protocol Form</div>
-    
-    <a href="${formDocxUrl}" download class="btn-download">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M12 3v13.5m0 0l-4.5-4.5m4.5 4.5l4.5-4.5"/>
-        </svg>
-        Download BSU-IACUC Protocol Form (.DOCX)
-    </a>
+    <div class="section-label">Official protocol form</div>
+    <div class="doc-list">
+    ${formats.map(f => `
+    <div class="doc-row">
+        <div class="doc-row-info">
+            <div class="doc-row-title">${f.title}</div>
+            <span class="doc-row-sub">${f.subtitle}</span>
+        </div>
+        <div class="doc-row-action">
+            <a href="${f.url}" download class="btn-upload-inline">
+                <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <use href="#download-icon" />
+                </svg>
+                Download
+            </a>
+        </div>
+    </div>`).join('')}
+    </div>
 
-    <a href="${formPdfUrl}" download class="btn-download">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M12 3v13.5m0 0l-4.5-4.5m4.5 4.5l4.5-4.5"/>
+    <div class="info-bar orange">
+        <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <use href="#alert-triangle-icon" />
         </svg>
-        Download BSU-IACUC Protocol Form (Fillable PDF)
-    </a>
+        <span>An incomplete form will be returned for revision.</span>
+    </div>
 
     <div class="btn-row">
-        <button class="btn-secondary" onclick="goTo(2)">← Previous</button>
-        <button class="btn-primary" onclick="goTo(4)">Next →</button>
+        <button class="btn-secondary" onclick="goTo(2)">
+            <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <use href="#back-icon" />
+            </svg>
+            Back
+        </button>
+        <button class="btn-primary" onclick="goTo(4)">
+            Continue
+            <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <use href="#arrow-right-icon" />
+            </svg>
+        </button>
     </div>`;
     }
 
@@ -491,35 +643,40 @@ include "includes/scroll-top.php";
     function step4() {
         return `
     <div class="page-tag">Step 5 of 5</div>
-    <div class="page-title">Upload Completed Form</div>
+    <div class="page-title">Upload completed form</div>
 
     <div class="section-label">Protocol title <span class="req">*</span></div>
     <div class="field">
         <input type="text" id="inp-title" value="${esc(state.title)}"
                placeholder="e.g. Effects of X on Y in Z model" maxlength="255">
     </div>
-    <div class="info-bar orange info-bar--title-hint">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"/>
-        </svg>
-        Make sure this title matches the Protocol Title on your form exactly.
-    </div>
+    <p class="helper field-hint">Make sure this title matches the Protocol Title on your form exactly.</p>
 
-    <div class="section-label">Completed protocol form <span class="req">*</span></div>
-    <div class="info-bar orange">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"/>
-        </svg>
-        <span><span class="bold">Filename format required:</span> Surname_ProtocolTitle.pdf (e.g. DelaCruz_EffectsOfXOnY.pdf)</span>
+    <div class="section-label">Completed protocol form</div>
+    <div class="doc-list">
+    ${docRow('protocol', {
+        title: 'Protocol form (PDF)',
+        subtitle: 'Filename: Surname_ProtocolTitle.pdf · max 10 MB',
+        required: true
+    })}
     </div>
-    ${uploadBox('protocol', 'Click to upload completed form', 'PDF only · max 10 MB', true)}
 
     <div id="upload-error" class="error-messages is-hidden"></div>
 
     <div class="btn-row">
-        <button class="btn-secondary" onclick="goTo(3)">← Previous</button>
+        <button class="btn-secondary" onclick="goTo(3)">
+            <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <use href="#back-icon" />
+            </svg>
+            Back
+        </button>
         <button class="btn-success" id="btn-submit" onclick="submitProtocol()">
-            <span id="submit-label">Submit Protocol</span>
+            <span id="submit-label">
+                <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <use href="#check-icon" />
+                </svg>
+                Submit protocol
+            </span>
             <span id="submit-spinner" class="is-hidden">Submitting…</span>
         </button>
     </div>`;
@@ -530,11 +687,11 @@ include "includes/scroll-top.php";
         return `
     <div class="success-center">
         <div class="success-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            <svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <use href="#check-circle-icon" />
             </svg>
         </div>
-        <div class="page-title page-title--center">Protocol Submitted!</div>
+        <div class="page-title page-title--center">Protocol submitted</div>
         <p class="success-desc">
             Your protocol has been received and will be assigned to a reviewer at BSU-CCARD. Expect feedback within <strong>5–7 business days</strong>. You will be notified via email.
         </p>
@@ -582,7 +739,7 @@ include "includes/scroll-top.php";
         state.agreedPrivacy = p && p.checked;
         saveState();
         if (!state.agreedTerms || !state.agreedPrivacy) {
-            errBox.textContent = 'Please accept both the Terms & Conditions and the Privacy Policy to continue.';
+            errBox.textContent = 'Please accept both the terms of use and the privacy policy to continue.';
             errBox.classList.remove('is-hidden');
             return;
         }
@@ -612,7 +769,7 @@ include "includes/scroll-top.php";
         errBox.style.display = 'none';
 
         if (!state.certAlready && !state.certName) {
-            showErr('Please upload your IACUC Training Certificate.');
+            showErr('Please upload your IACUC training certificate.');
             return;
         }
         if (state.isPi === null) {
@@ -620,7 +777,7 @@ include "includes/scroll-top.php";
             return;
         }
         if (state.isPi === false && !state.authName) {
-            showErr('Please upload the Authorization Letter of the Principal Investigator.');
+            showErr('Please upload the authorization letter of the Principal Investigator.');
             return;
         }
 
@@ -675,16 +832,7 @@ include "includes/scroll-top.php";
 
         saveState();
         idbSetFile(key, file);
-
-        const wrapper = event.target.closest('.upload-box, .info-bar');
-        if (wrapper) {
-            const tmp = document.createElement('div');
-            tmp.innerHTML = uploadBox(key, '', '');
-            const replacement = tmp.firstElementChild;
-            wrapper.replaceWith(replacement);
-        } else {
-            render();
-        }
+        render();
     }
 
     function removeFile(key) {
@@ -745,7 +893,7 @@ include "includes/scroll-top.php";
                 errBox.textContent = json.error ?? 'Submission failed. Please try again.';
                 errBox.style.display = 'flex';
                 btn.disabled = false;
-                btnLabel.style.display = 'inline';
+                btnLabel.style.display = 'inline-flex';
                 spinner.style.display = 'none';
                 return;
             }
@@ -754,10 +902,6 @@ include "includes/scroll-top.php";
             disarmGuard();
             idbClearAllFiles();
 
-            // Go straight to the Done step without persisting it — this is a
-            // terminal, one-time screen, not something to restore on reload.
-            // (clearState() must run *after* this, since goTo()/saveState()
-            // would otherwise immediately re-write the just-cleared state.)
             state.step = 5;
             render();
             window.scrollTo({
@@ -770,7 +914,7 @@ include "includes/scroll-top.php";
             errBox.textContent = 'Network error. Please check your connection and try again.';
             errBox.style.display = 'flex';
             btn.disabled = false;
-            btnLabel.style.display = 'inline';
+            btnLabel.style.display = 'inline-flex';
             spinner.style.display = 'none';
         }
     }
@@ -778,7 +922,6 @@ include "includes/scroll-top.php";
     // ===== INIT =====
     loadState();
 
-    // ===== * Check with the server whether this user already has a cert on file. =====
     fetch(ROOT + '/apply/hascert')
         .then(r => r.json())
         .then(d => {
@@ -790,8 +933,6 @@ include "includes/scroll-top.php";
             render();
         });
 
-    // Render immediately with whatever we have so the page isn't blank,
-    // then rehydrate the actual file blobs from IndexedDB and re-render.
     render();
     hydrateFiles();
 
