@@ -38,6 +38,50 @@ $filterSlugMap = [
     'approved'       => 'approved',
 ];
 
+// ===== Status metadata: color + icon + plain-language description (mirrors My Protocols) =====
+$statusMeta = [
+    'to-review' => [
+        'label' => 'To Review',
+        'color' => '#0072B2',
+        'icon'  => 'clock-icon',
+        'desc'  => 'Newly submitted protocols waiting on an initial review.',
+    ],
+    'returned-for-revision' => [
+        'label' => 'Returned for Revision',
+        'color' => '#D55E00',
+        'icon'  => 'alert-triangle-icon',
+        'desc'  => 'Sent back to the researcher with feedback. No action needed until they resubmit.',
+    ],
+    'reviewed' => [
+        'label' => 'Reviewed',
+        'color' => '#CC79A7',
+        'icon'  => 'checkbox-icon',
+        'desc'  => 'Reviewer has finished their assessment. Ready to be marked as endorsed.',
+    ],
+    'endorsed' => [
+        'label' => 'Endorsed',
+        'color' => '#E69F00',
+        'icon'  => 'shield-check-icon',
+        'desc'  => 'Endorsed and awaiting a clearance document before it can be marked approved.',
+    ],
+    'approved' => [
+        'label' => 'Approved',
+        'color' => '#009E73',
+        'icon'  => 'check-circle-icon',
+        'desc'  => 'Clearance issued. The protocol is fully approved.',
+    ],
+];
+
+/**
+ * Status icon: references a symbol already defined in sprites.php.
+ */
+function statusIconSvg(string $iconId, int $size = 14): string
+{
+    return '<svg class="status-icon-svg" width="' . $size . '" height="' . $size . '" viewBox="0 0 24 24" aria-hidden="true" focusable="false">'
+        . '<use href="#' . htmlspecialchars($iconId, ENT_QUOTES, 'UTF-8') . '" />'
+        . '</svg>';
+}
+
 foreach ($protocols as &$protocol) {
     $key = strtolower($protocol['status']);
 
@@ -71,6 +115,7 @@ foreach ($protocols as $p) {
 
 ?>
 
+<link rel="stylesheet" href="<?= asset_css('protocol-list.css') ?>">
 <link rel="stylesheet" href="<?= asset_css('admin/admin-home.css') ?>">
 
 <div class="body">
@@ -156,270 +201,310 @@ foreach ($protocols as $p) {
 
             </div> -->
 
-            <!-- ===== Filter pills ===== -->
-            <div class="filter-pills-row" id="filterPillsRow">
-                <button class="filter-pill" data-filter="all">
-                    All <span class="pill-count"><?= $totalCount ?></span>
-                </button>
-                <button class="filter-pill active" data-filter="to-review">
-                    To review <span class="pill-count"><?= $toReviewCount ?></span>
-                </button>
-                <button class="filter-pill" data-filter="returned-for-revision">
-                    Returned for revision <span class="pill-count"><?= $revisionCount ?></span>
-                </button>
-                <button class="filter-pill" data-filter="reviewed">
-                    Reviewed <span class="pill-count"><?= $reviewedCount ?></span>
-                </button>
-                <button class="filter-pill" data-filter="endorsed">
-                    Endorsed <span class="pill-count"><?= $endorsedCount ?></span>
-                </button>
-                <button class="filter-pill" data-filter="approved">
-                    Approved <span class="pill-count"><?= $approvedCount ?></span>
-                </button>
+            <!-- ===== Status filter tabs ===== -->
+            <div class="filter-wrapper">
+                <div class="mobile-status-filters button">
+                    <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <use href="#filter-icon" />
+                    </svg>
+                    Status: <span id="mobileFilterLabel" class="mobile-filter-label">To review</span>
+                </div>
+
+                <div class="status-filters" id="filterPillsRow">
+                    <button class="status-card" data-filter="all" data-label="All">
+                        <p>All <span class="status-count"><?= $totalCount ?></span></p>
+                    </button>
+                    <button class="status-card active" data-filter="to-review" data-label="To review">
+                        <p>To review <span class="status-count"><?= $toReviewCount ?></span></p>
+                    </button>
+                    <button class="status-card" data-filter="returned-for-revision" data-label="Returned for revision">
+                        <p>Returned for revision <span class="status-count"><?= $revisionCount ?></span></p>
+                    </button>
+                    <button class="status-card" data-filter="reviewed" data-label="Reviewed">
+                        <p>Reviewed <span class="status-count"><?= $reviewedCount ?></span></p>
+                    </button>
+                    <button class="status-card" data-filter="endorsed" data-label="Endorsed">
+                        <p>Endorsed <span class="status-count"><?= $endorsedCount ?></span></p>
+                    </button>
+                    <button class="status-card" data-filter="approved" data-label="Approved">
+                        <p>Approved <span class="status-count"><?= $approvedCount ?></span></p>
+                    </button>
+                </div>
             </div>
 
-            <!-- ===== Protocol table ===== -->
-            <div class="protocol-table-wrap">
-                <div class="protocol-table-scroll">
-                    <table class="protocol-table" id="protocolTable">
-                        <thead>
-                            <tr>
-                                <th class="col-title">Protocol title</th>
-                                <th class="col-researcher">Researcher</th>
-                                <th class="col-submitted">Submitted</th>
-                                <th class="col-status">Status</th>
-                                <th class="col-actions"></th>
-                            </tr>
-                        </thead>
+            <!-- ===== Status legend ===== -->
+            <div class="status-legend-bar">
+                <span class="legend-title">Current status</span>
 
-                        <?php
-                        $iconMap = [
-                            'review'   => '#review-icon',
-                            'history'  => '#history-icon',
-                            'check'    => '#check-icon',
-                            'upload'   => '#upload-icon',
-                            'download' => '#download-icon',
-                            'back'     => '#back-icon',
-                        ];
-                        ?>
+                <div class="legend-items">
+                    <?php foreach ($statusMeta as $meta): ?>
+                        <span class="legend-item">
+                            <span class="legend-icon" style="background:<?= $meta['color'] ?>">
+                                <?= statusIconSvg($meta['icon'], 13) ?>
+                            </span>
+                            <?= htmlspecialchars($meta['label'], ENT_QUOTES, 'UTF-8') ?>
+                        </span>
+                    <?php endforeach; ?>
+                </div>
 
-                        <tbody id="protocolTableBody">
-                            <?php foreach ($protocols as $protocol):
-                                $submittedDate  = date('M j, Y', strtotime($protocol['submitted_at']));
-                                $statusDisplay  = $protocol['status_display'];
-                                $badgeClass     = $protocol['badge_class'];
-                                $filterSlug     = $protocol['filter_slug'];
-                                $statusLower    = strtolower($protocol['status']);
-                                $protocolId     = (int) $protocol['protocol_id'];
-                                $researcherName = htmlspecialchars(
-                                    $protocol['first_name'] . ' ' . $protocol['last_name'],
-                                    ENT_QUOTES,
-                                    'UTF-8'
-                                );
-                                $title = htmlspecialchars($protocol['research_title'], ENT_QUOTES, 'UTF-8');
+                <div class="legend-info-wrapper" id="legendInfoWrapper">
+                    <button type="button" class="legend-info-btn" id="legendInfoBtn"
+                        aria-expanded="false" aria-controls="legendInfoPanel"
+                        aria-label="What do the statuses mean?">
+                        <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                            <use href="#question-info-icon" />
+                        </svg>
+                    </button>
 
-                                $userRole = $user['role'] ?? '';
-                                $actions = [];
-
-                                $userRole = strtolower($user['role'] ?? '');
-                                $actions = [];
-
-                                if ($userRole === 'reviewer') {
-
-                                    switch ($statusLower) {
-
-                                        case 'under review':
-                                            $actions = [
-                                                [
-                                                    'label' => 'Review',
-                                                    'action' => 'open',
-                                                    'icon' => 'review',
-                                                    'primary' => true
-                                                ],
-                                                [
-                                                    'label' => 'Show History',
-                                                    'action' => 'show-history',
-                                                    'icon' => 'history'
-                                                ]
-                                            ];
-                                            break;
-
-                                        case 'approved':
-                                            $actions = [
-                                                [
-                                                    'label' => 'Show Clearance',
-                                                    'action' => 'view-clearance',
-                                                    'icon' => 'download',
-                                                    'primary' => true
-                                                ],
-                                                [
-                                                    'label' => 'View',
-                                                    'action' => 'view',
-                                                    'icon' => 'review'
-                                                ],
-                                                [
-                                                    'label' => 'Show History',
-                                                    'action' => 'show-history',
-                                                    'icon' => 'history'
-                                                ]
-                                            ];
-                                            break;
-
-                                        default:
-                                            $actions = [
-                                                [
-                                                    'label' => 'View',
-                                                    'action' => 'view',
-                                                    'icon' => 'review',
-                                                    'primary' => true
-                                                ],
-                                                [
-                                                    'label' => 'Show History',
-                                                    'action' => 'show-history',
-                                                    'icon' => 'history'
-                                                ]
-                                            ];
-                                    }
-                                } else {
-
-                                    switch ($statusLower) {
-
-                                        case 'reviewed':
-                                            $actions = [
-                                                [
-                                                    'label' => 'Mark as Endorsed',
-                                                    'action' => 'mark-endorsed',
-                                                    'icon' => 'check',
-                                                    'primary' => true
-                                                ],
-                                                [
-                                                    'label' => 'View',
-                                                    'action' => 'view',
-                                                    'icon' => 'review'
-                                                ],
-                                                [
-                                                    'label' => 'Show History',
-                                                    'action' => 'show-history',
-                                                    'icon' => 'history'
-                                                ]
-                                            ];
-                                            break;
-
-                                        case 'endorsed':
-                                            $actions = [
-                                                [
-                                                    'label' => 'Upload Clearance and Mark as Approved',
-                                                    'action' => 'upload-clearance',
-                                                    'icon' => 'upload',
-                                                    'primary' => true
-                                                ],
-                                                [
-                                                    'label' => 'View',
-                                                    'action' => 'view',
-                                                    'icon' => 'review'
-                                                ],
-                                                [
-                                                    'label' => 'Show History',
-                                                    'action' => 'show-history',
-                                                    'icon' => 'history'
-                                                ]
-                                            ];
-                                            break;
-
-                                        case 'approved':
-                                            $actions = [
-                                                [
-                                                    'label' => 'Show Clearance',
-                                                    'action' => 'view-clearance',
-                                                    'icon' => 'download',
-                                                    'primary' => true
-                                                ],
-                                                [
-                                                    'label' => 'View',
-                                                    'action' => 'view',
-                                                    'icon' => 'review'
-                                                ],
-                                                [
-                                                    'label' => 'Show History',
-                                                    'action' => 'show-history',
-                                                    'icon' => 'history'
-                                                ]
-                                            ];
-                                            break;
-
-                                        default:
-                                            $actions = [
-                                                [
-                                                    'label' => 'View',
-                                                    'action' => 'view',
-                                                    'icon' => 'review',
-                                                    'primary' => true
-                                                ],
-                                                [
-                                                    'label' => 'Show History',
-                                                    'action' => 'show-history',
-                                                    'icon' => 'history'
-                                                ]
-                                            ];
-                                    }
-                                }
-                            ?>
-                                <tr data-protocol-id="<?= $protocolId ?>"
-                                    data-filter-slug="<?= $filterSlug ?>"
-                                    data-researcher="<?= strtolower(htmlspecialchars($protocol['first_name'] . ' ' . $protocol['last_name'], ENT_QUOTES, 'UTF-8')) ?>">
-
-                                    <td>
-                                        <div class="protocol-title-cell">
-                                            <?= $title ?>
-                                        </div>
-                                        <div class="protocol-title-meta">
-                                            <span class="meta-researcher"><?= $researcherName ?></span>
-                                            <span class="meta-sep">&middot;</span>
-                                            <span class="meta-date"><?= $submittedDate ?></span>
-                                        </div>
-                                    </td>
-                                    <td class="researcher-cell"><?= $researcherName ?></td>
-                                    <td class="date-cell"><?= $submittedDate ?></td>
-                                    <td>
-                                        <span class="status-badge <?= $badgeClass ?>">
-                                            <span class="status-badge-dot"></span>
-                                            <?= htmlspecialchars($statusDisplay, ENT_QUOTES, 'UTF-8') ?>
-                                        </span>
-                                    </td>
-                                    <td class="actions-cell">
-                                        <div class="row-actions">
-
-                                            <?php foreach ($actions as $action): ?>
-
-                                                <button
-                                                    class="row-btn <?= !empty($action['primary']) ? 'row-btn-primary' : '' ?>"
-                                                    data-action="<?= $action['action'] ?>">
-
-                                                    <?php if (!empty($action['icon'])): ?>
-                                                        <svg width="14" height="14" viewBox="0 0 24 24"
-                                                            aria-hidden="true" focusable="false">
-                                                            <use href="<?= $iconMap[$action['icon']] ?>"></use>
-                                                        </svg>
-                                                    <?php endif; ?>
-
-                                                    <?= htmlspecialchars($action['label']) ?>
-
-                                                </button>
-
-                                            <?php endforeach; ?>
-
-                                        </div>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
-
-                    <div class="inbox-no-results" id="noResultsRow" hidden>
-                        No protocols match your search or filter.
+                    <div class="legend-info-panel" id="legendInfoPanel" role="dialog" aria-label="What the statuses mean">
+                        <?php foreach ($statusMeta as $meta): ?>
+                            <div class="legend-info-row">
+                                <span class="legend-icon" style="background:<?= $meta['color'] ?>">
+                                    <?= statusIconSvg($meta['icon'], 11) ?>
+                                </span>
+                                <div>
+                                    <p class="legend-info-title" style="color:<?= $meta['color'] ?>">
+                                        <?= htmlspecialchars($meta['label'], ENT_QUOTES, 'UTF-8') ?>
+                                    </p>
+                                    <p class="legend-info-desc">
+                                        <?= htmlspecialchars($meta['desc'], ENT_QUOTES, 'UTF-8') ?>
+                                    </p>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
                     </div>
-                </div><!-- /.protocol-table-scroll -->
-            </div><!-- /.protocol-table-wrap -->
+                </div>
+            </div>
+
+            <!-- ===== Status guide (shows description for the active filter) ===== -->
+            <div class="status-guide" id="statusGuide"></div>
+
+            <!-- ===== Protocol list ===== -->
+            <div class="protocols-list" id="protocolsList">
+
+                <?php
+                $iconMap = [
+                    'review'   => '#review-icon',
+                    'history'  => '#history-icon',
+                    'check'    => '#check-icon',
+                    'upload'   => '#upload-icon',
+                    'download' => '#download-icon',
+                    'back'     => '#back-icon',
+                ];
+                ?>
+
+                <?php foreach ($protocols as $protocol):
+                    $submittedDate  = date('M j, Y', strtotime($protocol['submitted_at']));
+                    $statusDisplay  = $protocol['status_display'];
+                    $badgeClass     = $protocol['badge_class'];
+                    $filterSlug     = $protocol['filter_slug'];
+                    $statusLower    = strtolower($protocol['status']);
+                    $protocolId     = (int) $protocol['protocol_id'];
+                    $researcherName = htmlspecialchars(
+                        $protocol['first_name'] . ' ' . $protocol['last_name'],
+                        ENT_QUOTES,
+                        'UTF-8'
+                    );
+                    $title = htmlspecialchars($protocol['research_title'], ENT_QUOTES, 'UTF-8');
+
+                    $userRole = $user['role'] ?? '';
+                    $actions = [];
+
+                    $userRole = strtolower($user['role'] ?? '');
+                    $actions = [];
+
+                    if ($userRole === 'reviewer') {
+
+                        switch ($statusLower) {
+
+                            case 'under review':
+                                $actions = [
+                                    [
+                                        'label' => 'Review',
+                                        'action' => 'open',
+                                        'icon' => 'review',
+                                        'primary' => true
+                                    ],
+                                    [
+                                        'label' => 'Show History',
+                                        'action' => 'show-history',
+                                        'icon' => 'history'
+                                    ]
+                                ];
+                                break;
+
+                            case 'approved':
+                                $actions = [
+                                    [
+                                        'label' => 'Show Clearance',
+                                        'action' => 'view-clearance',
+                                        'icon' => 'download',
+                                        'primary' => true
+                                    ],
+                                    [
+                                        'label' => 'View',
+                                        'action' => 'view',
+                                        'icon' => 'review'
+                                    ],
+                                    [
+                                        'label' => 'Show History',
+                                        'action' => 'show-history',
+                                        'icon' => 'history'
+                                    ]
+                                ];
+                                break;
+
+                            default:
+                                $actions = [
+                                    [
+                                        'label' => 'View',
+                                        'action' => 'view',
+                                        'icon' => 'review',
+                                        'primary' => true
+                                    ],
+                                    [
+                                        'label' => 'Show History',
+                                        'action' => 'show-history',
+                                        'icon' => 'history'
+                                    ]
+                                ];
+                        }
+                    } else {
+
+                        switch ($statusLower) {
+
+                            case 'reviewed':
+                                $actions = [
+                                    [
+                                        'label' => 'Mark as Endorsed',
+                                        'action' => 'mark-endorsed',
+                                        'icon' => 'check',
+                                        'primary' => true
+                                    ],
+                                    [
+                                        'label' => 'View',
+                                        'action' => 'view',
+                                        'icon' => 'review'
+                                    ],
+                                    [
+                                        'label' => 'Show History',
+                                        'action' => 'show-history',
+                                        'icon' => 'history'
+                                    ]
+                                ];
+                                break;
+
+                            case 'endorsed':
+                                $actions = [
+                                    [
+                                        'label' => 'Upload Clearance and Mark as Approved',
+                                        'action' => 'upload-clearance',
+                                        'icon' => 'upload',
+                                        'primary' => true
+                                    ],
+                                    [
+                                        'label' => 'View',
+                                        'action' => 'view',
+                                        'icon' => 'review'
+                                    ],
+                                    [
+                                        'label' => 'Show History',
+                                        'action' => 'show-history',
+                                        'icon' => 'history'
+                                    ]
+                                ];
+                                break;
+
+                            case 'approved':
+                                $actions = [
+                                    [
+                                        'label' => 'Show Clearance',
+                                        'action' => 'view-clearance',
+                                        'icon' => 'download',
+                                        'primary' => true
+                                    ],
+                                    [
+                                        'label' => 'View',
+                                        'action' => 'view',
+                                        'icon' => 'review'
+                                    ],
+                                    [
+                                        'label' => 'Show History',
+                                        'action' => 'show-history',
+                                        'icon' => 'history'
+                                    ]
+                                ];
+                                break;
+
+                            default:
+                                $actions = [
+                                    [
+                                        'label' => 'View',
+                                        'action' => 'view',
+                                        'icon' => 'review',
+                                        'primary' => true
+                                    ],
+                                    [
+                                        'label' => 'Show History',
+                                        'action' => 'show-history',
+                                        'icon' => 'history'
+                                    ]
+                                ];
+                        }
+                    }
+                ?>
+                    <div class="protocol"
+                        data-protocol-id="<?= $protocolId ?>"
+                        data-filter-slug="<?= $filterSlug ?>"
+                        data-researcher="<?= strtolower(htmlspecialchars($protocol['first_name'] . ' ' . $protocol['last_name'], ENT_QUOTES, 'UTF-8')) ?>">
+
+                        <span class="protocol-status-icon" style="background:<?= $statusMeta[$filterSlug]['color'] ?? 'var(--muted-text)' ?>">
+                            <?= statusIconSvg($statusMeta[$filterSlug]['icon'] ?? 'check-circle-icon', 15) ?>
+                        </span>
+
+                        <div class="protocol-body">
+                            <div class="protocol-meta">
+                                <p class="research-title"><?= $title ?></p>
+                                <p class="protocol-meta-line">
+                                    <?= $researcherName ?> &middot; <?= $submittedDate ?>
+                                </p>
+                            </div>
+
+                            <div class="actions">
+                                <?php foreach ($actions as $action): ?>
+                                    <?php if (!empty($action['primary'])): ?>
+                                        <button class="button button--primary" data-action="<?= $action['action'] ?>">
+                                            <?php if (!empty($action['icon'])): ?>
+                                                <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                                    <use href="<?= $iconMap[$action['icon']] ?>"></use>
+                                                </svg>
+                                            <?php endif; ?>
+                                            <?= htmlspecialchars($action['label']) ?>
+                                        </button>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+
+                                <div class="actions-secondary">
+                                    <?php foreach ($actions as $action): ?>
+                                        <?php if (empty($action['primary'])): ?>
+                                            <button class="action-link" data-action="<?= $action['action'] ?>">
+                                                <?= htmlspecialchars($action['label']) ?>
+                                            </button>
+                                        <?php endif; ?>
+                                    <?php endforeach; ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+
+                <p class="no-results" id="noResultsMsg">
+                    <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <use href="#file-x-icon" />
+                    </svg>
+                    No protocols match your search or filter.
+                </p>
+            </div><!-- /.protocols-list -->
 
             <!-- ===== Pagination ===== -->
             <div class="pagination-bar" id="paginationBar">
@@ -450,30 +535,82 @@ foreach ($protocols as $p) {
     const CLEARANCE_UPLOAD_API = ROOT_URL + '/apply/clearance_upload';
     const CLEARANCE_VIEW_URL = ROOT_URL + '/apply/clearance/';
 
+    // ===== Status metadata (mirrors My Protocols) =====
+    const statusMeta = <?= json_encode($statusMeta) ?>;
+
     // ===== DOM refs =====
-    const tableBody = document.getElementById('protocolTableBody');
-    const noResultsRow = document.getElementById('noResultsRow');
-    const filterPills = document.querySelectorAll('.filter-pill');
+    const protocolsList = document.getElementById('protocolsList');
+    const noResultsMsg = document.getElementById('noResultsMsg');
+    const filterPills = document.querySelectorAll('.status-card');
+    const mobileFilter = document.querySelector('.mobile-status-filters');
+    const statusFiltersEl = document.getElementById('filterPillsRow');
     const searchInput = document.getElementById('inboxSearchInput');
     const searchClearBtn = document.getElementById('inboxSearchClear');
     const paginationInfo = document.getElementById('paginationInfo');
     const paginationBtns = document.getElementById('paginationButtons');
     const rowsPerPageSel = document.getElementById('rowsPerPageSelect');
 
-    const allRows = tableBody ? [...tableBody.querySelectorAll('tr')] : [];
+    const allRows = protocolsList ? [...protocolsList.querySelectorAll('.protocol')] : [];
 
     let activeFilter = 'to-review';
     let searchQuery = '';
     let currentPage = 1;
     let rowsPerPage = 10;
 
-    // ===== Filter pills =====
+    function hexToRgba(hex, alpha) {
+        const h = hex.replace('#', '');
+        const r = parseInt(h.substring(0, 2), 16);
+        const g = parseInt(h.substring(2, 4), 16);
+        const b = parseInt(h.substring(4, 6), 16);
+        return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+    }
+
+    function updateStatusGuide(selected) {
+        const guide = document.getElementById('statusGuide');
+        if (!guide) return;
+
+        const meta = statusMeta[selected];
+        if (!meta) {
+            guide.classList.remove('open');
+            guide.style.background = '';
+            guide.innerHTML = '';
+            return;
+        }
+
+        guide.innerHTML = `<p class="status-guide-text">
+                                <svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                    <use href="#info-icon" />
+                                </svg> ${meta.desc}
+                            </p>`;
+        guide.style.background = hexToRgba(meta.color, 0.12);
+        guide.classList.add('open');
+    }
+
+    // ===== Mobile status dropdown toggle =====
+    mobileFilter?.addEventListener('click', e => {
+        e.stopPropagation();
+        statusFiltersEl.classList.toggle('active');
+    });
+    document.addEventListener('click', e => {
+        if (!statusFiltersEl?.contains(e.target) && !mobileFilter?.contains(e.target)) {
+            statusFiltersEl?.classList.remove('active');
+        }
+    });
+
+    // ===== Status filter tabs =====
     filterPills.forEach(pill => {
         pill.addEventListener('click', () => {
             filterPills.forEach(p => p.classList.remove('active'));
             pill.classList.add('active');
             activeFilter = pill.dataset.filter;
             currentPage = 1;
+
+            const mobileFilterLabel = document.getElementById('mobileFilterLabel');
+            if (mobileFilterLabel) mobileFilterLabel.textContent = pill.dataset.label;
+
+            updateStatusGuide(activeFilter);
+            statusFiltersEl.classList.remove('active');
+
             const url = new URL(window.location);
             url.searchParams.set('status', activeFilter);
             history.replaceState(null, '', url);
@@ -514,19 +651,22 @@ foreach ($protocols as $p) {
                 filterPills.forEach(p => p.classList.remove('active'));
                 matchingPill.classList.add('active');
                 activeFilter = requestedStatus;
+                const mobileFilterLabel = document.getElementById('mobileFilterLabel');
+                if (mobileFilterLabel) mobileFilterLabel.textContent = matchingPill.dataset.label;
             }
         } else {
             const url = new URL(window.location);
             url.searchParams.set('status', activeFilter);
             history.replaceState(null, '', url);
         }
+        updateStatusGuide(activeFilter);
     })();
 
     // ===== Main render =====
     function renderTable() {
         const visibleRows = allRows.filter(row => {
             const slug = row.dataset.filterSlug;
-            const title = row.querySelector('.protocol-title-cell')?.textContent.toLowerCase() ?? '';
+            const title = row.querySelector('.research-title')?.textContent.toLowerCase() ?? '';
             const researcher = row.dataset.researcher ?? '';
 
             const matchesFilter =
@@ -551,8 +691,8 @@ foreach ($protocols as $p) {
 
         pageRows.forEach(row => row.classList.remove('protocol-row-hidden'));
 
-        if (noResultsRow) {
-            noResultsRow.hidden = totalRows !== 0;
+        if (noResultsMsg) {
+            noResultsMsg.style.display = totalRows === 0 ? 'flex' : 'none';
         }
 
         if (paginationInfo) {
@@ -638,11 +778,11 @@ foreach ($protocols as $p) {
     }
 
     // ===== Row action buttons =====
-    tableBody?.addEventListener('click', function(e) {
+    protocolsList?.addEventListener('click', function(e) {
         const btn = e.target.closest('[data-action]');
         if (!btn) return;
 
-        const row = btn.closest('tr');
+        const row = btn.closest('.protocol');
         const protocolId = parseInt(row?.dataset.protocolId, 10);
         const protocol = protocolsData.find(p => p.protocol_id == protocolId);
         const action = btn.dataset.action;
@@ -696,8 +836,7 @@ foreach ($protocols as $p) {
             const data = await res.json();
             if (data.ok) {
                 window.location.reload();
-            } else if (data.queued) {
-            } else {
+            } else if (data.queued) {} else {
                 alert('Error: ' + (data.error ?? 'Could not update status.'));
             }
         } catch (err) {
@@ -722,6 +861,40 @@ foreach ($protocols as $p) {
         }
         dismissFlash('flashSuccess', 4000);
         dismissFlash('flashError', 7000);
+    })();
+
+    // ===== Status legend info panel (hover on desktop, tap on touch) =====
+    (function() {
+        const wrapper = document.getElementById('legendInfoWrapper');
+        const btn = document.getElementById('legendInfoBtn');
+        const panel = document.getElementById('legendInfoPanel');
+        if (!wrapper || !btn || !panel) return;
+
+        function openPanel() {
+            panel.classList.add('open');
+            btn.setAttribute('aria-expanded', 'true');
+        }
+
+        function closePanel() {
+            panel.classList.remove('open');
+            btn.setAttribute('aria-expanded', 'false');
+        }
+
+        wrapper.addEventListener('mouseenter', openPanel);
+        wrapper.addEventListener('mouseleave', closePanel);
+        btn.addEventListener('focus', openPanel);
+
+        btn.addEventListener('click', e => {
+            e.stopPropagation();
+            panel.classList.contains('open') ? closePanel() : openPanel();
+        });
+
+        document.addEventListener('click', e => {
+            if (!wrapper.contains(e.target)) closePanel();
+        });
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') closePanel();
+        });
     })();
 
     // ===== Initial render =====

@@ -327,7 +327,7 @@ include "includes/scroll-top.php";
 
         if (opts.alreadyOnFile) {
             subLine = `<span class="doc-row-sub done">${opts.alreadyNote}</span>`;
-            action = `<div class="doc-row-done">${checkSvg}<span>On file</span></div>`;
+            action = `<div class="doc-row-done">${checkSvg}<span>Submitted</span></div>`;
         } else if (name) {
             const size = formatFileSize(state[key + 'Size']);
             subLine = `<span class="doc-row-sub done">${esc(name)}${size ? ` · ${size}` : ''}</span>`;
@@ -358,6 +358,14 @@ include "includes/scroll-top.php";
     </div>`;
     }
 
+    const uploadWarningNotice = `
+    <div class="notice notice-warning">
+        <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <use href="#alert-triangle-icon" />
+        </svg>
+        <span><span class="bold">All uploads will be thoroughly examined.</span> Make sure documents are legible, complete, and accurate before submitting.</span>
+    </div>`;
+
     // ===== STEP 0 — Requirements & Process =====
     function step0() {
         const checkSvgSm = `<svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -379,7 +387,7 @@ include "includes/scroll-top.php";
         ];
 
         const process = [
-            `Attach requirements (if applicable). <br>
+            `Attach requirements if applicable. <br>
          <span class="process-note">
            Your training certificate is required unless you have already submitted one previously.
            If you are not the Principal Investigator, attach an authorization letter.
@@ -410,13 +418,6 @@ include "includes/scroll-top.php";
         <div class="process-num">${i + 1}</div>
         <div class="process-text">${s}</div>
     </div>`).join('')}
-
-    <div class="info-bar orange">
-        <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-            <use href="#alert-triangle-icon" />
-        </svg>
-        <span><span class="bold">All uploads will be thoroughly examined.</span> Make sure documents are legible, complete, and accurate before submitting.</span>
-    </div>
 
     <div class="btn-row btn-row--lg-top">
         <button class="btn-primary" onclick="goTo(1)">
@@ -555,6 +556,8 @@ include "includes/scroll-top.php";
 
     <div id="doc-error" class="error-messages is-hidden"></div>
 
+    ${uploadWarningNotice}
+
     <div class="btn-row">
         <button class="btn-secondary" onclick="goTo(1)">
             <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -616,13 +619,6 @@ include "includes/scroll-top.php";
     </div>`).join('')}
     </div>
 
-    <div class="info-bar orange">
-        <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-            <use href="#alert-triangle-icon" />
-        </svg>
-        <span>An incomplete form will be returned for revision.</span>
-    </div>
-
     <div class="btn-row">
         <button class="btn-secondary" onclick="goTo(2)">
             <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -662,6 +658,8 @@ include "includes/scroll-top.php";
     </div>
 
     <div id="upload-error" class="error-messages is-hidden"></div>
+
+    ${uploadWarningNotice}
 
     <div class="btn-row">
         <button class="btn-secondary" onclick="goTo(3)">

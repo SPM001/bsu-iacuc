@@ -44,6 +44,7 @@
 
     /* ===== DECORATIVE ===== */
     --heading-fill: rgba(0, 0, 0, 0.15);
+    --heading-fill-main: rgba(0, 0, 0, 0.15);
     --heading-shadow: rgba(0, 0, 0, 1);
 
     --text-on-image: #f5f5f5;
@@ -98,7 +99,7 @@
     --sidebar-background: #1a2129;
     --backdrop-color: rgba(0, 0, 0, 0.65);
 
-    --primary-text: #e8eaed;
+    --primary-text: #e8eaedc9;
     --secondary-text: #a3adb8;
 
     --divider-color: #333d47;
@@ -107,7 +108,8 @@
     --hover-surface: #2a3339;
     --hover-surface-soft: #212a30;
 
-    --heading-fill: rgba(255, 255, 255, 0.16);
+    --heading-fill: rgba(255, 255, 255, 0.534);
+    --heading-fill-main: #d0d5dbd8;
     --heading-shadow: rgba(255, 255, 255, 0.45);
 
     --brand-surface-tint: rgba(30, 41, 36, 0.75);
@@ -201,11 +203,12 @@ h1,
 h2 {
     font-family: "PT Serif", serif;
     text-shadow: 0 0 1px var(--heading-shadow);
-    color: var(--heading-fill);
+    color: var(--heading-fill-main);
 }
 
 h2 {
     font-size: 1.8em;
+    color: var(--heading-fill);
 }
 
 button,

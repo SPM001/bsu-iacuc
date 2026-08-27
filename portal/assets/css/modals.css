@@ -29,6 +29,10 @@
     margin-bottom: .35rem;
 }
 
+.modal-card img {
+    object-fit: cover;
+}
+
 .modal-actions {
     display: flex;
     gap: .75rem;

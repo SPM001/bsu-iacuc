@@ -64,6 +64,7 @@ function statusIconSvg(string $iconId, int $size = 14): string
 }
 ?>
 
+<link rel="stylesheet" href="<?= asset_css('protocol-list.css') ?>">
 <link rel="stylesheet" href="<?= asset_css('submissions.css') ?>">
 
 <div class="body">
@@ -343,7 +344,7 @@ function statusIconSvg(string $iconId, int $size = 14): string
             </div>
             <button class="history-modal-close button" onclick="closeHistoryModal()" aria-label="Close">
                 <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                    <use href="#close-icon" />
+                    <use href="#close-icon">
                 </svg>
             </button>
         </div>

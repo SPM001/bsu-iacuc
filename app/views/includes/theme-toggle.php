@@ -8,8 +8,8 @@ $themeToggleExtraClass = $themeToggleExtraClass ?? '';
   class="theme-toggle <?= htmlspecialchars($themeToggleExtraClass, ENT_QUOTES, 'UTF-8') ?>"
   type="button"
   aria-pressed="false"
-  aria-label="Switch to dark mode"
-  title="Switch to dark/light theme">
+  aria-label="Toggle theme"
+  title="Toggle theme">
   <svg class="theme-toggle-icon theme-toggle-icon-moon" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
     <use href="#moon-icon" />
   </svg>

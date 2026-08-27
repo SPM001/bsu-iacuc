@@ -91,23 +91,27 @@ article {
 
     .banner {
         flex-direction: column;
-        text-align: center;
-        padding: 2rem 0;
+        align-items: flex-start;
+        padding: 0 0 2rem 0;
+        gap: .8em;
     }
 
     .logos {
         grid-template-columns: repeat(4, auto);
-        justify-content: center;
     }
 
     .logos img {
-        width: 56px;
-        height: 56px;
+        width: 40px;
+        height: 40px;
     }
 
     .banner h1 {
         max-width: 100%;
-        font-size: 1.8rem;
+        font-size: 1.5rem;
+    }
+
+    .articles h2 {
+        font-size: 1.4rem;
     }
 }
 
@@ -121,7 +125,7 @@ article {
     font-weight: 800;
 
     background-color: var(--brand-color-hover);
-    color: var(--text-on-brand);
+    color: var(--primary-text);
 }
 
 .btn-apply-outline {

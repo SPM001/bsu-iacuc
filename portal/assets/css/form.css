@@ -60,4 +60,8 @@
   .input-group {
     width: 90%;
   }
+
+  .input-group input#first_name {
+    margin-bottom: 1.4em;
+  }
 }
