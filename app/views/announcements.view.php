@@ -3,6 +3,12 @@ $title = 'Announcements';
 
 include "includes/header.php";
 include "includes/scroll-top.php";
+
+// ADDED SPM - pull admin-managed "From Our Office" posts.
+require_once dirname(__DIR__) . '/models/AnnouncementModel.php';
+$announcementModel = new AnnouncementModel();
+$officeAnnouncements = $announcementModel->getAll();
+// END ADDED
 ?>
 
 <link rel="stylesheet" href="<?= asset_css('announcements.css') ?>">
@@ -25,6 +31,22 @@ include "includes/scroll-top.php";
             <section class="announcements">
                 <h2>From Our Office</h2>
                 <p class="announcements-subtitle">Latest updates from BSU-CCARD.</p>
+
+                <!-- ADDED SPM - renders posts managed by admin -->
+                <?php if (empty($officeAnnouncements)): ?>
+                    <p class="announcements-empty">No announcements yet. Check back soon.</p>
+                <?php else: ?>
+                    <div class="office-announcements-list">
+                        <?php foreach ($officeAnnouncements as $post): ?>
+                            <article class="office-announcement-card">
+                                <h3 class="office-announcement-title"><?= htmlspecialchars($post['title'], ENT_QUOTES) ?></h3>
+                                <time class="office-announcement-date"><?= htmlspecialchars($post['created_at'], ENT_QUOTES) ?></time>
+                                <p class="office-announcement-body"><?= nl2br(htmlspecialchars($post['body'], ENT_QUOTES)) ?></p>
+                            </article>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+                <!-- END ADDED -->
             </section>
 
             <section class="fb-cards">
